@@ -1,6 +1,5 @@
 //  AppDelegate.swift
 //  ChineseApp
-//  Created by 玉井　勝也 on 2021/06/25.
 import UIKit
 
 @main
