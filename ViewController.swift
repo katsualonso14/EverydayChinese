@@ -1,5 +1,6 @@
 //  ViewController.swift
 //  ChineseApp
+
 import UIKit
 
 class ViewController: UIViewController {
