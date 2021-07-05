@@ -3,20 +3,20 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windosScene = (scene as? UIWindowScene) else {return}
         let window = UIWindow(windowScene: windosScene)
         self.window = window
-        window.rootViewController = ViewController(nibName: nil, bundle: nil)
-        window.makeKeyAndVisible()
         
-        guard let _ = (scene as? UIWindowScene) else { return }
+        let vc = MainTabBarController()
+        window.rootViewController = vc
+        //   keywindowとして設定することで、同一レベル(もしくは同一レベル以下)の windowの最前面に表示するためのメソッド
+        window.makeKeyAndVisible()
     }
-
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
