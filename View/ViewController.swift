@@ -13,8 +13,8 @@ class ViewController: UIViewController {
         return label
     }()
     
-    override func loadView() {
-//        super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         view = UIView()
         view.backgroundColor = .white
         

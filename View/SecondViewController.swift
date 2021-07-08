@@ -14,8 +14,8 @@ class SecondViewController: UIViewController {
         
     }()
     
-    override func loadView() {
-//        super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         view = UIView()
         view.backgroundColor = .white
         //falseでAotoLayoutでレイアウトが構築される
