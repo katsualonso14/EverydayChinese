@@ -12,7 +12,7 @@ class MainTabBarController: UITabBarController {
     }
 
     func setupTab() {
-        let viewController = ViewController()
+        let viewController = MyTableViewController()
         viewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
         
         let secondViewController = SecondViewController()
