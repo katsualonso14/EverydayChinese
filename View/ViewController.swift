@@ -1,38 +1,60 @@
-//文章ページ
-//  ViewController.swift
-//  ChineseApp
-
+//メインページ
 import UIKit
 
-final class MyTableViewController: UITableViewController {
-//cellの文章
-    var items: [String] = ["sentence1","sentence2","sentence3"]
-    
+class categoryViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
+        view.backgroundColor = .white
+        biginnerButton()
+        intermediateButton()
+        advancedButton()
+        
     }
 
-    // MARK: - Table view　設定
-    //セクション数の指定
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1    }
-    //表示するcellの指定
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+    @objc func pushBignnerButton(sender: UIButton){
+        print("BignnerButton pushed.")
     }
-    //cellが選択された時の処理
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("\(indexPath.row)番セルが押されたよ！")
+    @objc func pushIntermediateButton(sender: UIButton){
+        print("IntermediateButton pushed.")
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = items[indexPath.row]
-        cell.accessoryType = .disclosureIndicator // > 表示
-        //文字数が多くなった時に改行しなくなるの防止設定
-        cell.textLabel?.numberOfLines = 0
-        return cell
+    @objc func pushAdvancedButton(sender: UIButton){
+        print("AdvancedButton pushed.")
     }
+
+    func biginnerButton() {
+        
+        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: self.view.frame.height / 4))
+        button.backgroundColor = .blue
+        button.setTitle("初心者", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(pushBignnerButton), for: .touchUpInside)
+        self.view.addSubview(button)
+
+    }
+    func intermediateButton() {
+        
+        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height / 4))
+        button.backgroundColor = .orange
+        button.setTitle("中級者", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(pushIntermediateButton), for: .touchUpInside)
+        self.view.addSubview(button)
+
+    }
+    func advancedButton() {
+        
+        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 550, width: self.view.frame.width, height: self.view.frame.height / 4))
+        button.backgroundColor = .yellow
+        button.setTitle("上級者", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(pushAdvancedButton), for: .touchUpInside)
+        self.view.addSubview(button)
+
+    }
+    //大きい画像などのメモリ解放
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
 }

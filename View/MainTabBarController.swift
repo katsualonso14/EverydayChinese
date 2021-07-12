@@ -12,13 +12,13 @@ class MainTabBarController: UITabBarController {
     }
 
     func setupTab() {
-        let viewController = MyTableViewController()
-        viewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
+        let CategoryViewController = categoryViewController()
+      CategoryViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
         
-        let secondViewController = SecondViewController()
-        secondViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
+        let myTableViewController = MyTableViewController()
+        myTableViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
         
-        viewControllers = [viewController,secondViewController]
+        viewControllers = [CategoryViewController,myTableViewController]
         
     }
 
