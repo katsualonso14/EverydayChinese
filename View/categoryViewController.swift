@@ -24,31 +24,37 @@ class categoryViewController: UIViewController {
 
     func biginnerButton() {
         
-        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 50, width: self.view.frame.width, height: self.view.frame.height / 4))
-        button.backgroundColor = .blue
+        let button:UIButton = UIButton(frame: CGRect(x: 70, y: 150, width: 300, height: 150))
+        button.backgroundColor = .yellow
         button.setTitle("初心者", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(pushBignnerButton), for: .touchUpInside)
+        button.layer.cornerRadius = 20.0
+        button.layer.masksToBounds = true
         self.view.addSubview(button)
 
     }
     func intermediateButton() {
         
-        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height / 4))
+        let button:UIButton = UIButton(frame: CGRect(x: 70, y: 350, width: 300, height: 150))
         button.backgroundColor = .orange
         button.setTitle("中級者", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(pushIntermediateButton), for: .touchUpInside)
+        button.layer.cornerRadius = 20.0
+        button.layer.masksToBounds = true
         self.view.addSubview(button)
 
     }
     func advancedButton() {
         
-        let button:UIButton = UIButton(frame: CGRect(x: 0, y: 550, width: self.view.frame.width, height: self.view.frame.height / 4))
-        button.backgroundColor = .yellow
+        let button:UIButton = UIButton(frame: CGRect(x: 70, y: 550, width: 300, height: 150))
+        button.backgroundColor = .blue
         button.setTitle("上級者", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(pushAdvancedButton), for: .touchUpInside)
+        button.layer.cornerRadius = 20.0
+        button.layer.masksToBounds = true
         self.view.addSubview(button)
 
     }
