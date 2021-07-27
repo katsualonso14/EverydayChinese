@@ -14,12 +14,14 @@ class MainTabBarController: UITabBarController {
     func setupTab() {
         let categoryViewController = CategoryViewController()
       categoryViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
+        let nv = UINavigationController(rootViewController: categoryViewController)
         
-        let myTableViewController = MyTableViewController()
+        let myTableViewController = SettingViewController()
         myTableViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 0)
+        let nv2 = UINavigationController(rootViewController: myTableViewController)
         
-        viewControllers = [categoryViewController,myTableViewController]
-        
+              setViewControllers([nv, nv2], animated: false)
+    
     }
 
 }

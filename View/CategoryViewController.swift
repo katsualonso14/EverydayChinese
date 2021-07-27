@@ -9,25 +9,23 @@ class CategoryViewController: UIViewController {
         biginnerButton()
         intermediateButton()
         advancedButton()
+        navigationItem.title = "Category"
         
     }
     
     @objc func pushBignnerButton(sender: UIButton){
-        //       Biginner画面遷移
-        let biginnerViewController = BiginnerViewController.init()
-        //        全画面セット
-        //        biginnerViewController.modalPresentationStyle = .fullScreen
-        present(biginnerViewController, animated: true, completion: nil)
+        let vc = BiginnerViewController(titleName: "Biginner")
+        navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushIntermediateButton(sender: UIButton){
-        //Intermediate画面遷移
-        let intermediateViewController = IntermediateViewController.init()
-        present(intermediateViewController, animated: true, completion: nil)
+        let vc2 = IntermediateViewController(titleName: "Intermediate")
+        navigationController?.pushViewController(vc2, animated: true)
     }
+    
     @objc func pushAdvancedButton(sender: UIButton){
-        //Advanced画面遷移
-        let advancedViewController = AdvancedViewController.init()
-        present(advancedViewController, animated: true, completion: nil)    }
+        let vc3 = AdvancedViewController(titleName: "Advanced")
+        navigationController?.pushViewController(vc3, animated: true)   }
 
     func biginnerButton() {
         
@@ -35,7 +33,7 @@ class CategoryViewController: UIViewController {
         button.backgroundColor = .yellow
         button.setTitle("初心者", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(pushBignnerButton), for: .touchDown)
+        button.addTarget(self, action: #selector(pushBignnerButton), for: .touchUpInside)
         button.layer.cornerRadius = 20.0
         button.layer.masksToBounds = true
         self.view.addSubview(button)
