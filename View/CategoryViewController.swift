@@ -12,21 +12,21 @@ class CategoryViewController: UIViewController {
         navigationItem.title = "Category"
         
     }
-    
+//    初心者ボタン押した時のアクション
     @objc func pushBignnerButton(sender: UIButton){
         let vc = BiginnerViewController(titleName: "Biginner")
         navigationController?.pushViewController(vc, animated: true)
     }
-
+    //    中級者ボタン押した時のアクション
     @objc func pushIntermediateButton(sender: UIButton){
         let vc2 = IntermediateViewController(titleName: "Intermediate")
         navigationController?.pushViewController(vc2, animated: true)
     }
-    
+    //    上級者ボタン押した時のアクション
     @objc func pushAdvancedButton(sender: UIButton){
         let vc3 = AdvancedViewController(titleName: "Advanced")
         navigationController?.pushViewController(vc3, animated: true)   }
-
+    //    初心者ボタン
     func biginnerButton() {
         
         let button:UIButton = UIButton(frame: CGRect(x: 70, y: 150, width: 300, height: 150))
@@ -39,6 +39,7 @@ class CategoryViewController: UIViewController {
         self.view.addSubview(button)
 
     }
+    //    中級者ボタン
     func intermediateButton() {
         
         let button:UIButton = UIButton(frame: CGRect(x: 70, y: 350, width: 300, height: 150))
@@ -51,6 +52,7 @@ class CategoryViewController: UIViewController {
         self.view.addSubview(button)
 
     }
+    //    上級者ボタン
     func advancedButton() {
         
         let button:UIButton = UIButton(frame: CGRect(x: 70, y: 550, width: 300, height: 150))

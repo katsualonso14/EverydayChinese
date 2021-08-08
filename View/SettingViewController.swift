@@ -7,7 +7,7 @@ import UIKit
         super.viewDidLoad()
         
         view.backgroundColor = .orange
-        
+        navigationItem.title = "Setting"
     }
 
  }

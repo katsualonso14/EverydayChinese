@@ -10,7 +10,7 @@ class MainTabBarController: UITabBarController {
 
         setupTab()
     }
-
+    //タブバーの表示
     func setupTab() {
         let categoryViewController = CategoryViewController()
       categoryViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
