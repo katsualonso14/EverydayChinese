@@ -6,7 +6,8 @@ import SnapKit
 class BiginnerViewController: UITableViewController {
     
     let titleName: String
-    var sentence = ["aaa","bbb","ccc"]
+    let sentenceView = SentenceViewController()
+    let soundsView = SoundsViewController()
     
     init(titleName: String) {
         self.titleName = titleName
@@ -15,8 +16,8 @@ class BiginnerViewController: UITableViewController {
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     //　　　　viewのセット
-    private lazy var container: UIView = {
-        let container = UIView()
+    private lazy var container: UIScrollView = {
+        let container = UIScrollView()
         container.backgroundColor = UIColor.white
         return container
     }()
@@ -28,11 +29,17 @@ class BiginnerViewController: UITableViewController {
         self.view.addSubview(container)
         
         container.snp.makeConstraints { make in
-            make.edges.equalToSuperview() //中心点を親Viewと合わせる
+            make.edges.equalToSuperview() //中心点を親Viewと合わせる、全画面に窓を固定
         }
+        
+        container.snp.makeConstraints { make in
+            make.width.equalTo(container.frameLayoutGuide)
+            make.edges.equalTo(container.contentLayoutGuide)
+        }
+        
         tableView.dataSource = self
         tableView.delegate  = self
-        //regisiterを入れないと画面遷移しないs
+        //regisiterを入れないと画面遷移しない
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
@@ -42,15 +49,21 @@ class BiginnerViewController: UITableViewController {
        }
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentence.count
+        return sentenceView.sentence.count
     }
     //cellの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        //cellStyleをいくつかある中から選択
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "cell")
             
-            cell.textLabel?.text = sentence[indexPath.row]
+        cell.textLabel?.text = sentenceView.sentence[indexPath.row]
+        cell.detailTextLabel?.text = soundsView.sounds[indexPath.row]
             return cell
         }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(100)
+    }
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected")
