@@ -39,8 +39,8 @@ class BiginnerViewController: UITableViewController {
         
         tableView.dataSource = self
         tableView.delegate  = self
-        //regisiterを入れないと画面遷移しない
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        //CustomCellの登録
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
        override func didReceiveMemoryWarning() {
@@ -53,11 +53,10 @@ class BiginnerViewController: UITableViewController {
     }
     //cellの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //cellStyleをいくつかある中から選択
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "cell")
-            
-        cell.textLabel?.text = sentenceView.sentence[indexPath.row]
-        cell.detailTextLabel?.text = soundsView.sounds[indexPath.row]
+        //CustomTableViewCellの追加
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        //cellの文字
+        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row])
             return cell
         }
     
