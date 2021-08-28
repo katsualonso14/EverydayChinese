@@ -1,4 +1,4 @@
-//文章ページ
+//設定ページ
 import UIKit
 
  class SettingViewController: UIViewController {

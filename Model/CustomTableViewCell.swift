@@ -6,16 +6,24 @@ class CustomTableViewCell: UITableViewCell {
     
     let sentenceLabel: UILabel = {
            let label = UILabel()
-           label.font = UIFont.systemFont(ofSize: 18)
+           label.font = UIFont.systemFont(ofSize: 20)
            label.textColor = UIColor.black
            label.translatesAutoresizingMaskIntoConstraints = false
            return label
        }()
     
-    let pronunciationLabel: UILabel = {
+    let soundsLabel: UILabel = {
             let label = UILabel()
-            label.font = UIFont.systemFont(ofSize: 13)
+            label.font = UIFont.systemFont(ofSize: 20)
             label.textColor = UIColor.lightGray
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+    
+    let japaneseLabel: UILabel = {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = UIColor.blue
             label.translatesAutoresizingMaskIntoConstraints = false
             return label
         }()
@@ -34,26 +42,32 @@ class CustomTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(sentenceLabel)
-        addSubview(pronunciationLabel)
+        addSubview(soundsLabel)
+        addSubview(japaneseLabel)
         //namelabelの配置
         sentenceLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
-        sentenceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        sentenceLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 3/5).isActive = true
+        sentenceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50).isActive = true
+        sentenceLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         sentenceLabel.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        //pronunciationLabelの配置
-        pronunciationLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
-        pronunciationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        pronunciationLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/5).isActive = true
-        pronunciationLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
+        //soundsLabelの配置
+        soundsLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        soundsLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        soundsLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
+       //japaneseLabelの配置
+        japaneseLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        japaneseLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 50).isActive = true
+        japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        japaneseLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
     }
-    
+//    初期化
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCell(sentence: String, pronunciation: String) {
+    func setCell(sentence: String, pronunciation: String , japanese: String) {
         sentenceLabel.text = sentence
-        pronunciationLabel.text = pronunciation
-        
+        soundsLabel.text = pronunciation
+        japaneseLabel.text = japanese
     }
 }

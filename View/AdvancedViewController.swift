@@ -1,4 +1,4 @@
-
+//上級者ぺージ
 import UIKit
 
 class AdvancedViewController: UITableViewController {

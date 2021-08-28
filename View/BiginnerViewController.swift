@@ -1,5 +1,4 @@
-//  Created by 玉井　勝也 on 2021/07/25.
-
+//初心者ページ
 import UIKit
 import SnapKit
 
@@ -56,12 +55,14 @@ class BiginnerViewController: UITableViewController {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         //cellの文字
-        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row])
+        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row
+        ])
+        
             return cell
         }
-    
+//    セルの高さ
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(100)
+        return CGFloat(180)
     }
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

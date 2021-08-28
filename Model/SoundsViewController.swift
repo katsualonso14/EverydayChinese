@@ -1,4 +1,4 @@
-
+//音声データ
 import UIKit
 
 class SoundsViewController: UIViewController {
@@ -7,7 +7,6 @@ class SoundsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
 }

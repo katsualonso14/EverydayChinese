@@ -1,4 +1,4 @@
-
+//中級者ページ
 import UIKit
 
 class IntermediateViewController: UITableViewController {
