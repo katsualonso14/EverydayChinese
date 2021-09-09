@@ -1,12 +1,14 @@
 //初心者ページ
 import UIKit
 import SnapKit
+import AVFoundation
 
-class BiginnerViewController: UITableViewController {
+class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate {
     
     let titleName: String
     let sentenceView = SentenceViewController()
     let soundsView = SoundsViewController()
+    var audioPlayer: AVAudioPlayer!
     
     init(titleName: String) {
         self.titleName = titleName
@@ -35,6 +37,23 @@ class BiginnerViewController: UITableViewController {
             make.width.equalTo(container.frameLayoutGuide)
             make.edges.equalTo(container.contentLayoutGuide)
         }
+        //音声データのパス指定
+        let audioPath  = Bundle.main.path(forResource: "bell03", ofType: "mp3")!
+        let audioUrl  = URL(fileURLWithPath: audioPath)
+        //音声データのエラー時処理
+        var audioError: NSError?
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: audioUrl)
+        } catch let error as NSError {
+            audioError = error
+            audioPlayer = nil
+        }
+        
+        if let error = audioError {
+            print("Error\(error.localizedDescription)")
+        }
+        
+        audioPlayer.delegate = self
         
         tableView.dataSource = self
         tableView.delegate  = self
@@ -67,6 +86,7 @@ class BiginnerViewController: UITableViewController {
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("selected")
+        audioPlayer.play()
         
     }
     
