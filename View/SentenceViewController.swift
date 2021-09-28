@@ -14,14 +14,14 @@ class SentenceViewController: UITabBarController {
     
     var IntermediatePronunciation = ["wǒ","nǐ","tā","tā","wǒmen","tāmen","tāmen","zhè","zhèxiē","nà","nàxiē"]
     
-    var IntermediateJananase = ["わたし","あなた","彼","女性","わたしたち","彼ら","彼女たち","これ","これら","それ","それら   "]
+    var IntermediateJananase = ["わたし","あなた","彼","女性","わたしたち","彼ら","彼女たち","これ","これら","それ","それら"]
     
     
-    var AdvancedSentence = ["","","","","","","","","",""]
+    var AdvancedSentence = ["你叫什么名字","他是谁？","它需要多长时间","你喜欢什么类型的电影","在哪里完成","什么时候完成","你为什么喜欢这部电影","现在是几奌","你家有几口人","你想去看电影吗"]
     
-    var AdvancedPronunciation = ["","","","","","","","","",""]
+    var AdvancedPronunciation = ["Nǐ jiào shénme míngzi","tā shì shéi?","Tā xūyào duō cháng shíjiān","Nǐ xǐhuān shénme lèixíng de diànyǐng","Zài nǎlǐ wánchéng","Shénme shíhòu wánchéng","Nǐ wèishéme xǐhuān zhè bù diànyǐng","Xiànzài shì jǐ diǎn","Nǐ jiā yǒu jǐkǒu rén?","Nǐ xiǎng qù kàn diànyǐng ma"]
     
-    var AdvancedJananase = ["","","","","","","","","",""]
+    var AdvancedJananase = ["お名前は何ですか","彼はどなたですか？","どのくらい時間がかかりますか","どんな映画が好きですか","どこで行われますか","いつ行われますか","なぜその映画が好きですか","今何時ですか","あなたの家は何人家族ですか?","映画を見に行きませんか"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
