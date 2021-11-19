@@ -16,7 +16,7 @@ class MainTabBarController: UITabBarController {
       categoryViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
         let nv = UINavigationController(rootViewController: categoryViewController)
         
-        let myTableViewController = SettingViewController()
+        let myTableViewController = CalendarViewController()
         myTableViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 0)
         let nv2 = UINavigationController(rootViewController: myTableViewController)
         
