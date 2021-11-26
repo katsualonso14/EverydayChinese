@@ -77,4 +77,8 @@ class AddEventViewController: UIViewController {
         print(Realm.Configuration.defaultConfiguration.fileURL!)
         dismiss(animated: true, completion: nil)
     }
+    //他の場面を触ったらキーボードが消える
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+            view.endEditing(true)
+        }
 }
