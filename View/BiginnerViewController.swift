@@ -7,7 +7,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     
     let titleName: String
     let sentenceView = SentenceViewController()
-    let  synthesizer = AVSpeechSynthesizer()
+    let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
     
@@ -59,6 +59,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
            super.didReceiveMemoryWarning()
            // Dispose of any resources that can be recreated.
        }
+    //MARK: -Function
+    
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sentenceView.sentence.count
@@ -68,9 +70,14 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         //cellの文字指定
-        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row
-        ])
+        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
         
+        
+        //pushTriggerButton
+        let pushTriggerButton = UIButton(frame: CGRect(x: 270, y: 60, width: 50, height: 50))
+        pushTriggerButton.backgroundColor = .red
+        cell.addSubview(pushTriggerButton)
+
             return cell
         }
 //    セルの高さ
@@ -79,13 +86,12 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     }
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //中国語の読み上げ設定    
+        //中国語の読み上げ設定
         let utterance = AVSpeechUtterance.init(string: sentenceView.sentence[indexPath.row])
         let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
         utterance.voice = voice
         synthesizer.speak(utterance)
-        
-//        print("tap")
+
     }
         
 }
