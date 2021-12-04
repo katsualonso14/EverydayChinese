@@ -11,6 +11,7 @@ import RealmSwift
 class DeleteEventViewController: UIViewController {
 
     let datePickerText = UILabel()
+    let formatter = DateFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +37,7 @@ class DeleteEventViewController: UIViewController {
         datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.timeZone = NSTimeZone.local
         datePicker.addTarget(self, action: #selector(picker(_:)), for: .valueChanged)
+        
         view.addSubview(datePicker)
     }
     
@@ -49,7 +51,6 @@ class DeleteEventViewController: UIViewController {
     //MARK: -ActionFunction
     
     @objc func picker(_ sender: UIDatePicker) {
-        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
         datePickerText.text = formatter.string(from: sender.date)
        
@@ -60,21 +61,23 @@ class DeleteEventViewController: UIViewController {
     //RealmDB書き込み処理
     @objc func deleteMemo(){
         let realm = try! Realm()
-        let result = realm.objects(EventModel.self).filter("date == '\(datePickerText.text!)'")
-
         try! realm.write{
-            realm.delete(result)
-            
-            
-
+            //pickerで選んだ日付を削除 pickerをスクロールしなければ今日の日付を削除
+            if let selectPickerDay = datePickerText.text {
+                let result = realm.objects(EventModel.self).filter("date == '\(selectPickerDay)'")
+                realm.delete(result)
+                
+                print("\(result)")
+                dismiss(animated: true, completion: nil)
+            } else {
+                formatter.dateFormat = "yyyy/MM/dd"
+                let defaultDay = realm.objects(EventModel.self).filter("date == '\(formatter.string(from: Date()))'")
+                
+                realm.delete(defaultDay)
+                
+                print("\(defaultDay)")
+                dismiss(animated: true, completion: nil)
+            }
         }
-
-        print("\(result)")
-        
-        dismiss(animated: true, completion: nil)
-//        print(datePickerText.text!)
     }
-   
-    
-
 }

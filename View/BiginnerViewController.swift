@@ -71,12 +71,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         //cellの文字指定
         cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
-        
-        
-        //pushTriggerButton
-        let pushTriggerButton = UIButton(frame: CGRect(x: 270, y: 60, width: 50, height: 50))
-        pushTriggerButton.backgroundColor = .red
-        cell.addSubview(pushTriggerButton)
 
             return cell
         }

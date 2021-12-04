@@ -65,10 +65,12 @@ class AddEventViewController: UIViewController {
     //RealmDB書き込み処理
     @objc func saveMemo(){
         let realm = try! Realm()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
         
         try! realm.write{
-            // 未選択時に空文字を返す
-            let Events = [EventModel(value: ["date": datePickerText.text ?? "", "event": textView.text ?? ""])]
+            // memoLabelmに未選択時に今日の日付、空文字を返す
+            let Events = [EventModel(value: ["date": datePickerText.text ?? "\(formatter.string(from: Date()))", "event": textView.text ?? ""])]
             realm.add(Events)
             
         }

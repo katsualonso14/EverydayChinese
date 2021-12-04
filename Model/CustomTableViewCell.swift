@@ -58,7 +58,22 @@ class CustomTableViewCell: UITableViewCell {
         japaneseLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 50).isActive = true
         japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         japaneseLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
+        
+        //pushTriggerButton
+        let button = UIButton(type: .system)
+        let buttonImage = UIImage(named: "heart")
+        button.setImage(buttonImage, for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        accessoryView  = button
+        button.tintColor = .red
+        button.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
     }
+    
+    @objc private func  tapButton() {
+    print("tapButton")
+    }
+    
+    
     //    初期化
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -68,6 +83,8 @@ class CustomTableViewCell: UITableViewCell {
         sentenceLabel.text = sentence
         soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
         japaneseLabel.text = japanese
-        
     }
+    
+   
+    
 }

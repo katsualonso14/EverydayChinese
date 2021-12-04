@@ -107,6 +107,30 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
     }
     
+//    func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at monthPosition: FSCalendarMonthPosition){
+//        var hasEvent = false
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy/MM/dd"
+//        let workDay = formatter.string(from: date)
+//
+//        let realm = try! Realm()
+//        var result = realm.objects(EventModel.self)
+//        result = result.filter("date = '\(workDay)'")
+//
+//        for event in result {
+//            if event.date == workDay {
+//                hasEvent = true
+//            }
+//        }
+//        if hasEvent {
+//            cell.numberOfEvents = 1
+//                } else {
+//                    cell.numberOfEvents = 0
+//                }
+//
+//
+//    }
+    
     //点マークをつける関数
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         var hasEvent = false
