@@ -4,6 +4,8 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     
+    var BiginnerVC: BiginnerViewController?
+    
     let sentenceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
@@ -68,9 +70,10 @@ class CustomTableViewCell: UITableViewCell {
         button.tintColor = .red
         button.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
     }
-    
+    //セルのお気に入りボタンをタップしたとき処理
     @objc private func  tapButton() {
-    print("tapButton")
+        BiginnerVC!.flag = BiginnerVC!.flag ? false : true
+        BiginnerVC?.CustomCellTapButtonCall(cell: self)
     }
     
     
