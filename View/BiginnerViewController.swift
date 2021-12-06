@@ -2,6 +2,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import UserNotifications
 
 class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate  {
     
@@ -11,6 +12,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
     var flag = false
+    // 通知の編集を可能にする定数宣言
+    let content = UNMutableNotificationContent()
     
     init(titleName: String) {
         self.titleName = titleName
@@ -27,9 +30,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        タイトル
         navigationItem.title = titleName
-        //フラグを立てる
+        //お気に入りボタンのフラグを立てる
         flag = false
         self.view.addSubview(container)
         
@@ -104,6 +106,44 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
 
     }
         
+    //MARK:- Push
+    //プッシュ通知登録
+    func pushRegister() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        var dateComponetsDay = DateComponents()
+        dateComponetsDay.hour = 19
+        dateComponetsDay.minute = 19
+        
+        content.title = "お知らせ"
+        content.body = "アラーム"
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
+        //通知のID(identifier,タイトル,内容、トリガーを設定 )
+        let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
+        print("request is \(request.content.title)")
+        
+        notificationCenter.add(request) {
+            (error) in
+            if error != nil {
+//                print(error.debugDescription)
+            }
+        }
+        UNUserNotificationCenter.current().getPendingNotificationRequests{_ in
+//            print("Pending request :", $0)
+        }
+        print("flag is \(flag)")
+    }
+    //push通知削除
+    func pushDelete() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["お知らせ"])
+//        notificationCenter.removeAllPendingNotificationRequests()
+        print("request is \(content.title)")
+        print("flag is \(flag)")
+    }
+    
 }
     
     
