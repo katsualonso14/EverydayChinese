@@ -43,7 +43,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate{
    
    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
        // アプリ起動中でもアラートと音で通知
-       completionHandler([.alert, .sound])
+       completionHandler([.banner, .sound])
        
    }
    

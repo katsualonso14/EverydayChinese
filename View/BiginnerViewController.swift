@@ -66,7 +66,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     //MARK: -Function
     //cellの設定
     func CustomCellTapButtonCall(cell: UITableViewCell) {
-        
+        //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
 
@@ -74,6 +74,10 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         //cellの値を取得
         let tapSentence = sentenceView.sentence[indexPathTapped.row]
         print(tapSentence)
+        //タップしてときの値をpushメッセージに記載
+        content.title = "remind"
+        content.body = tapSentence
+        content.sound = UNNotificationSound.default
     }
     
     //cellの数
@@ -113,11 +117,11 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         
         var dateComponetsDay = DateComponents()
         dateComponetsDay.hour = 19
-        dateComponetsDay.minute = 19
+        dateComponetsDay.minute = 28
         
-        content.title = "お知らせ"
-        content.body = "アラーム"
-        content.sound = UNNotificationSound.default
+//        content.title = "remind"
+//        content.body = "アラーム"
+//        content.sound = UNNotificationSound.default
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
         //通知のID(identifier,タイトル,内容、トリガーを設定 )
@@ -130,16 +134,13 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
 //                print(error.debugDescription)
             }
         }
-        UNUserNotificationCenter.current().getPendingNotificationRequests{_ in
-//            print("Pending request :", $0)
-        }
         print("flag is \(flag)")
     }
     //push通知削除
     func pushDelete() {
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["お知らせ"])
-//        notificationCenter.removeAllPendingNotificationRequests()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["remind"])
+
         print("request is \(content.title)")
         print("flag is \(flag)")
     }
