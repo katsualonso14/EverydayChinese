@@ -67,7 +67,6 @@ class CustomTableViewCell: UITableViewCell {
         button.setImage(buttonImage, for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         accessoryView  = button
-        button.tintColor = .green
         button.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
     }
     //セルのお気に入りボタンをタップしたとき処理
@@ -78,7 +77,7 @@ class CustomTableViewCell: UITableViewCell {
         } else {
             BiginnerVC?.pushDelete()
         }
-        BiginnerVC!.flag = BiginnerVC!.flag ? false : true
+        BiginnerVC?.flag = BiginnerVC!.flag ? false : true
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
         
        

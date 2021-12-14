@@ -89,7 +89,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         cell.BiginnerVC = self
-        cell.accessoryView?.tintColor = flag ? .red : .gray
+        cell.tintColor = flag ? .red : .gray
         
         //cellの文字指定
         cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
@@ -116,8 +116,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let notificationCenter = UNUserNotificationCenter.current()
         
         var dateComponetsDay = DateComponents()
-        dateComponetsDay.hour = 19
-        dateComponetsDay.minute = 28
+        dateComponetsDay.hour = 20
+        dateComponetsDay.minute = 00
         
 //        content.title = "remind"
 //        content.body = "アラーム"
