@@ -11,7 +11,6 @@ class CategoryViewController: UIViewController {
         advancedButton()
         navigationItem.title = "Category"
         
-        
     }
 //    初心者ボタン押した時のアクション
     @objc func pushBignnerButton(sender: UIButton){
