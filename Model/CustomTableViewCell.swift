@@ -71,16 +71,8 @@ class CustomTableViewCell: UITableViewCell {
     }
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func  tapButton() {
-        
-        if BiginnerVC?.flag == false {
-        BiginnerVC?.pushRegister()
-        } else {
-            BiginnerVC?.pushDelete()
-        }
         BiginnerVC?.flag = BiginnerVC!.flag ? false : true
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
-        
-       
         
     }
     
