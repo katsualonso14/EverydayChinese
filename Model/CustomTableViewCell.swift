@@ -71,11 +71,8 @@ class CustomTableViewCell: UITableViewCell {
     }
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func  tapButton() {
-        BiginnerVC?.flag = BiginnerVC!.flag ? false : true
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
-        
     }
-    
     
     //    初期化
     required init?(coder: NSCoder) {
@@ -87,7 +84,4 @@ class CustomTableViewCell: UITableViewCell {
         soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
         japaneseLabel.text = japanese
     }
-    
-   
-    
 }

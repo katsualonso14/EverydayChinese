@@ -3,6 +3,10 @@ import UIKit
 
 class SentenceViewController: UITabBarController {
 
+    
+    var sentenceArray = [
+        ExpandableNames(isExpanded: true, names:  ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map{Contact(name: $0, hasFavorited: false)})
+    ]
     var sentence = ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"]
     
     var Pronunciation = ["Nǐzǎo","Xiàwǔ hǎo.","Wǎnshang hǎo","Zàijiàn","Míngtiān jiàn","Xiàzhōu jiàn","Huítou jiàn","Nǐ hǎo ma?","Xièxie","duìbuqǐ",]

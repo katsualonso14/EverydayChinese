@@ -10,7 +10,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
-    var flag = false
     
     init(titleName: String) {
         self.titleName = titleName
@@ -28,8 +27,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = titleName
-        //お気に入りボタンのフラグを立てる
-        flag = false
         self.view.addSubview(container)
         
         container.snp.makeConstraints { make in
@@ -66,26 +63,33 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
+        
+        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        print(contact)
+        let hasFavorited = contact.hasFavorited
+        
+        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
 
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
-        //cellの値を取得
-        let tapSentence = sentenceView.sentence[indexPathTapped.row]
-        print(tapSentence)
     }
     
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentenceView.sentence.count
+        return sentenceView.sentenceArray[0].names.count
     }
     //cellの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         cell.BiginnerVC = self
-        cell.tintColor = flag ? .red : .gray
         
+        
+        
+        let contact = sentenceView.sentenceArray[0].names[indexPath.row]
         //cellの文字指定
-        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
+        cell.setCell(sentence: contact.name, pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
+        
+        cell.tintColor = contact.hasFavorited ? .red : .gray
 
             return cell
         }
