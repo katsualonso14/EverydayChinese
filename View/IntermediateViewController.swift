@@ -67,10 +67,15 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        cell.IntermediateVC = self
+        
+        
+        let contact = sentenceView.IntermediateSentenceArray[0].names[indexPath.row]
         //cellの文字指定
         cell.setCell(sentence: sentenceView.IntermediateSentence[indexPath.row], pronunciation: sentenceView.IntermediatePronunciation[indexPath.row], japanese: sentenceView.IntermediateJananase[indexPath.row
         ])
         
+        cell.tintColor = contact.hasFavorited ? .red : .gray
             return cell
         }
 //    セルの高さ
@@ -87,7 +92,21 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         
 //        print("tap")
     }
+    
+    //お気に入りボタンを押したときの処理
+    func CustomCellTapButtonCall(cell: UITableViewCell) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
         
+        let contact = sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        print(contact)
+        let hasFavorited = contact.hasFavorited
+        
+        sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
 }
     
     

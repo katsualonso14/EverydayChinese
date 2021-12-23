@@ -67,10 +67,14 @@ class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        cell.advancedVC = self
+        
+        let contact = sentenceView.AdvancedSentenceArray[0].names[indexPath.row]
         //cellの文字指定
         cell.setCell(sentence: sentenceView.AdvancedSentence[indexPath.row], pronunciation: sentenceView.AdvancedPronunciation[indexPath.row], japanese: sentenceView.AdvancedJananase[indexPath.row
         ])
         
+        cell.tintColor = contact.hasFavorited ? .red : .gray
             return cell
         }
 //    セルの高さ
@@ -86,6 +90,21 @@ class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         synthesizer.speak(utterance)
         
 //        print("tap")
+    }
+    
+    //お気に入りボタンを押したときの処理
+    func CustomCellTapButtonCall(cell: UITableViewCell) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
+        
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        print(contact)
+        let hasFavorited = contact.hasFavorited
+        
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
         
 }

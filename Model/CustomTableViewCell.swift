@@ -5,6 +5,8 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     
     var BiginnerVC: BiginnerViewController?
+    var IntermediateVC: IntermediateViewController?
+    var advancedVC: AdvancedViewController?
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -72,6 +74,8 @@ class CustomTableViewCell: UITableViewCell {
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func  tapButton() {
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
     }
     
     //    初期化
