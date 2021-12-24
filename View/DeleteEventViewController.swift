@@ -22,29 +22,37 @@ class DeleteEventViewController: UIViewController {
     
     //MARK: -Function
     func Button() {
-        let button = UIButton(frame: CGRect(x: 150, y: 700, width: 100, height: 100))
+        let button = UIButton()
         button.backgroundColor = .blue
         button.setTitle("削除", for: UIControl.State())
         button.setTitleColor(.white, for: UIControl.State())
         button.addTarget(self, action: #selector(deleteMemo), for: .touchUpInside)
-        button.layer.cornerRadius = button.bounds.width / 2
+        button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         view.addSubview(button)
+        //autoLayout
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 500).isActive = true
+        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
 
     func DatePicker() {
-        let datePicker = UIDatePicker(frame: CGRect(x: 150, y: 300, width: 300, height: 300))
-        datePicker.datePickerMode = UIDatePicker.Mode.date
-        datePicker.timeZone = NSTimeZone.local
+        let datePicker = UIDatePicker()
+//        datePicker.datePickerMode = .date
+//        datePicker.preferredDatePickerStyle = .compact
         datePicker.addTarget(self, action: #selector(picker(_:)), for: .valueChanged)
-        
         view.addSubview(datePicker)
+        //autoLayout
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 400).isActive = true
+        datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+  
+       
     }
     
     func DatePickerText() {
-        datePickerText.frame = CGRect(x: 50, y: 500, width: 300, height: 100)
-        datePickerText.backgroundColor = .white
-        datePickerText.textAlignment = .center
         view.addSubview(datePickerText)
         
     }
@@ -53,9 +61,6 @@ class DeleteEventViewController: UIViewController {
     @objc func picker(_ sender: UIDatePicker) {
         formatter.dateFormat = "yyyy/MM/dd"
         datePickerText.text = formatter.string(from: sender.date)
-       
-        view.addSubview(datePickerText)
-        
     }
     
     //RealmDB書き込み処理
