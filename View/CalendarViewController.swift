@@ -38,24 +38,37 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     func addButton() {
         let addButton = UIButton(frame: CGRect(x: 300, y: 600, width: 100, height: 100))
+//        let addButton = UIButton()
         addButton.backgroundColor = .orange
         addButton.setTitle("+", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
         addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
-        addButton.layer.cornerRadius = addButton.bounds.width / 2
+        addButton.layer.cornerRadius = 50
         addButton.layer.masksToBounds = true
         view.addSubview(addButton)
+        //autoLayout
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -215).isActive = true
+        addButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     
     func deleteButton() {
-        let deleteButton = UIButton(frame: CGRect(x: 300, y: 710, width: 100, height: 100))
+        let deleteButton = UIButton()
         deleteButton.backgroundColor = .blue
         deleteButton.setTitle("-", for: UIControl.State())
         deleteButton.setTitleColor(.white, for: UIControl.State())
         deleteButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
-        deleteButton.layer.cornerRadius = deleteButton.bounds.width / 2
+        deleteButton.layer.cornerRadius = 50
         deleteButton.layer.masksToBounds = true
         view.addSubview(deleteButton)
+        //autoLayout
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -100).isActive = true
+        deleteButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
     //ボタンを押したときの処理
     @objc func tapAddButton() {
