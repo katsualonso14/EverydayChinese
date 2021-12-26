@@ -13,11 +13,13 @@ class MainTabBarController: UITabBarController {
     //タブバーの表示
     func setupTab() {
         let categoryViewController = CategoryViewController()
-      categoryViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed,tag: 0)
+        categoryViewController.tabBarItem.image = UIImage(named: "tag")
+        categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv = UINavigationController(rootViewController: categoryViewController)
         
         let myTableViewController = CalendarViewController()
-        myTableViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 0)
+        myTableViewController.tabBarItem.image = UIImage(named: "calendar")
+        myTableViewController.tabBarItem.title = "Calendar"
         let nv2 = UINavigationController(rootViewController: myTableViewController)
         
               setViewControllers([nv, nv2], animated: false)
