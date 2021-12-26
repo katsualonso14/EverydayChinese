@@ -11,8 +11,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // In loadView or viewDidLoad
-        let calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: 320, height: 300))
+        navigationItem.title = "Calendar"
+        let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
         calendar.register(FSCalendarCell.self, forCellReuseIdentifier: "CELL")
@@ -21,7 +21,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.addSubview(calendar)
         
         //レイアウト制約
-        calendar.centerYAnchor.constraint(equalTo: view.topAnchor, constant: 250).isActive = true
+        calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
         calendar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
@@ -37,7 +37,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     //MARK: -Function
     
     func addButton() {
-        let addButton = UIButton(frame: CGRect(x: 300, y: 600, width: 100, height: 100))
+        let addButton = UIButton()
 //        let addButton = UIButton()
         addButton.backgroundColor = .orange
         addButton.setTitle("+", for: UIControl.State())
@@ -120,29 +120,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
     }
     
-//    func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at monthPosition: FSCalendarMonthPosition){
-//        var hasEvent = false
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy/MM/dd"
-//        let workDay = formatter.string(from: date)
-//
-//        let realm = try! Realm()
-//        var result = realm.objects(EventModel.self)
-//        result = result.filter("date = '\(workDay)'")
-//
-//        for event in result {
-//            if event.date == workDay {
-//                hasEvent = true
-//            }
-//        }
-//        if hasEvent {
-//            cell.numberOfEvents = 1
-//                } else {
-//                    cell.numberOfEvents = 0
-//                }
-//
-//
-//    }
     
     //点マークをつける関数
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
