@@ -40,8 +40,8 @@ class DeleteEventViewController: UIViewController {
 
     func DatePicker() {
         let datePicker = UIDatePicker()
-//        datePicker.datePickerMode = .date
-//        datePicker.preferredDatePickerStyle = .compact
+        datePicker.datePickerMode = UIDatePicker.Mode.date
+        datePicker.locale = Locale(identifier: "ja-JP")
         datePicker.addTarget(self, action: #selector(picker(_:)), for: .valueChanged)
         view.addSubview(datePicker)
         //autoLayout
