@@ -7,7 +7,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
 
     fileprivate weak var calendar: FSCalendar!
     //memoLabel
-    let memoLabel = UILabel(frame: CGRect(x: 200, y: 500, width: 400, height: 50))
+    let memoLabel = UILabel()
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +26,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
        
+        view.addSubview(memoLabel)
+        memoLabel.translatesAutoresizingMaskIntoConstraints = false
+        memoLabel.bottomAnchor.constraint(equalTo: calendar.bottomAnchor,constant: 30).isActive = true
+        memoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         self.calendar = calendar
         view.backgroundColor = .white
@@ -43,15 +47,15 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         addButton.setTitle("+", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
         addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
-        addButton.layer.cornerRadius = 50
+        addButton.layer.cornerRadius = 40
         addButton.layer.masksToBounds = true
         view.addSubview(addButton)
         //autoLayout
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -215).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -190).isActive = true
         addButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
-        addButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        addButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     func deleteButton() {
@@ -60,15 +64,15 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         deleteButton.setTitle("-", for: UIControl.State())
         deleteButton.setTitleColor(.white, for: UIControl.State())
         deleteButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
-        deleteButton.layer.cornerRadius = 50
+        deleteButton.layer.cornerRadius = 40
         deleteButton.layer.masksToBounds = true
         view.addSubview(deleteButton)
         //autoLayout
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -100).isActive = true
         deleteButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
-        deleteButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        deleteButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
     //ボタンを押したときの処理
     @objc func tapAddButton() {
