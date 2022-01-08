@@ -77,12 +77,14 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     //ボタンを押したときの処理
     @objc func tapAddButton() {
         let addEventVC = AddEventViewController()
-        present(addEventVC, animated: true, completion: nil)
+//        present(addEventVC, animated: true, completion: nil)
+        navigationController?.pushViewController(addEventVC, animated: true)
     }
     
     @objc func tapDeleteButton() {
         let deleteEventVC = DeleteEventViewController()
-        present(deleteEventVC, animated: true, completion: nil)
+//        present(deleteEventVC, animated: true, completion: nil)
+        navigationController?.pushViewController(deleteEventVC, animated: true)
     }
     
    
@@ -124,6 +126,29 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
     }
     
+//    func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at monthPosition: FSCalendarMonthPosition) {
+//        var hasEvent = false
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy/MM/dd"
+//        let workDay = formatter.string(from: date)
+//
+//        let realm = try! Realm()
+//        var result = realm.objects(EventModel.self)
+//        result = result.filter("date = '\(workDay)'")
+//
+//        for event in result {
+//            if event.date == workDay {
+//                hasEvent = true
+//            }
+//        }
+//        if hasEvent {
+//            cell.eventIndicator.numberOfEvents = 1
+//            cell.eventIndicator.isHidden = false
+//            cell.eventIndicator.color = UIColor.blue
+//        } else {
+//            cell.eventIndicator.numberOfEvents = 0
+//        }
+//    }
     
     //点マークをつける関数
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
@@ -131,11 +156,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd"
         let workDay = formatter.string(from: date)
-        
+
         let realm = try! Realm()
         var result = realm.objects(EventModel.self)
         result = result.filter("date = '\(workDay)'")
-        
+
         for event in result {
             if event.date == workDay {
                 hasEvent = true

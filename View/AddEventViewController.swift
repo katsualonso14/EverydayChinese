@@ -24,7 +24,7 @@ class AddEventViewController: UIViewController {
         view.addSubview(textView)
         //autolayout
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textView.widthAnchor.constraint(equalToConstant: 300).isActive = true
         textView.heightAnchor.constraint(equalToConstant: 300).isActive = true
@@ -41,7 +41,7 @@ class AddEventViewController: UIViewController {
         view.addSubview(button)
         //autoLayout
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 500).isActive = true
+        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 600).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200).isActive = true
         button.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -56,7 +56,7 @@ class AddEventViewController: UIViewController {
         view.addSubview(datePicker)
         //autoLayout
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 400).isActive = true
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 500).isActive = true
         datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
@@ -90,9 +90,11 @@ class AddEventViewController: UIViewController {
             
         }
         
-        print("DB register done")
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
-        dismiss(animated: true, completion: nil)
+//        print("DB register done")
+//        print(Realm.Configuration.defaultConfiguration.fileURL!)
+//        dismiss(animated: true, completion: nil)
+        let calenderVC = CalendarViewController()
+        navigationController?.pushViewController(calenderVC, animated: true)
     }
     //他の場面を触ったらキーボードが消える
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

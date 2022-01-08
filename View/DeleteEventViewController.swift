@@ -81,8 +81,10 @@ class DeleteEventViewController: UIViewController {
                 realm.delete(defaultDay)
                 
                 print("\(defaultDay)")
-                dismiss(animated: true, completion: nil)
+//                dismiss(animated: true, completion: nil)
             }
         }
+        let calenderVC = CalendarViewController()
+        navigationController?.pushViewController(calenderVC, animated: true)
     }
 }
