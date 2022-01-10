@@ -6,6 +6,7 @@ class AddEventViewController: UIViewController {
 
     let datePickerText = UILabel()
     let textView  = UITextView()
+    let datePicker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +24,19 @@ class AddEventViewController: UIViewController {
         textView.layer.cornerRadius = 10.0
         view.addSubview(textView)
         //autolayout
+        if #available(iOS 11, * ) {//safeAreaがある場合はsafeAreaからtopAnchorを始める
+            let guide = view.safeAreaLayoutGuide
+            textView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 0).isActive = true
+            
+        } else {
+            textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
+        }
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
         textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textView.widthAnchor.constraint(equalToConstant: 300).isActive = true
         textView.heightAnchor.constraint(equalToConstant: 300).isActive = true
     }
-    
+
     func Button() {
         let button = UIButton()
         button.backgroundColor = .orange
@@ -41,7 +48,7 @@ class AddEventViewController: UIViewController {
         view.addSubview(button)
         //autoLayout
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 600).isActive = true
+        button.topAnchor.constraint(equalTo: view.topAnchor,constant: 470).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 200).isActive = true
         button.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -49,14 +56,13 @@ class AddEventViewController: UIViewController {
     }
 
     func DatePicker() {
-        let datePicker = UIDatePicker()
         datePicker.datePickerMode = UIDatePicker.Mode.date
         datePicker.locale = Locale(identifier: "ja-JP")
         datePicker.addTarget(self, action: #selector(picker(_:)), for: .valueChanged)
         view.addSubview(datePicker)
         //autoLayout
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 500).isActive = true
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 400).isActive = true
         datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
