@@ -2,8 +2,9 @@
 import UIKit
 import FSCalendar
 import RealmSwift
+import CalculateCalendarLogic
 
-class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
+class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
 
     fileprivate weak var calendar: FSCalendar!
     //memoLabel
@@ -125,31 +126,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
         }
     }
-    
-//    func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at monthPosition: FSCalendarMonthPosition) {
-//        var hasEvent = false
-//        let formatter = DateFormatter()
-//        formatter.dateFormat = "yyyy/MM/dd"
-//        let workDay = formatter.string(from: date)
-//
-//        let realm = try! Realm()
-//        var result = realm.objects(EventModel.self)
-//        result = result.filter("date = '\(workDay)'")
-//
-//        for event in result {
-//            if event.date == workDay {
-//                hasEvent = true
-//            }
-//        }
-//        if hasEvent {
-//            cell.eventIndicator.numberOfEvents = 1
-//            cell.eventIndicator.isHidden = false
-//            cell.eventIndicator.color = UIColor.blue
-//        } else {
-//            cell.eventIndicator.numberOfEvents = 0
-//        }
-//    }
-    
     //点マークをつける関数
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         var hasEvent = false
@@ -173,6 +149,55 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         }
     }
     
+    //MARK: -祝日設定
+    fileprivate let gregorian: Calendar = Calendar(identifier: .gregorian)
+        fileprivate lazy var dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter
+        }()
+        // 祝日判定を行い結果を返すメソッド(True:祝日)
+        func judgeHoliday(_ date : Date) -> Bool {
+            //祝日判定用のカレンダークラスのインスタンス
+            let tmpCalendar = Calendar(identifier: .gregorian)
+            // 祝日判定を行う日にちの年、月、日を取得
+            let year = tmpCalendar.component(.year, from: date)
+            let month = tmpCalendar.component(.month, from: date)
+            let day = tmpCalendar.component(.day, from: date)
+            // CalculateCalendarLogic()：祝日判定のインスタンスの生成
+            let holiday = CalculateCalendarLogic()
+
+            return holiday.judgeJapaneseHoliday(year: year, month: month, day: day)
+        }
+        // date型 -> 年月日をIntで取得
+        func getDay(_ date:Date) -> (Int,Int,Int){
+            let tmpCalendar = Calendar(identifier: .gregorian)
+            let year = tmpCalendar.component(.year, from: date)
+            let month = tmpCalendar.component(.month, from: date)
+            let day = tmpCalendar.component(.day, from: date)
+            return (year,month,day)
+        }
+        //曜日判定(日曜日:1 〜 土曜日:7)
+        func getWeekIdx(_ date: Date) -> Int{
+            let tmpCalendar = Calendar(identifier: .gregorian)
+            return tmpCalendar.component(.weekday, from: date)
+        }
+        // 土日や祝日の日の文字色を変える
+        func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+            //祝日判定をする（祝日は赤色で表示する）
+            if self.judgeHoliday(date){
+                return UIColor.red
+            }
+            //土日の判定を行う（土曜日は青色、日曜日は赤色で表示する）
+            let weekday = self.getWeekIdx(date)
+            if weekday == 1 {   //日曜日
+                return UIColor.red
+            }
+            else if weekday == 7 {  //土曜日
+                return UIColor.blue
+            }
+            return nil
+        }
 }
 
 
