@@ -76,6 +76,7 @@ class CustomTableViewCell: UITableViewCell {
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
         IntermediateVC?.CustomCellTapButtonCall(cell: self)
         advancedVC?.CustomCellTapButtonCall(cell: self)
+        BiginnerVC?.pushRegister()
     }
     
     //    初期化

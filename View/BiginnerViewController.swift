@@ -2,6 +2,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import UserNotifications
 
 class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate  {
     
@@ -10,6 +11,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
+    // 通知の編集を可能にする定数宣言
+    let content = UNMutableNotificationContent()
     
     init(titleName: String) {
         self.titleName = titleName
@@ -69,7 +72,10 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let hasFavorited = contact.hasFavorited
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
-
+        //タップしてときの値をpushメッセージに記載
+        content.title = "remind"
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
@@ -106,8 +112,27 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         synthesizer.speak(utterance)
 
     }
+    //MARK:- Push
+    //プッシュ通知登録
+    func pushRegister() {
+        let notificationCenter = UNUserNotificationCenter.current()
         
-   
+        var dateComponetsDay = DateComponents()
+        dateComponetsDay.hour = 11
+        dateComponetsDay.minute = 13
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
+        //通知のID(identifier,タイトル,内容、トリガーを設定 )
+        let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
+        print("request is \(request.content.title)")
+        
+        notificationCenter.add(request) {
+            (error) in
+            if error != nil {
+            //print(error.debugDescription)
+            }
+        }
+    }
     
 }
     
