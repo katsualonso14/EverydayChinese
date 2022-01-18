@@ -73,7 +73,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         //タップしてときの値をpushメッセージに記載
-        content.title = "remind"
+        content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -118,8 +118,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let notificationCenter = UNUserNotificationCenter.current()
         
         var dateComponetsDay = DateComponents()
-        dateComponetsDay.hour = 11
-        dateComponetsDay.minute = 13
+        dateComponetsDay.hour = 19
+        dateComponetsDay.minute = 43
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
         //通知のID(identifier,タイトル,内容、トリガーを設定 )
@@ -133,7 +133,13 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
             }
         }
     }
-    
+    //push通知削除
+    func pushDelete() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
+        
+        print("request is \(content.title)")
+    }
 }
     
     

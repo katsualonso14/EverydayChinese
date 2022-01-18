@@ -7,6 +7,7 @@ class CustomTableViewCell: UITableViewCell {
     var BiginnerVC: BiginnerViewController?
     var IntermediateVC: IntermediateViewController?
     var advancedVC: AdvancedViewController?
+    var SentenceVC: SentenceViewController?
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -76,7 +77,13 @@ class CustomTableViewCell: UITableViewCell {
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
         IntermediateVC?.CustomCellTapButtonCall(cell: self)
         advancedVC?.CustomCellTapButtonCall(cell: self)
-        BiginnerVC?.pushRegister()
+        //通知設定
+        if SentenceVC?.sentenceArray.hasFavorited == false {
+            BiginnerVC?.pushRegister()
+            
+        } else {
+            
+        }
     }
     
     //    初期化
