@@ -5,22 +5,18 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+   //アプリ起動時に呼び出されるメソッド
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         //通知許可の取得
         UNUserNotificationCenter.current().requestAuthorization(
-               options: [.alert, .sound, .badge]){
-                   (granted, _) in
-                   if granted{
-                       UNUserNotificationCenter.current().delegate = self
-                   } else {
-                       print("通知が許可されていない")
-                   }
-               }
-        
+            options: [.alert, .sound, .badge]){
+                (granted, _) in
+                if granted{
+                    UNUserNotificationCenter.current().delegate = self
+                } else {
+                    print("通知が許可されていない")
+                }
+            }
         return true
     }
 
@@ -39,17 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UNUserNotificationCenterDelegate{
-   
-   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-       // アプリ起動中でもアラートと音で通知
-       completionHandler([.banner, .sound])
-       
-   }
-   
-   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-       completionHandler()
-       
-   }
-
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+          // アプリ起動中でもアラートと音で通知
+          completionHandler([.banner, .sound])
+          
+      }
+      
+      func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+          completionHandler()
+      }
 }
+

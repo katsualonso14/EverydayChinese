@@ -6,6 +6,7 @@ class AddEventViewController: UIViewController {
 
     let datePickerText = UILabel()
     let textView  = UITextView()
+    let datePicker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,31 +19,51 @@ class AddEventViewController: UIViewController {
     
     //MARK: -ViewFunction
     func TextView() {
-        textView.frame = CGRect(x: 50, y: 50, width: 300, height: 300)
         textView.layer.borderColor = UIColor.gray.cgColor
         textView.layer.borderWidth = 1.0
         textView.layer.cornerRadius = 10.0
         view.addSubview(textView)
-        
+        //autolayout
+        if #available(iOS 11, * ) {//safeAreaがある場合はsafeAreaからtopAnchorを始める
+            let guide = view.safeAreaLayoutGuide
+            textView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 0).isActive = true
+            
+        } else {
+            textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
+        }
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        textView.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        textView.heightAnchor.constraint(equalToConstant: 300).isActive = true
     }
-    
+
     func Button() {
-        let button = UIButton(frame: CGRect(x: 150, y: 700, width: 100, height: 100))
+        let button = UIButton()
         button.backgroundColor = .orange
         button.setTitle("保存", for: UIControl.State())
         button.setTitleColor(.white, for: UIControl.State())
         button.addTarget(self, action: #selector(saveMemo), for: .touchUpInside)
-        button.layer.cornerRadius = button.bounds.width / 2
+        button.layer.cornerRadius = 10
         button.layer.masksToBounds = true
         view.addSubview(button)
+        //autoLayout
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.topAnchor.constraint(equalTo: view.topAnchor,constant: 470).isActive = true
+        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 70).isActive = true
+
     }
 
     func DatePicker() {
-        let datePicker = UIDatePicker(frame: CGRect(x: 150, y: 300, width: 300, height: 300))
         datePicker.datePickerMode = UIDatePicker.Mode.date
-        datePicker.timeZone = NSTimeZone.local
+        datePicker.locale = Locale(identifier: "ja-JP")
         datePicker.addTarget(self, action: #selector(picker(_:)), for: .valueChanged)
         view.addSubview(datePicker)
+        //autoLayout
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 400).isActive = true
+        datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     func DatePickerText() {
@@ -75,9 +96,11 @@ class AddEventViewController: UIViewController {
             
         }
         
-        print("DB register done")
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
-        dismiss(animated: true, completion: nil)
+//        print("DB register done")
+//        print(Realm.Configuration.defaultConfiguration.fileURL!)
+//        dismiss(animated: true, completion: nil)
+        let calenderVC = CalendarViewController()
+        navigationController?.pushViewController(calenderVC, animated: true)
     }
     //他の場面を触ったらキーボードが消える
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

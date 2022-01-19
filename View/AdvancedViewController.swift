@@ -2,6 +2,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import UserNotifications
 
 class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
@@ -10,7 +11,8 @@ class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     let  synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
-    
+    // 通知の編集を可能にする定数宣言
+    let content = UNMutableNotificationContent()
     
     init(titleName: String) {
         self.titleName = titleName
@@ -67,10 +69,14 @@ class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        cell.advancedVC = self
+        
+        let contact = sentenceView.AdvancedSentenceArray[0].names[indexPath.row]
         //cellの文字指定
         cell.setCell(sentence: sentenceView.AdvancedSentence[indexPath.row], pronunciation: sentenceView.AdvancedPronunciation[indexPath.row], japanese: sentenceView.AdvancedJananase[indexPath.row
         ])
         
+        cell.tintColor = contact.hasFavorited ? .red : .gray
             return cell
         }
 //    セルの高さ
@@ -84,10 +90,59 @@ class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
         utterance.voice = voice
         synthesizer.speak(utterance)
-        
-//        print("tap")
     }
+    
+    //お気に入りボタンを押したときの処理
+    func CustomCellTapButtonCall(cell: UITableViewCell) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
         
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        print(contact)
+        let hasFavorited = contact.hasFavorited
+        
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        //タップしてときの値をpushメッセージに記載
+        content.title = contact.name
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister()
+        } else {
+            pushDelete()
+        }
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    //プッシュ通知登録
+    func pushRegister() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        var dateComponetsDay = DateComponents()
+        dateComponetsDay.hour = 20
+        dateComponetsDay.minute = 00
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
+        //通知のID(identifier,タイトル,内容、トリガーを設定 )
+        let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
+        print("request is \(request.content.title)")
+        
+        notificationCenter.add(request) {
+            (error) in
+            if error != nil {
+            //print(error.debugDescription)
+            }
+        }
+    }
+    //push通知削除
+    func pushDelete() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
+        
+        print("request is \(content.title)")
+    }
 }
     
     

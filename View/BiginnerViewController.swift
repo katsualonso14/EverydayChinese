@@ -11,7 +11,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
-    var flag = false
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
     
@@ -31,8 +30,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = titleName
-        //お気に入りボタンのフラグを立てる
-        flag = false
         self.view.addSubview(container)
         
         container.snp.makeConstraints { make in
@@ -69,30 +66,43 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
-
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-        //cellの値を取得
-        let tapSentence = sentenceView.sentence[indexPathTapped.row]
-        print(tapSentence)
+        
+        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        print(contact)
+        let hasFavorited = contact.hasFavorited
+        
+        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         //タップしてときの値をpushメッセージに記載
-        content.title = "remind"
-        content.body = tapSentence
+        content.title = contact.name
+        content.body = contact.name
         content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister()
+        } else {
+            pushDelete()
+        }
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentenceView.sentence.count
+        return sentenceView.sentenceArray[0].names.count
     }
     //cellの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         cell.BiginnerVC = self
-        cell.tintColor = flag ? .red : .gray
         
+        
+        
+        let contact = sentenceView.sentenceArray[0].names[indexPath.row]
         //cellの文字指定
-        cell.setCell(sentence: sentenceView.sentence[indexPath.row], pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
+        cell.setCell(sentence: contact.name, pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
+        
+        cell.tintColor = contact.hasFavorited ? .red : .gray
 
             return cell
         }
@@ -109,7 +119,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         synthesizer.speak(utterance)
 
     }
-        
     //MARK:- Push
     //プッシュ通知登録
     func pushRegister() {
@@ -119,10 +128,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         dateComponetsDay.hour = 20
         dateComponetsDay.minute = 00
         
-//        content.title = "remind"
-//        content.body = "アラーム"
-//        content.sound = UNNotificationSound.default
-        
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
         //通知のID(identifier,タイトル,内容、トリガーを設定 )
         let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
@@ -131,20 +136,17 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         notificationCenter.add(request) {
             (error) in
             if error != nil {
-//                print(error.debugDescription)
+            //print(error.debugDescription)
             }
         }
-        print("flag is \(flag)")
     }
     //push通知削除
     func pushDelete() {
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["remind"])
-
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
+        
         print("request is \(content.title)")
-        print("flag is \(flag)")
     }
-    
 }
     
     

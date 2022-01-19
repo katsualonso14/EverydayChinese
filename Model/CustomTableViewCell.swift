@@ -5,6 +5,9 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     
     var BiginnerVC: BiginnerViewController?
+    var IntermediateVC: IntermediateViewController?
+    var advancedVC: AdvancedViewController?
+    var SentenceVC: SentenceViewController?
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -71,19 +74,10 @@ class CustomTableViewCell: UITableViewCell {
     }
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func  tapButton() {
-        
-        if BiginnerVC?.flag == false {
-        BiginnerVC?.pushRegister()
-        } else {
-            BiginnerVC?.pushDelete()
-        }
-        BiginnerVC?.flag = BiginnerVC!.flag ? false : true
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
-        
-       
-        
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
     }
-    
     
     //    初期化
     required init?(coder: NSCoder) {
@@ -95,7 +89,4 @@ class CustomTableViewCell: UITableViewCell {
         soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
         japaneseLabel.text = japanese
     }
-    
-   
-    
 }
