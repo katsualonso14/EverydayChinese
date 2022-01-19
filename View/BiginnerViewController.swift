@@ -76,6 +76,13 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister()
+        } else {
+            pushDelete()
+        }
+        
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
@@ -118,8 +125,8 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         let notificationCenter = UNUserNotificationCenter.current()
         
         var dateComponetsDay = DateComponents()
-        dateComponetsDay.hour = 19
-        dateComponetsDay.minute = 43
+        dateComponetsDay.hour = 20
+        dateComponetsDay.minute = 00
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
         //通知のID(identifier,タイトル,内容、トリガーを設定 )

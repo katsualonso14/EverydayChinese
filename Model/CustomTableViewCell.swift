@@ -77,13 +77,6 @@ class CustomTableViewCell: UITableViewCell {
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
         IntermediateVC?.CustomCellTapButtonCall(cell: self)
         advancedVC?.CustomCellTapButtonCall(cell: self)
-        //通知設定
-        if SentenceVC?.sentenceArray.hasFavorited == false {
-            BiginnerVC?.pushRegister()
-            
-        } else {
-            
-        }
     }
     
     //    初期化

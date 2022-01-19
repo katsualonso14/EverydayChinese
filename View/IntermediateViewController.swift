@@ -2,6 +2,7 @@
 import UIKit
 import SnapKit
 import AVFoundation
+import UserNotifications
 
 class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
@@ -10,7 +11,8 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
     let  synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
-    
+    // 通知の編集を可能にする定数宣言
+    let content = UNMutableNotificationContent()
     
     init(titleName: String) {
         self.titleName = titleName
@@ -104,8 +106,45 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         let hasFavorited = contact.hasFavorited
         
         sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
-
+        //タップしてときの値をpushメッセージに記載
+        content.title = contact.name
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister()
+        } else {
+            pushDelete()
+        }
+        print(hasFavorited)
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    //プッシュ通知登録
+    func pushRegister() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        var dateComponetsDay = DateComponents()
+        dateComponetsDay.hour = 20
+        dateComponetsDay.minute = 00
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
+        //通知のID(identifier,タイトル,内容、トリガーを設定 )
+        let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
+        print("request is \(request.content.title)")
+        
+        notificationCenter.add(request) {
+            (error) in
+            if error != nil {
+            //print(error.debugDescription)
+            }
+        }
+    }
+    //push通知削除
+    func pushDelete() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
+        
+        print("request is \(content.title)")
     }
 }
     
