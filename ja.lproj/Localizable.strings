@@ -1,0 +1,79 @@
+/* 
+  Localizable.strings
+  ChineseApp
+
+  Created by KatsuyaTamai on 2024/12/07.
+  
+*/
+
+// MARK: - English
+"Good moring" = "おはよう";
+"Good afternoon" = "こんにちは";
+"Good evening" = "こんばんは";
+"Goodbye" = "さようなら";
+"See you tomorrow" = "明日ね";
+"See you next week" = "来週会いましょう";
+"See you later" = "じゃね";
+"How are you?" = "元気ですか？";
+"Thank you" = "ありがとう";
+"Sorry" = "ごめんなさい";
+
+// MARK: - IntermediateEnglish
+"I" = "私";
+"you" = "あなた";
+"he" = "彼";
+"she" = "彼女";
+"we" = "私たち";
+"they (male)" = "彼ら";
+"they (female)" = "彼女たち";
+"this" = "これ";
+"these" = "これら";
+"that" = "それ";
+
+// MARK: - AdvancedEnglish
+"What's your name?" = "あなたの名前は何ですか？";
+"Who is he?" = "彼は誰ですか？";
+"How long does it take?" = "どれくらい時間がかかりますか？";
+"What type of movies do you like?" = "どんな映画が好きですか？";
+"Where will it be done?" = "どこでそれをしますか？";
+"When will it be done?" = "いつそれは終わりますか？";
+"Why do you like this movie?" = "なぜこの映画が好きですか？";
+"What time is it?" = "今何時ですか？";
+"How many people are in your family?" = "ご家族は何人ですか？";
+"Do you want to go see a movie?" = "映画を見に行きませんか？";
+
+// MARK: - TripEnglish
+"Thank you" = "ありがとう";
+"Excuse me" = "すみません";
+"Sorry" = "ごめんなさい";
+"I want to check in" = "チェックインしたいです";
+"Can you help me store my luggage?" = "荷物を預かってもらえますか？";
+"What’s the Wi-Fi password?" = "Wi-Fiのパスワードは何ですか？";
+"I would like to order" = "注文したいです";
+"Bill, please" = "お勘定をお願いします";
+"How much is it?" = "いくらですか？";
+"Can you say it again?" = "もう一度言ってください";
+
+// MARK: - DramaEnglish
+"Really?" = "本当に？";
+"I understand" = "わかりました";
+"It's okay" = "大丈夫";
+"Good luck" = "頑張って";
+"It's fine" = "問題ない";
+"Relax" = "リラックスして";
+"Really?" = "本当に？";
+"What’s wrong?" = "どうしたの？";
+"Don’t do that" = "それをしないで";
+"Whatever" = "なんでもいい";
+
+// MARK: - RestaurantEnglish
+"I have a reservation" = "予約しています";
+"No reservation, is there a table?" = "予約していませんが、席は空いていますか？";
+"Please give me the menu" = "メニューをください";
+"What do you recommend?" = "おすすめは何ですか？";
+"Is this dish spicy?" = "この料理は辛いですか？";
+"Do you have vegetarian dishes?" = "ベジタリアン向けの料理はありますか？";
+"Please give me a glass of water" = "水を一杯ください";
+"Please wait a moment" = "少々お待ちください";
+"Can I take this to go?" = "これを持ち帰りできますか？";
+"It’s very delicious!" = "とても美味しい！";

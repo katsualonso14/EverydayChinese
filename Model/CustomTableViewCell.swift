@@ -7,7 +7,12 @@ class CustomTableViewCell: UITableViewCell {
     var BiginnerVC: BiginnerViewController?
     var IntermediateVC: IntermediateViewController?
     var advancedVC: AdvancedViewController?
+    var TripVC: TripViewController?
+    var DramaVC: DramaViewController?
+    var restaurantVC: RestaurantViewController?
+    
     var SentenceVC: SentenceViewController?
+    
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -77,6 +82,8 @@ class CustomTableViewCell: UITableViewCell {
         BiginnerVC?.CustomCellTapButtonCall(cell: self)
         IntermediateVC?.CustomCellTapButtonCall(cell: self)
         advancedVC?.CustomCellTapButtonCall(cell: self)
+        TripVC?.CustomCellTapButtonCall(cell: self)
+        DramaVC?.CustomCellTapButtonCall(cell: self)
     }
     
     //    初期化

@@ -5,10 +5,8 @@ import RealmSwift
 import CalculateCalendarLogic
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
-
     fileprivate weak var calendar: FSCalendar!
-    //memoLabel
-    let memoLabel = UILabel()
+    let memoLabel = UILabel()  //memoLabel
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +20,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.addSubview(calendar)
         
         //レイアウト制約
-        calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
+        calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
         calendar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
@@ -36,15 +34,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.backgroundColor = .white
         addButton()
         deleteButton()
-        
     }
     
     //MARK: -Function
     
     func addButton() {
         let addButton = UIButton()
-//        let addButton = UIButton()
-        addButton.backgroundColor = .orange
+        addButton.backgroundColor =  UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
         addButton.setTitle("+", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
         addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
@@ -53,7 +49,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.addSubview(addButton)
         //autoLayout
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -190).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -250).isActive = true
         addButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
         addButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         addButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
@@ -61,7 +57,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     func deleteButton() {
         let deleteButton = UIButton()
-        deleteButton.backgroundColor = .blue
+        deleteButton.backgroundColor = UIColor(red: 255/255, green: 102/255, blue: 102/255, alpha: 1.0) 
         deleteButton.setTitle("-", for: UIControl.State())
         deleteButton.setTitleColor(.white, for: UIControl.State())
         deleteButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
@@ -70,11 +66,12 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.addSubview(deleteButton)
         //autoLayout
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -100).isActive = true
+        deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -160).isActive = true
         deleteButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
+    
     //ボタンを押したときの処理
     @objc func tapAddButton() {
         let addEventVC = AddEventViewController()
