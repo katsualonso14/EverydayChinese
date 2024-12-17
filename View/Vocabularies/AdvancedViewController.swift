@@ -1,14 +1,14 @@
-//初心者ページ
+//上級者ぺージ
 import UIKit
 import SnapKit
 import AVFoundation
 import UserNotifications
 
-class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate  {
-    
+class AdvancedViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+
     let titleName: String
     let sentenceView = SentenceViewController()
-    let synthesizer = AVSpeechSynthesizer()
+    let  synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
@@ -29,6 +29,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //        タイトル
         navigationItem.title = titleName
         self.view.addSubview(container)
         
@@ -49,6 +50,10 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
             print("Audio Setting Failed.")
             return
         }
+        // TableViewのcontentInsetを調整して、広告スペースを確保
+        let bannerHeight: CGFloat = 50 // AdMobバナーの高さ
+        tableView.contentInset.bottom = bannerHeight
+        tableView.scrollIndicatorInsets.bottom = bannerHeight
         
         tableView.dataSource = self
         tableView.delegate  = self
@@ -60,18 +65,48 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
            super.didReceiveMemoryWarning()
            // Dispose of any resources that can be recreated.
        }
-    //MARK: -Function
-    //cellの設定
+    //cellの数
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sentenceView.sentence.count
+    }
+    //cellの中身
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //CustomTableViewCellの追加
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        cell.advancedVC = self
+        
+        let contact = sentenceView.AdvancedSentenceArray[0].names[indexPath.row]
+        //cellの文字指定
+        cell.setCell(sentence: sentenceView.AdvancedSentence[indexPath.row], pronunciation: sentenceView.AdvancedPronunciation[indexPath.row], japanese: sentenceView.AdvancedEnglish[indexPath.row
+        ])
+        
+        cell.tintColor = contact.hasFavorited ? .red : .gray
+            return cell
+        }
+//    セルの高さ
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CGFloat(180)
+    }
+    //cellをタップした時の処理
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //中国語の読み上げ設定
+        let utterance = AVSpeechUtterance.init(string: sentenceView.AdvancedSentence[indexPath.row])
+        let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
+        utterance.voice = voice
+        synthesizer.speak(utterance)
+    }
+    
+    //お気に入りボタンを押したときの処理
     func CustomCellTapButtonCall(cell: UITableViewCell) {
         //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         print(contact)
         let hasFavorited = contact.hasFavorited
         
-        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -85,41 +120,6 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
-    
-    //cellの数
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentenceView.sentenceArray[0].names.count
-    }
-    //cellの中身
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //CustomTableViewCellの追加
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.BiginnerVC = self
-        
-        
-        
-        let contact = sentenceView.sentenceArray[0].names[indexPath.row]
-        //cellの文字指定
-        cell.setCell(sentence: contact.name, pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.japanese[indexPath.row])
-        
-        cell.tintColor = contact.hasFavorited ? .red : .gray
-
-            return cell
-        }
-//    セルの高さ
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(180)
-    }
-    //cellをタップした時の処理
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //中国語の読み上げ設定
-        let utterance = AVSpeechUtterance.init(string: sentenceView.sentence[indexPath.row])
-        let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
-        utterance.voice = voice
-        synthesizer.speak(utterance)
-
-    }
-    //MARK:- Push
     //プッシュ通知登録
     func pushRegister() {
         let notificationCenter = UNUserNotificationCenter.current()
@@ -150,3 +150,4 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
 }
     
     
+

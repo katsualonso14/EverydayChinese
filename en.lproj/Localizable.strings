@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  ChineseApp
+
+  Created by KatsuyaTamai on 2024/12/07.
+  
+*/
+
+"welcome_message" = "Welcome to the app!";
+"error_message" = "An error has occurred.";

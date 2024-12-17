@@ -1,12 +1,14 @@
 
 import UIKit
 import RealmSwift
+import GoogleMobileAds
 
-class AddEventViewController: UIViewController {
+class AddEventViewController: UIViewController, GADBannerViewDelegate {
 
     let datePickerText = UILabel()
     let textView  = UITextView()
     let datePicker = UIDatePicker()
+    var bannerView: GADBannerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,6 +16,18 @@ class AddEventViewController: UIViewController {
         Button()
         DatePicker()
         view.backgroundColor = .white
+        
+        // Admob広告設定
+        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
+        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
+        bannerView = GADBannerView(adSize: adaptiveSize)
+        
+        addBannerViewToView(bannerView)
+        bannerView.delegate = self
+        
+        bannerView.adUnitID = "ca-app-pub-2751119101175618/2259631200"
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
     }
     
     
@@ -39,19 +53,19 @@ class AddEventViewController: UIViewController {
 
     func Button() {
         let button = UIButton()
-        button.backgroundColor = .orange
-        button.setTitle("保存", for: UIControl.State())
+        button.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
+        button.setTitle("Save", for: UIControl.State())
         button.setTitleColor(.white, for: UIControl.State())
         button.addTarget(self, action: #selector(saveMemo), for: .touchUpInside)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 50
         button.layer.masksToBounds = true
         view.addSubview(button)
         //autoLayout
         button.translatesAutoresizingMaskIntoConstraints = false
         button.topAnchor.constraint(equalTo: view.topAnchor,constant: 470).isActive = true
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 120).isActive = true
 
     }
 
@@ -96,9 +110,6 @@ class AddEventViewController: UIViewController {
             
         }
         
-//        print("DB register done")
-//        print(Realm.Configuration.defaultConfiguration.fileURL!)
-//        dismiss(animated: true, completion: nil)
         let calenderVC = CalendarViewController()
         navigationController?.pushViewController(calenderVC, animated: true)
     }
@@ -106,4 +117,16 @@ class AddEventViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             view.endEditing(true)
         }
+    
+    //MARK: -Admob
+    func addBannerViewToView(_ bannerView: GADBannerView) {
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bannerView)
+        
+        bannerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 610).isActive = true
+        bannerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        bannerView.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
 }
