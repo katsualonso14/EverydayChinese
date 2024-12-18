@@ -17,7 +17,7 @@ class CustomTableViewCell: UITableViewCell {
     let sentenceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
-        label.textColor = UIColor.black
+        label.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

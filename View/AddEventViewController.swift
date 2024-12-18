@@ -15,7 +15,6 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         TextView()
         Button()
         DatePicker()
-        view.backgroundColor = .white
         
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
@@ -25,7 +24,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = "ca-app-pub-2751119101175618/2259631200"
+        bannerView.adUnitID = "ca-app-pub-5743090122530738/3794682492" // AdBanner ID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }

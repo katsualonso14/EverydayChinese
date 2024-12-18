@@ -31,7 +31,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         memoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         self.calendar = calendar
-        view.backgroundColor = .white
         addButton()
         deleteButton()
     }
@@ -117,7 +116,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         for memo in eventModel {
             if memo.date == workDay {
                 memoLabel.text = memo.event
-                memoLabel.textColor = .black
+                memoLabel.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
                 view.addSubview(memoLabel)
                 
             }
@@ -193,7 +192,25 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             else if weekday == 7 {  //土曜日
                 return UIColor.blue
             }
-            return nil
+            // not current month for dark mode
+            
+            if(UITraitCollection.current.userInterfaceStyle == .dark ) {
+                let today = Date()
+                let year = self.gregorian.component(.year, from: date)
+                let month = self.gregorian.component(.month, from: date)
+                let todayYear = self.gregorian.component(.year, from: today)
+                let todayMonth = self.gregorian.component(.month, from: today)
+                
+                if year == todayYear && month == todayMonth {
+                    return UIColor.white
+                }
+                else {
+                    return UIColor.lightGray
+                }
+            } else {
+                return nil
+            }
+
         }
 }
 
