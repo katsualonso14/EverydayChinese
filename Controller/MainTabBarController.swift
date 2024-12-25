@@ -20,7 +20,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate {
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = "ca-app-pub-5743090122530738/3794682492" // AdBanner ID
+        bannerView.adUnitID = "ca-app-pub-2751119101175618/6291482773" // AdBanner ID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }
@@ -34,12 +34,18 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate {
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv = UINavigationController(rootViewController: categoryViewController)
         
+        let myNotesVC = MyNotesViewController()
+        let pencilLine = UIImage(systemName: "pencil.and.outline")
+        myNotesVC.tabBarItem.image = pencilLine
+        myNotesVC.tabBarItem.title = "MyNotes"
+        let nv1 = UINavigationController(rootViewController: myNotesVC)
+        
         let myTableViewController = CalendarViewController()
         myTableViewController.tabBarItem.image = UIImage(named: "calendar")
         myTableViewController.tabBarItem.title = "Calendar"
         let nv2 = UINavigationController(rootViewController: myTableViewController)
         
-        setViewControllers([nv, nv2], animated: false)
+        setViewControllers([nv, nv1, nv2], animated: false)
         
 
     }
