@@ -6,7 +6,7 @@ import CalculateCalendarLogic
 
 class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     fileprivate weak var calendar: FSCalendar!
-    let memoLabel = UILabel()  //memoLabel
+    let memoButton = UIButton() // memo contents
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +24,22 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
-       
-        view.addSubview(memoLabel)
-        memoLabel.translatesAutoresizingMaskIntoConstraints = false
-        memoLabel.bottomAnchor.constraint(equalTo: calendar.bottomAnchor,constant: 30).isActive = true
-        memoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
+        view.addSubview(memoButton)
+        memoButton.translatesAutoresizingMaskIntoConstraints = false
+        memoButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 30).isActive = true
+        memoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        memoButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
+        memoButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
+        memoButton.layer.cornerRadius = 25
+        memoButton.layer.masksToBounds = true
+        memoButton.backgroundColor = .systemGray6
+        memoButton.titleLabel?.text = "MEMO"
+        memoButton.setTitleColor(UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black, for: .normal)
+        memoButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
+
         self.calendar = calendar
         addButton()
-        deleteButton()
     }
     
     //MARK: -Function
@@ -48,27 +55,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         view.addSubview(addButton)
         //autoLayout
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -250).isActive = true
+        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -160).isActive = true
         addButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
         addButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
         addButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-    }
-    
-    func deleteButton() {
-        let deleteButton = UIButton()
-        deleteButton.backgroundColor = UIColor(red: 255/255, green: 102/255, blue: 102/255, alpha: 1.0) 
-        deleteButton.setTitle("-", for: UIControl.State())
-        deleteButton.setTitleColor(.white, for: UIControl.State())
-        deleteButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
-        deleteButton.layer.cornerRadius = 40
-        deleteButton.layer.masksToBounds = true
-        view.addSubview(deleteButton)
-        //autoLayout
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -160).isActive = true
-        deleteButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
-        deleteButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        deleteButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     //ボタンを押したときの処理
@@ -103,22 +93,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let workDay = "\(year)/\(mmmm)/\(dddd)"
         print("\(workDay)")
         
-        memoLabel.text = "MEMO"
-        memoLabel.textColor = .lightGray
-        memoLabel.font = UIFont.systemFont(ofSize: 20.0)
-        
-        view.addSubview(memoLabel)
-        
-        
         let realm = try! Realm()
         let eventModel = realm.objects(EventModel.self)
         
+        // 勉強したメモを表示
         for memo in eventModel {
             if memo.date == workDay {
-                memoLabel.text = memo.event
-                memoLabel.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
-                view.addSubview(memoLabel)
-                
+                memoButton.setTitle(memo.event, for: .normal)
             }
         }
     }
