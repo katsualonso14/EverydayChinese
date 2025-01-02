@@ -4,6 +4,7 @@ class MyNotesViewController: UITableViewController {
     
     var words = [String]()
     var sentences = [String]()
+    var isFirstViewDidLoad = false // 初回画面フラグ
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,23 +17,34 @@ class MyNotesViewController: UITableViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MyNotesCell.self, forCellReuseIdentifier: "MyNotesCell")
-
+        isFirstViewDidLoad = true
     }
     
     
     //MARK: - TableView DataSource
     // テーブルビューのセクション数を返す
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return words.count
+        if(isFirstViewDidLoad) {
+            return 3
+        } else {
+            return words.count
+        }
     }
     
     // テーブルビューのセルの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
-        cell.label.text = "Word: \(words[indexPath.row])"
-        cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
         
-        return cell
+        // if epmty
+        if (isFirstViewDidLoad) {
+            cell.label.text = "Word: "
+            cell.secondLabel.text = "Sentence: "
+            return cell
+        } else {
+            cell.label.text = "Word: \(words[indexPath.row])"
+            cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
+            return cell
+        }
     }
     
     //セルの高さ
@@ -46,7 +58,7 @@ class MyNotesViewController: UITableViewController {
 //    }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+        if (editingStyle == .delete && !words.isEmpty && !sentences.isEmpty ) {
                 // Word
                 var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
                 currentWord.remove(at: indexPath.row)
@@ -80,7 +92,7 @@ class MyNotesViewController: UITableViewController {
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
-            
+            self?.isFirstViewDidLoad = false
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
                 let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
