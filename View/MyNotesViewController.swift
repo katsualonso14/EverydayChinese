@@ -9,9 +9,11 @@ class MyNotesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "MyNotes"
         isFirstViewDidLoad = true
         setView()
         setTableView()
+        setAddButton()
     }
     //MARK: - View Layout
     func setView() {
@@ -40,13 +42,30 @@ class MyNotesViewController: UIViewController {
         
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        navigationItem.title = "MyNotes"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
-        navigationController?.navigationBar.prefersLargeTitles = true
         
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MyNotesCell.self, forCellReuseIdentifier: "MyNotesCell")
+    }
+    
+    func setAddButton() {
+        let addButton = UIButton()
+        addButton.backgroundColor =  UIColor.systemRed
+        addButton.setTitle("Add", for: UIControl.State())
+        addButton.setTitleColor(.white, for: UIControl.State())
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
+        addButton.layer.cornerRadius = 30
+        addButton.layer.masksToBounds = true
+        view.addSubview(addButton)
+        
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.17),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+        ])
     }
     
     //MARK: - Function

@@ -39,26 +39,28 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         memoButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
 
         self.calendar = calendar
-        addButton()
+        setAddButton()
     }
     
     //MARK: -Function
-    
-    func addButton() {
+    func setAddButton() {
         let addButton = UIButton()
-        addButton.backgroundColor =  UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
-        addButton.setTitle("+", for: UIControl.State())
+        addButton.backgroundColor =  UIColor.systemRed
+        addButton.setTitle("Add", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
+        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
         addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
-        addButton.layer.cornerRadius = 40
+        addButton.layer.cornerRadius = 30
         addButton.layer.masksToBounds = true
         view.addSubview(addButton)
-        //autoLayout
+        
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: -160).isActive = true
-        addButton.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
-        addButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        addButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        NSLayoutConstraint.activate([
+            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.17),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+        ])
     }
     
     //ボタンを押したときの処理
