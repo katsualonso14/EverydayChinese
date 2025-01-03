@@ -1,81 +1,71 @@
 import UIKit
 
-class MyNotesViewController: UITableViewController {
-    
+class MyNotesViewController: UIViewController {
+    let tableView = UITableView()
+    let conteinerView = UIView()
     var words = [String]()
     var sentences = [String]()
     var isFirstViewDidLoad = false // 初回画面フラグ
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "MyNotes"
+        isFirstViewDidLoad = true
+        setView()
+        setTableView()
+        setAddButton()
+    }
+    //MARK: - View Layout
+    func setView() {
+        conteinerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(conteinerView)
+        
+        NSLayoutConstraint.activate([
+            conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            conteinerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            conteinerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
+    }
+    
+    func setTableView() {
+        conteinerView.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: conteinerView.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
+        ])
+        tableView.backgroundColor = .systemGray6
+        
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        navigationItem.title = "MyNotes"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
-        navigationController?.navigationBar.prefersLargeTitles = true
         
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MyNotesCell.self, forCellReuseIdentifier: "MyNotesCell")
-        isFirstViewDidLoad = true
     }
     
-    
-    //MARK: - TableView DataSource
-    // テーブルビューのセクション数を返す
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(isFirstViewDidLoad) {
-            return 3
-        } else {
-            return words.count
-        }
-    }
-    
-    // テーブルビューのセルの中身
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
+    func setAddButton() {
+        let addButton = UIButton()
+        addButton.backgroundColor =  UIColor.systemRed
+        addButton.setTitle("Add", for: UIControl.State())
+        addButton.setTitleColor(.white, for: UIControl.State())
+        addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
+        addButton.layer.cornerRadius = 30
+        addButton.layer.masksToBounds = true
+        view.addSubview(addButton)
         
-        // if epmty
-        if (isFirstViewDidLoad) {
-            cell.label.text = "Word: "
-            cell.secondLabel.text = "Sentence: "
-            return cell
-        } else {
-            cell.label.text = "Word: \(words[indexPath.row])"
-            cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
-            return cell
-        }
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.17),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+        ])
     }
-    
-    //セルの高さ
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    //タップ処理
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("tapped")
-//    }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete && !words.isEmpty && !sentences.isEmpty ) {
-                // Word
-                var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
-                currentWord.remove(at: indexPath.row)
-                UserDefaults.standard.setValue(currentWord, forKey: "word")
-                words.remove(at: indexPath.row)
-                // Sentence
-                var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
-                currentSentence.remove(at: indexPath.row)
-                UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
-                sentences.remove(at: indexPath.row)
-                
-                tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
-    
-    
-    
     
     //MARK: - Function
     @objc func addTapped() {
@@ -131,5 +121,69 @@ class MyNotesViewController: UITableViewController {
         present(aleat, animated: true)
     }
 }
+
+
+//MARK: - TableView DataSource
+extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
+    // テーブルビューのセクション数を返す
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(isFirstViewDidLoad) {
+            return 3
+        } else {
+            return words.count
+        }
+    }
+    
+    // テーブルビューのセルの中身
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
+         cell.layer.cornerRadius = 16
+         cell.layer.masksToBounds = true
+         cell.backgroundColor = .systemBackground
+         cell.layer.borderWidth = 5
+         cell.layer.borderColor = UIColor.systemGray6.cgColor
+         
+        // if epmty
+        if (isFirstViewDidLoad) {
+            cell.label.text = "Word: "
+            cell.secondLabel.text = "Sentence: "
+            return cell
+        } else {
+            cell.label.text = "Word: \(words[indexPath.row])"
+            cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
+            return cell
+        }
+    }
+    
+    //セルの高さ
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    //タップ処理
+    //    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    //        print("tapped")
+    //    }
+    
+     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete && !words.isEmpty && !sentences.isEmpty ) {
+            // Word
+            var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
+            currentWord.remove(at: indexPath.row)
+            UserDefaults.standard.setValue(currentWord, forKey: "word")
+            words.remove(at: indexPath.row)
+            // Sentence
+            var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
+            currentSentence.remove(at: indexPath.row)
+            UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
+            sentences.remove(at: indexPath.row)
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+}
+
+
 
 

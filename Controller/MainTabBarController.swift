@@ -28,7 +28,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate {
     //タブバーの表示
     func setupTab() {
         self.tabBar.tintColor = UIColor.systemRed //タブバー選択時の色指定
-
+        view.backgroundColor = .systemGray6
         let categoryViewController = CategoryViewController()
         categoryViewController.tabBarItem.image = UIImage(named: "tag")
         categoryViewController.tabBarItem.title = "Word&Sentence"
