@@ -20,8 +20,8 @@ class MyNotesViewController: UIViewController {
         
         view.backgroundColor = .systemGray6
         NSLayoutConstraint.activate([
-            conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             conteinerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             conteinerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
@@ -36,9 +36,7 @@ class MyNotesViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
-        
-        tableView.layer.cornerRadius = 16 // Adjust corner radius as needed
-        tableView.layer.masksToBounds = true
+        tableView.backgroundColor = .systemGray6
         
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
@@ -121,7 +119,12 @@ extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセルの中身
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
-        
+         cell.layer.cornerRadius = 16
+         cell.layer.masksToBounds = true
+         cell.backgroundColor = .systemBackground
+         cell.layer.borderWidth = 5
+         cell.layer.borderColor = UIColor.systemGray6.cgColor
+         
         // if epmty
         if (isFirstViewDidLoad) {
             cell.label.text = "Word: "
