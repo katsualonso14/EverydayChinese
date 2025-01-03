@@ -6,13 +6,14 @@ class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Category"
+        view.backgroundColor = .systemGray6
         
         //    初心者ボタン
         let button:UIButton = UIButton()
         self.view.addSubview(button)
         //Autosizingのレイアウトの仕組みをAuto Layoutに変換するかどうかを設定するフラグを既存がオンなのでfalse(オフ)に設定
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemGray6
+        button.backgroundColor = .systemBackground
         //set layout
         button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 150).isActive = true
         button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -23,7 +24,7 @@ class CategoryViewController: UIViewController {
         button.layer.masksToBounds = true
         
         button.setTitle("Beginner", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(AppColors.textColor, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
 
         button.setImage(UIImage(named: "beginner"), for: .normal)
@@ -36,7 +37,7 @@ class CategoryViewController: UIViewController {
         let intermediateButton:UIButton = UIButton()
         self.view.addSubview(intermediateButton)
         intermediateButton.translatesAutoresizingMaskIntoConstraints = false
-        intermediateButton.backgroundColor = .systemGray6
+        intermediateButton.backgroundColor = .systemBackground
         
         intermediateButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
         intermediateButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -46,7 +47,7 @@ class CategoryViewController: UIViewController {
         intermediateButton.layer.masksToBounds = true
         
         intermediateButton.setTitle("Intermediate", for: .normal)
-        intermediateButton.setTitleColor(.white, for: .normal)
+        intermediateButton.setTitleColor(AppColors.textColor, for: .normal)
         intermediateButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         intermediateButton.setImage(UIImage(named: "intermediate"), for: .normal)
         intermediateButton.contentHorizontalAlignment = .left
@@ -58,7 +59,7 @@ class CategoryViewController: UIViewController {
         let advancedButton:UIButton = UIButton()
         self.view.addSubview(advancedButton)
         advancedButton.translatesAutoresizingMaskIntoConstraints = false
-        advancedButton.backgroundColor = .systemGray6
+        advancedButton.backgroundColor = .systemBackground
         
         advancedButton.topAnchor.constraint(equalTo: intermediateButton.bottomAnchor, constant: 20).isActive = true
         advancedButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -68,7 +69,7 @@ class CategoryViewController: UIViewController {
         advancedButton.layer.masksToBounds = true
         
         advancedButton.setTitle("Advanced", for: .normal)
-        advancedButton.setTitleColor(.white, for: .normal)
+        advancedButton.setTitleColor(AppColors.textColor, for: .normal)
         advancedButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         advancedButton.setImage(UIImage(named: "advanced"), for: .normal)
         advancedButton.contentHorizontalAlignment = .left
@@ -80,7 +81,7 @@ class CategoryViewController: UIViewController {
         let restaurantButton:UIButton = UIButton()
         self.view.addSubview(restaurantButton)
         restaurantButton.translatesAutoresizingMaskIntoConstraints = false
-        restaurantButton.backgroundColor = .systemGray6
+        restaurantButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
         restaurantButton.topAnchor.constraint(equalTo: advancedButton.bottomAnchor, constant: 20).isActive = true
         restaurantButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -90,7 +91,7 @@ class CategoryViewController: UIViewController {
         restaurantButton.layer.masksToBounds = true
         
         restaurantButton.setTitle("Restaurant", for: .normal)
-        restaurantButton.setTitleColor(.white, for: .normal)
+        restaurantButton.setTitleColor(AppColors.textColor, for: .normal)
         restaurantButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         restaurantButton.setImage(UIImage(named: "restaurant"), for: .normal)
         restaurantButton.contentHorizontalAlignment = .left
@@ -102,7 +103,7 @@ class CategoryViewController: UIViewController {
         let tripButton:UIButton = UIButton()
         self.view.addSubview(tripButton)
         tripButton.translatesAutoresizingMaskIntoConstraints = false
-        tripButton.backgroundColor = .systemGray6
+        tripButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
         tripButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 20).isActive = true
         tripButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -112,7 +113,7 @@ class CategoryViewController: UIViewController {
         tripButton.layer.masksToBounds = true
         
         tripButton.setTitle("Trip", for: .normal)
-        tripButton.setTitleColor(.white, for: .normal)
+        tripButton.setTitleColor(AppColors.textColor, for: .normal)
         tripButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         tripButton.setImage(UIImage(named: "trip"), for: .normal)
         tripButton.contentHorizontalAlignment = .left
@@ -124,7 +125,7 @@ class CategoryViewController: UIViewController {
         let dramaButton:UIButton = UIButton()
         self.view.addSubview(dramaButton)
         dramaButton.translatesAutoresizingMaskIntoConstraints = false
-        dramaButton.backgroundColor = .systemGray6
+        dramaButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
         dramaButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 20).isActive = true
         dramaButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -134,7 +135,7 @@ class CategoryViewController: UIViewController {
         dramaButton.layer.masksToBounds = true
         
         dramaButton.setTitle("Drama", for: .normal)
-        dramaButton.setTitleColor(.white, for: .normal)
+        dramaButton.setTitleColor(AppColors.textColor, for: .normal)
         dramaButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         dramaButton.setImage(UIImage(named: "drama"), for: .normal)
         dramaButton.contentHorizontalAlignment = .left
