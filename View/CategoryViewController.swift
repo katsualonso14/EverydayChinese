@@ -6,7 +6,6 @@ class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Category"
-        view.backgroundColor = .systemGray6
         
         //    初心者ボタン
         let button:UIButton = UIButton()

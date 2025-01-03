@@ -11,6 +11,13 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Calendar"
+        setCalendar()
+        setAddButton()
+        setMemoButton()
+    }
+    
+    //MARK: -Layout
+    func setCalendar() {
         let calendar = FSCalendar()
         calendar.dataSource = self
         calendar.delegate = self
@@ -18,37 +25,37 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         //Auto Layout以前に使われていた制約を解除しないといけない
         calendar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(calendar)
-        
         //レイアウト制約
         calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
         calendar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
-        
+        self.calendar = calendar
+    }
+    
+    func setMemoButton() {
         view.addSubview(memoButton)
         memoButton.translatesAutoresizingMaskIntoConstraints = false
+        memoButton.titleLabel?.text = "Memo"
         memoButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 30).isActive = true
         memoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         memoButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         memoButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
         memoButton.layer.cornerRadius = 25
         memoButton.layer.masksToBounds = true
-        memoButton.backgroundColor = .systemGray6
-        memoButton.titleLabel?.text = "MEMO"
+        memoButton.backgroundColor = UIColor.systemBackground
+//        memoButton.titleLabel?.text = "MEMO"
         memoButton.setTitleColor(UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black, for: .normal)
+        memoButton.titleLabel?.font = .systemFont(ofSize: 20)
         memoButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
-
-        self.calendar = calendar
-        setAddButton()
     }
     
-    //MARK: -Function
     func setAddButton() {
         let addButton = UIButton()
         addButton.backgroundColor =  UIColor.systemRed
         addButton.setTitle("Add", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
         addButton.layer.cornerRadius = 30
         addButton.layer.masksToBounds = true
@@ -62,7 +69,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
         ])
     }
-    
+    //MARK: -Function
     //ボタンを押したときの処理
     @objc func tapAddButton() {
         let addEventVC = AddEventViewController()
@@ -93,12 +100,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let dddd = String(format: "%02d", day)
         
         let workDay = "\(year)/\(mmmm)/\(dddd)"
-        print("\(workDay)")
         
         let realm = try! Realm()
         let eventModel = realm.objects(EventModel.self)
         
-        // 勉強したメモを表示
+        // メモを表示
         for memo in eventModel {
             if memo.date == workDay {
                 memoButton.setTitle(memo.event, for: .normal)

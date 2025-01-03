@@ -20,7 +20,6 @@ class MyNotesViewController: UIViewController {
         conteinerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(conteinerView)
         
-        view.backgroundColor = .systemGray6
         NSLayoutConstraint.activate([
             conteinerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             conteinerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -53,7 +52,7 @@ class MyNotesViewController: UIViewController {
         addButton.backgroundColor =  UIColor.systemRed
         addButton.setTitle("Add", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
-        addButton.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
         addButton.layer.cornerRadius = 30
         addButton.layer.masksToBounds = true
