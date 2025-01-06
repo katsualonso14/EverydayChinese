@@ -12,3 +12,6 @@
 # Ignore files
 ChineseApp/Model/MyAds.swift
 ChineseApp/Info.plist
+
+Info.plist
+Model/MyAds.swift
