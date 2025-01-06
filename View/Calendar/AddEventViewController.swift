@@ -24,7 +24,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = "ca-app-pub-2751119101175618/2259631200" // AdBanner ID
+        bannerView.adUnitID = MyAds.bannerID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }
