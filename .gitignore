@@ -1,0 +1,15 @@
+
+# Ignore build files
+
+# Ignore Xcode-specific files
+
+# Ignore Swift Package Manager artifacts
+
+
+# Ignore CocoaPods dependencies
+
+
+# Ignore files
+
+Model/MyAds.swift
+Info.plist 

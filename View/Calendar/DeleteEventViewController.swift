@@ -11,8 +11,9 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Button()
         DatePicker()
+        setDeleteButton()
+        
         
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
@@ -28,21 +29,24 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     }
     
     //MARK: -Function
-    func Button() {
-        let button = UIButton()
-        button.backgroundColor = UIColor(red: 255/255, green: 102/255, blue: 102/255, alpha: 1.0)
-        button.setTitle("Delete", for: UIControl.State())
-        button.setTitleColor(.white, for: UIControl.State())
-        button.addTarget(self, action: #selector(deleteMemo), for: .touchUpInside)
-        button.layer.cornerRadius = 50
-        button.layer.masksToBounds = true
-        view.addSubview(button)
-        //autoLayout
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: view.topAnchor, constant: 400).isActive = true
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 120).isActive = true
+    func setDeleteButton() {
+        let deleteButton = UIButton()
+        deleteButton.backgroundColor =  .systemBackground
+        deleteButton.setTitle("Delete", for: UIControl.State())
+        deleteButton.setTitleColor(UIColor.systemRed, for: UIControl.State())
+        deleteButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        deleteButton.addTarget(self, action: #selector(deleteMemo), for: .touchUpInside)
+        deleteButton.layer.cornerRadius = 30
+        deleteButton.layer.masksToBounds = true
+        view.addSubview(deleteButton)
+        
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deleteButton.bottomAnchor.constraint(equalTo: view.topAnchor,constant: view.frame.height * 0.6),
+            deleteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            deleteButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            deleteButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+        ])
     }
 
     func DatePicker() {
@@ -53,8 +57,10 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
         view.addSubview(datePicker)
         //autoLayout
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 320).isActive = true
-        datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: view.frame.height * 0.3),
+        datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
     //MARK: -ActionFunction
