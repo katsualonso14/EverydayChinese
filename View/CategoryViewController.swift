@@ -6,15 +6,17 @@ class CategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Category"
-        
+        let scrollView = UIScrollView() // for scroll
+        self.view.addSubview(scrollView)
         //    初心者ボタン
         let button:UIButton = UIButton()
         self.view.addSubview(button)
+
         //Autosizingのレイアウトの仕組みをAuto Layoutに変換するかどうかを設定するフラグを既存がオンなのでfalse(オフ)に設定
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBackground
         //set layout
-        button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 150).isActive = true
+        button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: view.frame.height * 0.13).isActive = true
         button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true

@@ -13,7 +13,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         TextView()
-        Button()
+        setAddButton()
         DatePicker()
         
         // Admob広告設定
@@ -39,33 +39,37 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         //autolayout
         if #available(iOS 11, * ) {//safeAreaがある場合はsafeAreaからtopAnchorを始める
             let guide = view.safeAreaLayoutGuide
-            textView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 0).isActive = true
+            textView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 30).isActive = true
             
         } else {
             textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60).isActive = true
         }
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textView.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        textView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        NSLayoutConstraint.activate([
+            textView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textView.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            textView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.3)
+        ])
     }
 
-    func Button() {
-        let button = UIButton()
-        button.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
-        button.setTitle("Save", for: UIControl.State())
-        button.setTitleColor(.white, for: UIControl.State())
-        button.addTarget(self, action: #selector(saveMemo), for: .touchUpInside)
-        button.layer.cornerRadius = 50
-        button.layer.masksToBounds = true
-        view.addSubview(button)
-        //autoLayout
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: view.topAnchor,constant: 470).isActive = true
-        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 120).isActive = true
-
+    func setAddButton() {
+        let addButton = UIButton()
+        addButton.backgroundColor =  UIColor.systemRed
+        addButton.setTitle("Add", for: UIControl.State())
+        addButton.setTitleColor(.white, for: UIControl.State())
+        addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
+        addButton.addTarget(self, action: #selector(saveMemo), for: .touchUpInside)
+        addButton.layer.cornerRadius = 30
+        addButton.layer.masksToBounds = true
+        view.addSubview(addButton)
+        
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            addButton.bottomAnchor.constraint(equalTo: view.topAnchor,constant: view.frame.height * 0.6),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
+            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+        ])
     }
 
     func DatePicker() {
@@ -75,7 +79,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         view.addSubview(datePicker)
         //autoLayout
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: 400).isActive = true
+        datePicker.topAnchor.constraint(equalTo: view.topAnchor,constant: view.frame.height * 0.48).isActive = true
         datePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     

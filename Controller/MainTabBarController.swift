@@ -20,7 +20,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate {
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = "ca-app-pub-2751119101175618/6291482773" // AdBanner ID
+        bannerView.adUnitID = MyAds.bannerID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }
