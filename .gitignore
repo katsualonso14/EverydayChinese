@@ -10,6 +10,5 @@
 
 
 # Ignore files
-
-Model/MyAds.swift
-Info.plist 
+ChineseApp/Model/MyAds.swift
+ChineseApp/Info.plist
