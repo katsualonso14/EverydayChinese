@@ -40,7 +40,7 @@ class CategoryViewController: UIViewController {
         intermediateButton.translatesAutoresizingMaskIntoConstraints = false
         intermediateButton.backgroundColor = .systemBackground
         
-        intermediateButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 20).isActive = true
+        intermediateButton.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 13).isActive = true
         intermediateButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         intermediateButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         intermediateButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
@@ -62,7 +62,7 @@ class CategoryViewController: UIViewController {
         advancedButton.translatesAutoresizingMaskIntoConstraints = false
         advancedButton.backgroundColor = .systemBackground
         
-        advancedButton.topAnchor.constraint(equalTo: intermediateButton.bottomAnchor, constant: 20).isActive = true
+        advancedButton.topAnchor.constraint(equalTo: intermediateButton.bottomAnchor, constant: 13).isActive = true
         advancedButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         advancedButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         advancedButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
@@ -84,7 +84,7 @@ class CategoryViewController: UIViewController {
         restaurantButton.translatesAutoresizingMaskIntoConstraints = false
         restaurantButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
-        restaurantButton.topAnchor.constraint(equalTo: advancedButton.bottomAnchor, constant: 20).isActive = true
+        restaurantButton.topAnchor.constraint(equalTo: advancedButton.bottomAnchor, constant: 13).isActive = true
         restaurantButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         restaurantButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         restaurantButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
@@ -106,7 +106,7 @@ class CategoryViewController: UIViewController {
         tripButton.translatesAutoresizingMaskIntoConstraints = false
         tripButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
-        tripButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 20).isActive = true
+        tripButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 13).isActive = true
         tripButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         tripButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         tripButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
@@ -128,7 +128,7 @@ class CategoryViewController: UIViewController {
         dramaButton.translatesAutoresizingMaskIntoConstraints = false
         dramaButton.backgroundColor = .systemBackground
         //connstraitでlayoutを調整する
-        dramaButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 20).isActive = true
+        dramaButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 13).isActive = true
         dramaButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         dramaButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         dramaButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
