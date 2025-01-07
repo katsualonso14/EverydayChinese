@@ -63,7 +63,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.17),
+            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.23),
             addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
             addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
