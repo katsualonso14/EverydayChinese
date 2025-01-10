@@ -73,14 +73,16 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     //ボタンを押したときの処理
     @objc func tapAddButton() {
         let addEventVC = AddEventViewController()
-//        present(addEventVC, animated: true, completion: nil)
-        navigationController?.pushViewController(addEventVC, animated: true)
+        let navController = UINavigationController(rootViewController: addEventVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
     }
     
     @objc func tapDeleteButton() {
         let deleteEventVC = DeleteEventViewController()
-//        present(deleteEventVC, animated: true, completion: nil)
-        navigationController?.pushViewController(deleteEventVC, animated: true)
+        let navController = UINavigationController(rootViewController: deleteEventVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
     }
     
    

@@ -11,6 +11,8 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        setupNavigationBar()
         DatePicker()
         setDeleteButton()
         
@@ -29,6 +31,12 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     }
     
     //MARK: -Function
+    private func setupNavigationBar() {
+        self.title = "メモを削除"
+        let cancelButton = UIBarButtonItem(title: "キャンセル", style: .plain, target: self, action: #selector(cancelTapped))
+        self.navigationItem.leftBarButtonItem = cancelButton
+    }
+    
     func setDeleteButton() {
         let deleteButton = UIButton()
         deleteButton.backgroundColor =  .systemBackground
@@ -64,6 +72,10 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     }
     
     //MARK: -ActionFunction
+    @objc private func cancelTapped() {
+        // モーダルを閉じる
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @objc func picker(_ sender: UIDatePicker) {
         formatter.dateFormat = "yyyy/MM/dd"
@@ -88,7 +100,7 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
                 realm.delete(defaultDay)
                 
                 print("\(defaultDay)")
-//                dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         }
         let calenderVC = CalendarViewController()
