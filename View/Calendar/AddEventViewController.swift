@@ -9,6 +9,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
     let textView  = UITextView()
     let datePicker = UIDatePicker()
     var bannerView: GADBannerView!
+    var onEventUpdate: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +22,12 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
         let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
         bannerView = GADBannerView(adSize: adaptiveSize)
+
         
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = MyAds.bannerID
+        bannerView.adUnitID = MyAds.mediumRectangleBannerId
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }
@@ -35,6 +37,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
     private func setupNavigationBar() {
         // ナビゲーションバーのタイトル
         self.title = "メモを追加"
+        
         let cancelButton = UIBarButtonItem(title: "キャンセル", style: .plain, target: self, action: #selector(cancelTapped))
         self.navigationItem.leftBarButtonItem = cancelButton
     }
@@ -124,6 +127,8 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
             realm.add(Events)
             
         }
+    
+        onEventUpdate?() // カレンダー更新
         self.dismiss(animated: true, completion: nil)
     }
     //他の場面を触ったらキーボードが消える

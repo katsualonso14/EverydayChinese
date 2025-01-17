@@ -8,6 +8,7 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
     let datePickerText = UILabel()
     let formatter = DateFormatter()
     var bannerView: GADBannerView!
+    var onEventUpdate: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,21 +91,16 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
             if let selectPickerDay = datePickerText.text {
                 let result = realm.objects(EventModel.self).filter("date == '\(selectPickerDay)'")
                 realm.delete(result)
-                
-                print("\(result)")
-                dismiss(animated: true, completion: nil)
             } else {
                 formatter.dateFormat = "yyyy/MM/dd"
                 let defaultDay = realm.objects(EventModel.self).filter("date == '\(formatter.string(from: Date()))'")
-                
                 realm.delete(defaultDay)
-                
-                print("\(defaultDay)")
-                self.dismiss(animated: true, completion: nil)
             }
         }
-        let calenderVC = CalendarViewController()
-        navigationController?.pushViewController(calenderVC, animated: true)
+        onEventUpdate?() // カレンダー更新
+        // TODO: delete処理でカレンダーのドットを即時削除
+        dismiss(animated: true, completion: nil)
+        
     }
     //MARK: -Admob
     func addBannerViewToView(_ bannerView: GADBannerView) {
