@@ -9,28 +9,39 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
     let textView  = UITextView()
     let datePicker = UIDatePicker()
     var bannerView: GADBannerView!
+    var onEventUpdate: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         TextView()
         setAddButton()
         DatePicker()
-        
+        setupNavigationBar()
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
         let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
         bannerView = GADBannerView(adSize: adaptiveSize)
+
         
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
-        bannerView.adUnitID = MyAds.bannerID
+        bannerView.adUnitID = MyAds.mediumRectangleBannerId
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
     }
     
     
     //MARK: -ViewFunction
+    private func setupNavigationBar() {
+        // ナビゲーションバーのタイトル
+        self.title = "メモを追加"
+        
+        let cancelButton = UIBarButtonItem(title: "キャンセル", style: .plain, target: self, action: #selector(cancelTapped))
+        self.navigationItem.leftBarButtonItem = cancelButton
+    }
+    
     func TextView() {
         textView.layer.borderColor = UIColor.gray.cgColor
         textView.layer.borderWidth = 1.0
@@ -91,6 +102,10 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         
     }
     //MARK: -ActionFunction
+    @objc private func cancelTapped() {
+        // モーダルを閉じる
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @objc func picker(_ sender: UIDatePicker) {
         let formatter = DateFormatter()
@@ -112,9 +127,9 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
             realm.add(Events)
             
         }
-        
-        let calenderVC = CalendarViewController()
-        navigationController?.pushViewController(calenderVC, animated: true)
+    
+        onEventUpdate?() // カレンダー更新
+        self.dismiss(animated: true, completion: nil)
     }
     //他の場面を触ったらキーボードが消える
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

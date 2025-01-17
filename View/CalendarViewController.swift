@@ -14,6 +14,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         setCalendar()
         setAddButton()
         setMemoButton()
+        updateCalendar()
     }
     
     //MARK: -Layout
@@ -69,18 +70,27 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
         ])
     }
+    
+    func updateCalendar() {
+        calendar.reloadData()
+    }
     //MARK: -Function
     //ボタンを押したときの処理
     @objc func tapAddButton() {
         let addEventVC = AddEventViewController()
-//        present(addEventVC, animated: true, completion: nil)
-        navigationController?.pushViewController(addEventVC, animated: true)
+        addEventVC.onEventUpdate = {[weak self] in
+            self?.updateCalendar()
+        }
+        let navController = UINavigationController(rootViewController: addEventVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
     }
     
     @objc func tapDeleteButton() {
         let deleteEventVC = DeleteEventViewController()
-//        present(deleteEventVC, animated: true, completion: nil)
-        navigationController?.pushViewController(deleteEventVC, animated: true)
+        let navController = UINavigationController(rootViewController: deleteEventVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
     }
     
    
