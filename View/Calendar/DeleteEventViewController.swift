@@ -98,7 +98,6 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
             }
         }
         onEventUpdate?() // カレンダー更新
-        // TODO: delete処理でカレンダーのドットを即時削除
         dismiss(animated: true, completion: nil)
         
     }

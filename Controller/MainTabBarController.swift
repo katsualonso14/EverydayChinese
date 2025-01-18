@@ -12,7 +12,6 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTab()
-
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
         let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
@@ -20,12 +19,13 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         
         addBannerViewToView(bannerView)
         bannerView.delegate = self
-        
         bannerView.adUnitID = MyAds.bannerID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
         
+        //TODO: 初回のCookie確認後の表示
         setupInterstitial()
+        
     }
     //MARK: -Layout
     //タブバーの表示
@@ -84,7 +84,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
             do {
                 // 読み込み
                 interstitial = try await GADInterstitialAd.load(
-                    withAdUnitID: "ca-app-pub-2751119101175618/2052630498", request: GADRequest()
+                    withAdUnitID: MyAds.interstialAdId, request: GADRequest()
                 )
                 // Delegate設定
                 interstitial?.fullScreenContentDelegate = self
