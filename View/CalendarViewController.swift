@@ -88,6 +88,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     @objc func tapDeleteButton() {
         let deleteEventVC = DeleteEventViewController()
+        deleteEventVC.onEventUpdate = {[weak self] in
+            self?.updateCalendar()
+        }
         let navController = UINavigationController(rootViewController: deleteEventVC)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated: true, completion: nil)
