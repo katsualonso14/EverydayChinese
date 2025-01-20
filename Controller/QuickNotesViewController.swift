@@ -1,19 +1,20 @@
+
+import Foundation
 import UIKit
 
-class MyNotesViewController: UIViewController {
+
+class QuickNotesViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
-    var sentences = [String]()
-    var isFirstViewDidLoad = false // 初回画面フラグ
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "MyNotes"
-        isFirstViewDidLoad = true
+        navigationItem.title = "QuickNotes"
         setView()
         setTableView()
         setAddButton()
+        
     }
     //MARK: - View Layout
     func setView() {
@@ -38,9 +39,8 @@ class MyNotesViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
         tableView.backgroundColor = .systemGray6
-        
-        self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
-        self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
+
+        self.words = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -49,8 +49,9 @@ class MyNotesViewController: UIViewController {
     
     func setAddButton() {
         let addButton = UIButton()
-        addButton.backgroundColor =  UIColor.systemRed
-        addButton.setTitle("Add", for: UIControl.State())
+        addButton.backgroundColor = AppColors.appMainColor
+
+        addButton.setTitle("+", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
         addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
         addButton.addTarget(self, action: #selector(addTapped), for: .touchUpInside)
@@ -60,29 +61,25 @@ class MyNotesViewController: UIViewController {
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.23),
-            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
-            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: view.frame.height * -0.1),
+            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02),
+            addButton.widthAnchor.constraint(equalToConstant: 60),
+            addButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "New Notes", message: "add word and sentence", preferredStyle: .alert)
+        let aleat = UIAlertController(title: "Quick Notes", message: "add word", preferredStyle: .alert)
         
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter word..."
-        }
-        aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter sentence..."
         }
         
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
-            self?.isFirstViewDidLoad = false
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
                 let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
@@ -95,27 +92,14 @@ class MyNotesViewController: UIViewController {
             if let filed = aleat.textFields?.first {
                 if let text = filed.text, !text.isEmpty {
                     DispatchQueue.main.async {
-                        var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
+                        var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
                         currentWord.append(text)
-                        UserDefaults.standard.setValue(currentWord, forKey: "word")
+                        UserDefaults.standard.setValue(currentWord, forKey: "quick word")
                         self?.words.append(text)
                         self?.tableView.reloadData()
                     }
                 }
             }
-            
-            if let filed2 = aleat.textFields?.last {
-                if let text2 = filed2.text, !text2.isEmpty {
-                    DispatchQueue.main.async {
-                        var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
-                        currentSentence.append(text2)
-                        UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
-                        self?.sentences.append(text2)
-                        self?.tableView.reloadData()
-                    }
-                }
-            }
-            
         }))
         
         present(aleat, animated: true)
@@ -124,14 +108,10 @@ class MyNotesViewController: UIViewController {
 
 
 //MARK: - TableView DataSource
-extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
+extension QuickNotesViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセクション数を返す
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(isFirstViewDidLoad) {
-            return 3
-        } else {
-            return words.count
-        }
+        return words.count
     }
     
     // テーブルビューのセルの中身
@@ -143,21 +123,13 @@ extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
          cell.layer.borderWidth = 5
          cell.layer.borderColor = UIColor.systemGray6.cgColor
          
-        // if epmty
-        if (isFirstViewDidLoad) {
-            cell.label.text = "Word: "
-            cell.secondLabel.text = "Sentence: "
-            return cell
-        } else {
-            cell.label.text = "Word: \(words[indexPath.row])"
-            cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
-            return cell
-        }
+        cell.label.text = words[indexPath.row]
+        return cell
     }
     
     //セルの高さ
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 50
     }
     
     //タップ処理
@@ -166,17 +138,11 @@ extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
     //    }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete && !words.isEmpty && !sentences.isEmpty ) {
-            // Word
-            var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
+        if (editingStyle == .delete && !words.isEmpty) {
+            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
             currentWord.remove(at: indexPath.row)
-            UserDefaults.standard.setValue(currentWord, forKey: "word")
+            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
             words.remove(at: indexPath.row)
-            // Sentence
-            var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
-            currentSentence.remove(at: indexPath.row)
-            UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
-            sentences.remove(at: indexPath.row)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

@@ -8,7 +8,7 @@ class MyNotesCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        label.textColor = .systemRed
+        label.textColor = AppColors.appMainColor
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
         

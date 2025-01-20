@@ -11,10 +11,10 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Calendar"
+//        saveToday()
         setCalendar()
         setAddButton()
         setMemoButton()
-        updateCalendar()
     }
     
     //MARK: -Layout
@@ -33,22 +33,54 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
         self.calendar = calendar
     }
+    // チェックマーク設定
+    //TODO: noCheckMarkとの出し分け
+    func setCheckMark() {
+        let checkMark = UIImage(systemName: "checkmark.circle")
+        let checkMarkView = UIImageView(image: checkMark)
+        checkMarkView.contentMode = .scaleAspectFit
+        view.addSubview(checkMarkView)
+        
+        checkMarkView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            checkMarkView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: view.frame.height * 0.01),
+            checkMarkView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            checkMarkView.widthAnchor.constraint(equalToConstant: 60),
+            checkMarkView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
+    func setNoCheckMark() {
+        let checkMark = UIImage(systemName: "star")
+        let checkMarkView = UIImageView(image: checkMark)
+        checkMarkView.contentMode = .scaleAspectFit
+        view.addSubview(checkMarkView)
+        
+        checkMarkView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            checkMarkView.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: view.frame.height * 0.01),
+            checkMarkView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            checkMarkView.widthAnchor.constraint(equalToConstant: 60),
+            checkMarkView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
     
     func setMemoButton() {
         view.addSubview(memoButton)
-        memoButton.translatesAutoresizingMaskIntoConstraints = false
-        memoButton.titleLabel?.text = "Memo"
-        memoButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 30).isActive = true
-        memoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        memoButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
-        memoButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
         memoButton.layer.cornerRadius = 25
         memoButton.layer.masksToBounds = true
         memoButton.backgroundColor = UIColor.systemBackground
-//        memoButton.titleLabel?.text = "MEMO"
         memoButton.setTitleColor(UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black, for: .normal)
         memoButton.titleLabel?.font = .systemFont(ofSize: 20)
         memoButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
+        
+        memoButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            memoButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: view.frame.height * 0.1),
+            memoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            memoButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
+            memoButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1)
+        ])
     }
     
     func setAddButton() {
@@ -88,6 +120,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     @objc func tapDeleteButton() {
         let deleteEventVC = DeleteEventViewController()
+        deleteEventVC.onEventUpdate = {[weak self] in
+            self?.updateCalendar()
+        }
         let navController = UINavigationController(rootViewController: deleteEventVC)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated: true, completion: nil)
@@ -99,9 +134,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let cell = calendar.dequeueReusableCell(withIdentifier: "CELL", for: date, at: position)
         return cell
     }
-    
+    // 日付を選択したときの処理
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-    
         let tmpDate = Calendar(identifier: .gregorian)
         let year = tmpDate.component(.year, from: date)
         let month = tmpDate.component(.month, from: date)
@@ -211,6 +245,20 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             }
 
         }
+    
+    // 今日の日付を保存
+    func saveToday() {
+        let realm = try! Realm()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        
+        try! realm.write{
+            let Events = [EventModel(value: ["date": formatter.string(from: Date()), "event": "Study Chinese"])]
+            realm.add(Events)
+        }
+    }
+    
+    
 }
 
 
