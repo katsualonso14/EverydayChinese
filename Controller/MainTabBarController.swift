@@ -37,18 +37,23 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv = UINavigationController(rootViewController: categoryViewController)
         
+        let quickNotesVC = QuickNotesViewController()
+        quickNotesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
+        quickNotesVC.tabBarItem.title = "QuickNotes"
+        let nv1 = UINavigationController(rootViewController: quickNotesVC)
+        
         let myNotesVC = MyNotesViewController()
         let pencilLine = UIImage(systemName: "pencil.and.outline")
         myNotesVC.tabBarItem.image = pencilLine
         myNotesVC.tabBarItem.title = "MyNotes"
-        let nv1 = UINavigationController(rootViewController: myNotesVC)
+        let nv2 = UINavigationController(rootViewController: myNotesVC)
         
         let myTableViewController = CalendarViewController()
         myTableViewController.tabBarItem.image = UIImage(named: "calendar")
         myTableViewController.tabBarItem.title = "Calendar"
-        let nv2 = UINavigationController(rootViewController: myTableViewController)
+        let nv3 = UINavigationController(rootViewController: myTableViewController)
         
-        setViewControllers([nv, nv1, nv2], animated: false)
+        setViewControllers([nv, nv1, nv2, nv3], animated: false)
         
 
     }
