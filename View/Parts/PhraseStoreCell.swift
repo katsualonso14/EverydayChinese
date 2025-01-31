@@ -1,6 +1,6 @@
 import UIKit
 
-class MyNotesCell: UITableViewCell {
+class PhraseStoreCell: UITableViewCell {
     
     let label = UILabel()
     let secondLabel = UILabel()

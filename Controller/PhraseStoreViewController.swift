@@ -1,6 +1,6 @@
 import UIKit
 
-class MyNotesViewController: UIViewController {
+class PhraseStoreViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
@@ -9,7 +9,7 @@ class MyNotesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "MyNotes"
+        navigationItem.title = "Phrase Store"
         isFirstViewDidLoad = true
         setView()
         setTableView()
@@ -44,7 +44,7 @@ class MyNotesViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(MyNotesCell.self, forCellReuseIdentifier: "MyNotesCell")
+        tableView.register(PhraseStoreCell.self, forCellReuseIdentifier: "PhraseStoreCell")
     }
     
     func setAddButton() {
@@ -125,7 +125,7 @@ class MyNotesViewController: UIViewController {
 
 
 //MARK: - TableView DataSource
-extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
+extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセクション数を返す
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(isFirstViewDidLoad) {
@@ -137,7 +137,7 @@ extension MyNotesViewController: UITableViewDataSource, UITableViewDelegate {
     
     // テーブルビューのセルの中身
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhraseStoreCell") as! PhraseStoreCell
          cell.layer.cornerRadius = 16
          cell.layer.masksToBounds = true
          cell.backgroundColor = .systemBackground

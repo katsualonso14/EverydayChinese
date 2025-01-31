@@ -24,7 +24,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         bannerView.load(GADRequest())
         
         //TODO: 初回のCookie確認後の表示
-        setupInterstitial()
+//        setupInterstitial()
         
     }
     //MARK: -Layout
@@ -32,28 +32,29 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
     func setupTab() {
         self.tabBar.tintColor = UIColor.systemRed //タブバー選択時の色指定
         view.backgroundColor = .systemGray6
+        
+        let phrasesVC = PhrasesViewController()
+        phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
+        phrasesVC.tabBarItem.title = "Phrases"
+        let nv1 = UINavigationController(rootViewController: phrasesVC)
+        
+        let phraseStoreVC = PhraseStoreViewController()
+        let pencilLine = UIImage(systemName: "pencil.and.outline")
+        phraseStoreVC.tabBarItem.image = pencilLine
+        phraseStoreVC.tabBarItem.title = "PhraseStore"
+        let nv2 = UINavigationController(rootViewController: phraseStoreVC)
+        
         let categoryViewController = CategoryViewController()
         categoryViewController.tabBarItem.image = UIImage(named: "tag")
         categoryViewController.tabBarItem.title = "Word&Sentence"
-        let nv = UINavigationController(rootViewController: categoryViewController)
-        
-        let quickNotesVC = QuickNotesViewController()
-        quickNotesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
-        quickNotesVC.tabBarItem.title = "QuickNotes"
-        let nv1 = UINavigationController(rootViewController: quickNotesVC)
-        
-        let myNotesVC = MyNotesViewController()
-        let pencilLine = UIImage(systemName: "pencil.and.outline")
-        myNotesVC.tabBarItem.image = pencilLine
-        myNotesVC.tabBarItem.title = "MyNotes"
-        let nv2 = UINavigationController(rootViewController: myNotesVC)
+        let nv3 = UINavigationController(rootViewController: categoryViewController)
         
         let myTableViewController = CalendarViewController()
         myTableViewController.tabBarItem.image = UIImage(named: "calendar")
         myTableViewController.tabBarItem.title = "Calendar"
-        let nv3 = UINavigationController(rootViewController: myTableViewController)
+        let nv4 = UINavigationController(rootViewController: myTableViewController)
         
-        setViewControllers([nv, nv1, nv2, nv3], animated: false)
+        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
         
 
     }

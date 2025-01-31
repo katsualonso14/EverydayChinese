@@ -1,20 +1,17 @@
-
 import Foundation
 import UIKit
 
-
-class QuickNotesViewController: UIViewController {
+class PhrasesViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "QuickNotes"
+        navigationItem.title = "Phrases"
         setView()
         setTableView()
         setAddButton()
-        
     }
     //MARK: - View Layout
     func setView() {
@@ -38,13 +35,16 @@ class QuickNotesViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: conteinerView.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: conteinerView.bottomAnchor)
         ])
-        tableView.backgroundColor = .systemGray6
+        tableView.backgroundColor = .clear
+        tableView.layer.cornerRadius = 16
+        tableView.layer.masksToBounds = true
+        tableView.separatorStyle = .none // Remove default separator
 
         self.words = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(MyNotesCell.self, forCellReuseIdentifier: "MyNotesCell")
+        tableView.register(PhrasesCell.self, forCellReuseIdentifier: "PhrasesCell")
     }
     
     func setAddButton() {
@@ -72,13 +72,11 @@ class QuickNotesViewController: UIViewController {
     @objc func addTapped() {
         //add new cell
         let aleat = UIAlertController(title: "Quick Notes", message: "add word", preferredStyle: .alert)
-        
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter word..."
         }
         
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
         aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
@@ -88,7 +86,6 @@ class QuickNotesViewController: UIViewController {
                 return
             }
  
-        
             if let filed = aleat.textFields?.first {
                 if let text = filed.text, !text.isEmpty {
                     DispatchQueue.main.async {
@@ -108,34 +105,45 @@ class QuickNotesViewController: UIViewController {
 
 
 //MARK: - TableView DataSource
-extension QuickNotesViewController: UITableViewDataSource, UITableViewDelegate {
-    // テーブルビューのセクション数を返す
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return words.count
     }
-    
-    // テーブルビューのセルの中身
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MyNotesCell") as! MyNotesCell
-         cell.layer.cornerRadius = 16
-         cell.layer.masksToBounds = true
-         cell.backgroundColor = .systemBackground
-         cell.layer.borderWidth = 5
-         cell.layer.borderColor = UIColor.systemGray6.cgColor
-         
+    // 各セクションに対して1つだけ入れるように設定(スペースのため）
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    //TODO: もう少し間を短くする
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = view.backgroundColor
+        //最小限の高さを間に指定
+        NSLayoutConstraint.activate([
+            headerView.heightAnchor.constraint(equalToConstant: 1)
+            ])
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhrasesCell") as! PhrasesCell
+        // Cell design
+        cell.layer.cornerRadius = 16
+        cell.layer.masksToBounds = true
+        cell.backgroundColor = .systemBackground
+        // Background view for selection
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = UIColor.systemGray.withAlphaComponent(0.5)
+        selectedBackgroundView.layer.cornerRadius = 16
+        selectedBackgroundView.layer.masksToBounds = true
+        cell.selectedBackgroundView = selectedBackgroundView
+        // Set label text
         cell.label.text = words[indexPath.row]
         return cell
     }
-    
-    //セルの高さ
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
-    //タップ処理
-    //    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //        print("tapped")
-    //    }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete && !words.isEmpty) {
