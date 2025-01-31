@@ -141,18 +141,18 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
         // Set label text
-        cell.label.text = words[indexPath.row]
+        cell.label.text = words[indexPath.section]
         return cell
     }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete && !words.isEmpty) {
             var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
-            currentWord.remove(at: indexPath.row)
+            currentWord.remove(at: indexPath.section)
             UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            words.remove(at: indexPath.row)
+            words.remove(at: indexPath.section)
             
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.deleteSections([indexPath.section], with: .fade)
         }
     }
     

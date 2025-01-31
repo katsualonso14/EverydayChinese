@@ -49,14 +49,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         
-        let myTableViewController = CalendarViewController()
-        myTableViewController.tabBarItem.image = UIImage(named: "calendar")
-        myTableViewController.tabBarItem.title = "Calendar"
-        let nv4 = UINavigationController(rootViewController: myTableViewController)
-        
-        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
-        
-
+        setViewControllers([nv1, nv2, nv3], animated: false)
     }
     
     //MARK: -Admob
