@@ -142,6 +142,24 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
         cell.selectedBackgroundView = selectedBackgroundView
         // Set label text
         cell.label.text = words[indexPath.section]
+        // Delete button (trash icon)
+        
+        let deleteButton = UIButton(type: .custom)
+        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal) // Trash icon
+        deleteButton.tintColor = AppColors.appMainColor
+//        deleteButton.frame = CGRect(x: cell.frame.width - 30, y: (cell.frame.height - 30) / 2, width: 30, height: 30)
+        deleteButton.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
+        deleteButton.tag = indexPath.section // Set the section index as the tag
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        cell.addSubview(deleteButton)
+        
+        NSLayoutConstraint.activate([
+            deleteButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -10),
+            deleteButton.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
+            deleteButton.widthAnchor.constraint(equalToConstant: 30),
+            deleteButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
+        
         return cell
     }
     
@@ -154,6 +172,22 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
             
             tableView.deleteSections([indexPath.section], with: .fade)
         }
+    }
+    
+    @objc func deleteTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this word?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
+            // タグの判別
+            let index = sender.tag
+            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
+            currentWord.remove(at: index)
+            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
+            self?.words.remove(at: index)
+            self?.tableView.deleteSections([index], with: .fade)
+        }))
+        present(alert, animated: true)
     }
     
 }
