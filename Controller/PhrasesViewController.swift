@@ -101,6 +101,22 @@ class PhrasesViewController: UIViewController {
         
         present(aleat, animated: true)
     }
+    
+    @objc func deleteTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this word?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
+            // タグの判別
+            let index = sender.tag
+            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
+            currentWord.remove(at: index)
+            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
+            self?.words.remove(at: index)
+            self?.tableView.deleteSections([index], with: .fade)
+        }))
+        present(alert, animated: true)
+    }
 }
 
 
@@ -140,10 +156,9 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
-        cell.label.text = words[indexPath.section]
         // Delete button
         let deleteButton = UIButton(type: .custom)
-        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal) // Trash icon
+        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
         deleteButton.tintColor = AppColors.appMainColor
         deleteButton.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         deleteButton.tag = indexPath.section // Set the section index as the tag
@@ -156,10 +171,12 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
             deleteButton.widthAnchor.constraint(equalToConstant: 30),
             deleteButton.heightAnchor.constraint(equalToConstant: 30)
         ])
+        cell.label.text = words[indexPath.section]
         
         return cell
     }
     
+    // スワイプ処理
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete && !words.isEmpty) {
             var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
@@ -169,22 +186,6 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
             
             tableView.deleteSections([indexPath.section], with: .fade)
         }
-    }
-    
-    @objc func deleteTapped(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this word?", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
-            // タグの判別
-            let index = sender.tag
-            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
-            currentWord.remove(at: index)
-            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            self?.words.remove(at: index)
-            self?.tableView.deleteSections([index], with: .fade)
-        }))
-        present(alert, animated: true)
     }
     
 }
