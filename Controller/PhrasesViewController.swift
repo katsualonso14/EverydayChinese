@@ -140,14 +140,11 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
-        // Set label text
         cell.label.text = words[indexPath.section]
-        // Delete button (trash icon)
-        
+        // Delete button
         let deleteButton = UIButton(type: .custom)
         deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal) // Trash icon
         deleteButton.tintColor = AppColors.appMainColor
-//        deleteButton.frame = CGRect(x: cell.frame.width - 30, y: (cell.frame.height - 30) / 2, width: 30, height: 30)
         deleteButton.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
         deleteButton.tag = indexPath.section // Set the section index as the tag
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
