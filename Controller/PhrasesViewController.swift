@@ -10,6 +10,7 @@ class PhrasesViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Phrases"
         setView()
+        setDescriptionButton()
         setTableView()
         setAddButton()
     }
@@ -68,6 +69,13 @@ class PhrasesViewController: UIViewController {
         ])
     }
     
+    func setDescriptionButton() {
+        let descriptionButton = UIButton(type: .system)
+        descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
+        descriptionButton.tintColor = AppColors.appMainColor
+        descriptionButton.addTarget(self, action: #selector(descriptionTapped), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
+    }
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
@@ -117,8 +125,21 @@ class PhrasesViewController: UIViewController {
         }))
         present(alert, animated: true)
     }
+    
+    @objc func descriptionTapped() {
+        let modalView = UIAlertController(
+            title: "Description",
+            message: """
+            Let's write down the words you are interested in on the Pharese page.
+            
+            Let's make a summary of the words you wrote down with their meanings and example sentences in the Phrase Store
+            """,
+            preferredStyle: .alert
+        )
+        modalView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(modalView, animated: true)
+    }
 }
-
 
 //MARK: - TableView DataSource
 extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
