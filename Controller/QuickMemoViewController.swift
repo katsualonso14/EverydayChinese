@@ -48,7 +48,7 @@ class QuickMemoViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(PhrasesCell.self, forCellReuseIdentifier: "PhrasesCell")
+        tableView.register(QuickMemoCell.self, forCellReuseIdentifier: "QuickMemoCell")
     }
     
     func setAddButton() {
@@ -156,7 +156,7 @@ class QuickMemoViewController: UIViewController {
     }
     
     @objc func setDiscrptionView() {
-        let explanationView = QuickMemoDescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
@@ -187,7 +187,7 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PhrasesCell") as! PhrasesCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "QuickMemoCell") as! QuickMemoCell
         // Cell design
         cell.layer.cornerRadius = 16
         cell.layer.masksToBounds = true

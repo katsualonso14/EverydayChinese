@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-class QuickMemoDescriptionView: UIView {
+class PhraseStoreDescriptionView: UIView {
     let imageView = UIImageView()
     let closeButton = UIButton(type: .system)
 
@@ -12,14 +12,14 @@ class QuickMemoDescriptionView: UIView {
         self.layer.cornerRadius = 12
 
         // 画像
-        imageView.image = UIImage(named: "Quick Memo Sample")
+        imageView.image = UIImage(named: "PhraseStore Sample")
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 20, y: 20, width: 250, height: 150)
         addSubview(imageView)
 
         // 説明文
         let label = UILabel()
-        label.text = "You can write down words you don't understand or are curious about in your daily life quickly and easily."
+        label.text = "Tset"
         label.frame = CGRect(x: 20, y: 180, width: 280, height: 20)
         label.font = UIFont.systemFont(ofSize: 15)
         label.numberOfLines = 0
