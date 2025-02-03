@@ -5,12 +5,15 @@ class PhrasesViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
+    // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理(
+    let isDescription = UserDefaults.standard.bool(forKey: "isDescription")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Phrases"
         setView()
         setDescriptionButton()
+        checkDescription()
         setTableView()
         setAddButton()
     }
@@ -73,9 +76,35 @@ class PhrasesViewController: UIViewController {
         let descriptionButton = UIButton(type: .system)
         descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
         descriptionButton.tintColor = AppColors.appMainColor
-        descriptionButton.addTarget(self, action: #selector(descriptionTapped), for: .touchUpInside)
+        descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
     }
+    //　説明ダイアログ表示
+    func setDescription() {
+        let modalView = UIAlertController(
+            title: "Description",
+            message: """
+            Let's write down the words you are interested in on the Pharese page.
+            
+            Let's make a summary of the words you wrote down with their meanings and example sentences in the Phrase Store
+            """,
+            preferredStyle: .alert
+        )
+        // 次回以降表示しないのチェックボックス
+        let checkBox = UIAlertAction(title: "Don't show this again", style: .default) { (_) in
+            UserDefaults.standard.setValue(true, forKey: "isDescription")
+        }
+        modalView.addAction(checkBox)
+        modalView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(modalView, animated: true)
+    }
+    
+    func checkDescription() {
+        if !isDescription {
+            setDescription()
+        }
+    }
+    
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
@@ -126,18 +155,10 @@ class PhrasesViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    @objc func descriptionTapped() {
-        let modalView = UIAlertController(
-            title: "Description",
-            message: """
-            Let's write down the words you are interested in on the Pharese page.
-            
-            Let's make a summary of the words you wrote down with their meanings and example sentences in the Phrase Store
-            """,
-            preferredStyle: .alert
-        )
-        modalView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(modalView, animated: true)
+    @objc func setDiscrptionView() {
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
+        explanationView.center = view.center
+        view.addSubview(explanationView)
     }
 }
 
