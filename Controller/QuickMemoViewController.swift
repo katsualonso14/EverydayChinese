@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class PhrasesViewController: UIViewController {
+class QuickMemoViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
@@ -10,7 +10,7 @@ class PhrasesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Phrases"
+        navigationItem.title = "Quick Memo"
         setView()
         setDescriptionButton()
         checkDescription()
@@ -108,7 +108,7 @@ class PhrasesViewController: UIViewController {
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "Quick Notes", message: "add word", preferredStyle: .alert)
+        let aleat = UIAlertController(title: "Save Quick Memo", message: "Add word", preferredStyle: .alert)
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter word..."
         }
@@ -156,14 +156,14 @@ class PhrasesViewController: UIViewController {
     }
     
     @objc func setDiscrptionView() {
-        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
+        let explanationView = QuickMemoDescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
 }
 
 //MARK: - TableView DataSource
-extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
+extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return words.count
     }

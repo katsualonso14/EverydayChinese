@@ -33,9 +33,9 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         self.tabBar.tintColor = UIColor.systemRed //タブバー選択時の色指定
         view.backgroundColor = .systemGray6
         
-        let phrasesVC = PhrasesViewController()
+        let phrasesVC = QuickMemoViewController()
         phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
-        phrasesVC.tabBarItem.title = "Phrases"
+        phrasesVC.tabBarItem.title = "Quick Memo"
         let nv1 = UINavigationController(rootViewController: phrasesVC)
         
         let phraseStoreVC = PhraseStoreViewController()

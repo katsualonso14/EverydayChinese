@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-class DescriptionView: UIView {
+class QuickMemoDescriptionView: UIView {
     let imageView = UIImageView()
     let closeButton = UIButton(type: .system)
 
@@ -12,7 +12,7 @@ class DescriptionView: UIView {
         self.layer.cornerRadius = 12
 
         // 画像
-        imageView.image = UIImage(named: "Pharases Sample")
+        imageView.image = UIImage(named: "Quick Memo Sample")
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 20, y: 20, width: 250, height: 150)
         addSubview(imageView)
