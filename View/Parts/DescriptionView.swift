@@ -19,17 +19,21 @@ class DescriptionView: UIView {
 
         // 説明文
         let label = UILabel()
-        label.text = "You can write down words \nyou don't understand or are curious \nabout in your daily life \nquickly and easily."
-        label.frame = CGRect(x: 20, y: 170, width: 250, height: 20)
-        label.numberOfLines = 4
-        label.sizeToFit()
+        label.text = "You can write down words you don't understand or are curious about in your daily life quickly and easily."
+        label.frame = CGRect(x: 20, y: 180, width: 280, height: 20)
         label.font = UIFont.systemFont(ofSize: 15)
+        label.numberOfLines = 0
+        label.sizeToFit()
         addSubview(label)
         
         // 閉じるボタン
         closeButton.setTitle("Close", for: .normal)
+        closeButton.backgroundColor = AppColors.appMainColor
+        closeButton.setTitleColor(.white, for: .normal)
+        closeButton.layer.cornerRadius = 10
+        closeButton.layer.masksToBounds = true
         closeButton.addTarget(self, action: #selector(closeView), for: .touchUpInside)
-        closeButton.frame = CGRect(x: 20, y: 270, width: 250, height: 40)
+        closeButton.frame = CGRect(x: 20, y: 250, width: 250, height: 40)
         addSubview(closeButton)
     }
 
