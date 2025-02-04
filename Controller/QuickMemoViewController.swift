@@ -13,6 +13,8 @@ class QuickMemoViewController: UIViewController {
         setDescriptionButton()
         setTableView()
         setAddButton()
+        // 説明ダイアログが必要か確認
+        checkIsDescription()
     }
     //MARK: - View Layout
     func setView() {
@@ -75,6 +77,12 @@ class QuickMemoViewController: UIViewController {
         descriptionButton.tintColor = AppColors.appMainColor
         descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
+    }
+    
+    func checkIsDescription() {
+        if !UserDefaults.standard.bool(forKey: "isDescription") {
+            setDiscrptionView()
+        }
     }
     
     //MARK: - Function
