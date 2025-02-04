@@ -5,15 +5,12 @@ class QuickMemoViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
-    // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理(
-    let isDescription = UserDefaults.standard.bool(forKey: "isDescription")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Quick Memo"
         setView()
         setDescriptionButton()
-        checkDescription()
         setTableView()
         setAddButton()
     }
@@ -79,31 +76,6 @@ class QuickMemoViewController: UIViewController {
         descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
     }
-    //　説明ダイアログ表示
-    func setDescription() {
-        let modalView = UIAlertController(
-            title: "Description",
-            message: """
-            Let's write down the words you are interested in on the Pharese page.
-            
-            Let's make a summary of the words you wrote down with their meanings and example sentences in the Phrase Store
-            """,
-            preferredStyle: .alert
-        )
-        // 次回以降表示しないのチェックボックス
-        let checkBox = UIAlertAction(title: "Don't show this again", style: .default) { (_) in
-            UserDefaults.standard.setValue(true, forKey: "isDescription")
-        }
-        modalView.addAction(checkBox)
-        modalView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(modalView, animated: true)
-    }
-    
-    func checkDescription() {
-        if !isDescription {
-            setDescription()
-        }
-    }
     
     //MARK: - Function
     @objc func addTapped() {
@@ -156,7 +128,7 @@ class QuickMemoViewController: UIViewController {
     }
     
     @objc func setDiscrptionView() {
-        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 200, width: 300, height: 300))
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 300, height: 350))
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
