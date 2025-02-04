@@ -1,17 +1,20 @@
 import Foundation
 import UIKit
 
-class PhrasesViewController: UIViewController {
+class QuickMemoViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var words = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Phrases"
+        navigationItem.title = "Quick Memo"
         setView()
+        setDescriptionButton()
         setTableView()
         setAddButton()
+        // 説明ダイアログが必要か確認
+        checkIsDescription()
     }
     //MARK: - View Layout
     func setView() {
@@ -44,7 +47,7 @@ class PhrasesViewController: UIViewController {
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(PhrasesCell.self, forCellReuseIdentifier: "PhrasesCell")
+        tableView.register(QuickMemoCell.self, forCellReuseIdentifier: "QuickMemoCell")
     }
     
     func setAddButton() {
@@ -68,10 +71,24 @@ class PhrasesViewController: UIViewController {
         ])
     }
     
+    func setDescriptionButton() {
+        let descriptionButton = UIButton(type: .system)
+        descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
+        descriptionButton.tintColor = AppColors.appMainColor
+        descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
+    }
+    
+    func checkIsDescription() {
+        if !UserDefaults.standard.bool(forKey: "isDescription") {
+            setDiscrptionView()
+        }
+    }
+    
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "Quick Notes", message: "add word", preferredStyle: .alert)
+        let aleat = UIAlertController(title: "Save Quick Memo", message: "Add word", preferredStyle: .alert)
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter word..."
         }
@@ -101,11 +118,32 @@ class PhrasesViewController: UIViewController {
         
         present(aleat, animated: true)
     }
+    
+    @objc func deleteTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this word?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
+            // タグの判別
+            let index = sender.tag
+            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
+            currentWord.remove(at: index)
+            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
+            self?.words.remove(at: index)
+            self?.tableView.deleteSections([index], with: .fade)
+        }))
+        present(alert, animated: true)
+    }
+    
+    @objc func setDiscrptionView() {
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 300, height: 350))
+        explanationView.center = view.center
+        view.addSubview(explanationView)
+    }
 }
 
-
 //MARK: - TableView DataSource
-extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
+extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return words.count
     }
@@ -129,7 +167,7 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PhrasesCell") as! PhrasesCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "QuickMemoCell") as! QuickMemoCell
         // Cell design
         cell.layer.cornerRadius = 16
         cell.layer.masksToBounds = true
@@ -140,11 +178,27 @@ extension PhrasesViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
-        // Set label text
+        // Delete button
+        let deleteButton = UIButton(type: .custom)
+        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
+        deleteButton.tintColor = AppColors.appMainColor
+        deleteButton.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
+        deleteButton.tag = indexPath.section // Set the section index as the tag
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        cell.addSubview(deleteButton)
+        
+        NSLayoutConstraint.activate([
+            deleteButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -10),
+            deleteButton.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
+            deleteButton.widthAnchor.constraint(equalToConstant: 30),
+            deleteButton.heightAnchor.constraint(equalToConstant: 30)
+        ])
         cell.label.text = words[indexPath.section]
+        
         return cell
     }
     
+    // スワイプ処理
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete && !words.isEmpty) {
             var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []

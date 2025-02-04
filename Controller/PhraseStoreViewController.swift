@@ -3,14 +3,13 @@ import UIKit
 class PhraseStoreViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
+    //TODO: UseDefaultsの値のみで良い場合は削除を検討
     var words = [String]()
     var sentences = [String]()
-    var isFirstViewDidLoad = false // 初回画面フラグ
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Phrase Store"
-        isFirstViewDidLoad = true
         setView()
         setTableView()
         setAddButton()
@@ -83,7 +82,6 @@ class PhraseStoreViewController: UIViewController {
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
-            self?.isFirstViewDidLoad = false
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
                 let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
@@ -128,11 +126,7 @@ class PhraseStoreViewController: UIViewController {
 extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセクション数を返す
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(isFirstViewDidLoad) {
-            return 3
-        } else {
-            return words.count
-        }
+         return words.count
     }
     
     // テーブルビューのセルの中身
@@ -143,17 +137,10 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
          cell.backgroundColor = .systemBackground
          cell.layer.borderWidth = 5
          cell.layer.borderColor = UIColor.systemGray6.cgColor
+         cell.label.text = "Word: \(words[indexPath.row])"
+         cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
          
-        // if epmty
-        if (isFirstViewDidLoad) {
-            cell.label.text = "Word: "
-            cell.secondLabel.text = "Sentence: "
-            return cell
-        } else {
-            cell.label.text = "Word: \(words[indexPath.row])"
-            cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
-            return cell
-        }
+         return cell
     }
     
     //セルの高さ
@@ -161,13 +148,8 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
         return 100
     }
     
-    //タップ処理
-    //    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //        print("tapped")
-    //    }
-    
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete && !words.isEmpty && !sentences.isEmpty ) {
+        if (editingStyle == .delete) {
             // Word
             var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
             currentWord.remove(at: indexPath.row)
@@ -180,6 +162,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
             sentences.remove(at: indexPath.row)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
     

@@ -24,7 +24,7 @@ class CategoryViewController: UIViewController {
         button.layer.cornerRadius = 25.0
         button.layer.masksToBounds = true
         
-        button.setTitle("Beginner", for: .normal)
+        button.setTitle("Greetings", for: .normal)
         button.setTitleColor(AppColors.textColor, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
 
@@ -47,7 +47,7 @@ class CategoryViewController: UIViewController {
         intermediateButton.layer.cornerRadius = 25.0
         intermediateButton.layer.masksToBounds = true
         
-        intermediateButton.setTitle("Intermediate", for: .normal)
+        intermediateButton.setTitle("Pronouns", for: .normal)
         intermediateButton.setTitleColor(AppColors.textColor, for: .normal)
         intermediateButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         intermediateButton.setImage(UIImage(named: "intermediate"), for: .normal)
@@ -69,7 +69,7 @@ class CategoryViewController: UIViewController {
         advancedButton.layer.cornerRadius = 25.0
         advancedButton.layer.masksToBounds = true
         
-        advancedButton.setTitle("Advanced", for: .normal)
+        advancedButton.setTitle("Daily conversation", for: .normal)
         advancedButton.setTitleColor(AppColors.textColor, for: .normal)
         advancedButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         advancedButton.setImage(UIImage(named: "advanced"), for: .normal)
@@ -148,17 +148,17 @@ class CategoryViewController: UIViewController {
     }
 //    初心者ボタン押した時のアクション
     @objc func pushBignnerButton(sender: UIButton){
-        let vc = BiginnerViewController(titleName: "Biginner")
+        let vc = BiginnerViewController(titleName: "Greetings")
         navigationController?.pushViewController(vc, animated: true)
     }
     //    中級者ボタン押した時のアクション
     @objc func pushIntermediateButton(sender: UIButton){
-        let vc = IntermediateViewController(titleName: "Intermediate")
+        let vc = IntermediateViewController(titleName: "Pronouns")
         navigationController?.pushViewController(vc, animated: true)
     }
     //    上級者ボタン押した時のアクション
     @objc func pushAdvancedButton(sender: UIButton){
-        let vc = AdvancedViewController(titleName: "Advanced")
+        let vc = AdvancedViewController(titleName: "Daily conversation")
         navigationController?.pushViewController(vc, animated: true)   }
     
     //    旅行用ボタン押した時のアクション
