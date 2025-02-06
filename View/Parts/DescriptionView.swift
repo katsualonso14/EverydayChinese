@@ -67,7 +67,7 @@ class DescriptionView: UIView {
         
         label.text = isQuickMemo ?
         "You can write down words you don't understand or are curious about in your daily life quickly and easily."
-        : "You can save words and sentences that you want to remember in PhraseStore."
+        : "You can save words and sentences that you want to remember and situations when you find them in PhraseStore."
         label.sizeToFit()
         
         button.setTitle(isQuickMemo ? "Next" : "Close", for: .normal)
