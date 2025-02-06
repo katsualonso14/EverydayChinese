@@ -6,6 +6,7 @@ class PhraseStoreViewController: UIViewController {
     //TODO: UseDefaultsの値のみで良い場合は削除を検討
     var words = [String]()
     var sentences = [String]()
+    var situation = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,7 @@ class PhraseStoreViewController: UIViewController {
         
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
+        self.situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -78,12 +80,15 @@ class PhraseStoreViewController: UIViewController {
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter sentence..."
         }
+        aleat.addTextField{ (textField) in
+            textField.placeholder = "Enter situation..."
+        }
         
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
         aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
             // 文字がない場合はエラーメッセージ
-            if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
+            if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
                 let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(alert, animated: true)
@@ -103,13 +108,25 @@ class PhraseStoreViewController: UIViewController {
                 }
             }
             
-            if let filed2 = aleat.textFields?.last {
+            if let filed2 = aleat.textFields?[1] {
                 if let text2 = filed2.text, !text2.isEmpty {
                     DispatchQueue.main.async {
                         var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
                         currentSentence.append(text2)
                         UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
                         self?.sentences.append(text2)
+                        self?.tableView.reloadData()
+                    }
+                }
+            }
+            
+            if let filed3 = aleat.textFields?.last {
+                if let text3 = filed3.text, !text3.isEmpty {
+                    DispatchQueue.main.async {
+                        var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
+                        currentSituation.append(text3)
+                        UserDefaults.standard.setValue(currentSituation, forKey: "situation")
+                        self?.situation.append(text3)
                         self?.tableView.reloadData()
                     }
                 }
@@ -139,13 +156,16 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
          cell.layer.borderColor = UIColor.systemGray6.cgColor
          cell.label.text = "Word: \(words[indexPath.row])"
          cell.secondLabel.text = "Sentence: \(sentences[indexPath.row])"
+         cell.secondLabel.numberOfLines = 2 // 文章のため少し長めに
+         cell.thirdLabel.text = "Situation: \(situation[indexPath.row])"
+         cell.thirdLabel.numberOfLines = 2 // メモのため少し
          
          return cell
     }
     
     //セルの高さ
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 150
     }
     
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -160,6 +180,11 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
             currentSentence.remove(at: indexPath.row)
             UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
             sentences.remove(at: indexPath.row)
+            // Situation
+            var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
+            situation.remove(at: indexPath.row)
+            currentSituation.remove(at: indexPath.row)
+            UserDefaults.standard.setValue(currentSituation, forKey: "situation")
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.reloadRows(at: [indexPath], with: .automatic)
