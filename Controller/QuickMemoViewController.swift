@@ -4,7 +4,10 @@ import UIKit
 class QuickMemoViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
-    var words = [String]()
+    var QuickMemo = [String]()
+    let searchController = UISearchController(searchResultsController: nil)
+    var filteredWords = [String]()
+    var isSearching = false // 検索中かどうか判定
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -13,6 +16,7 @@ class QuickMemoViewController: UIViewController {
         setDescriptionButton()
         setTableView()
         setAddButton()
+        setupSearchController()
         // 説明ダイアログが必要か確認
         checkIsDescription()
     }
@@ -43,7 +47,7 @@ class QuickMemoViewController: UIViewController {
         tableView.layer.masksToBounds = true
         tableView.separatorStyle = .none // Remove default separator
 
-        self.words = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
+        self.QuickMemo = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -84,6 +88,21 @@ class QuickMemoViewController: UIViewController {
             setDiscrptionView()
         }
     }
+    func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Words"
+        tableView.tableHeaderView = searchController.searchBar
+        // Layout Setting
+        tableView.tableHeaderView?.layer.cornerRadius = 16
+        tableView.tableHeaderView?.layer.masksToBounds = true
+        tableView.tableHeaderView?.layer.borderWidth = 5
+        tableView.tableHeaderView?.layer.borderColor = UIColor.systemGray6.cgColor
+        
+        searchController.searchBar.backgroundImage = UIImage() // 背景を透明に設定
+        searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
+        definesPresentationContext = true
+    }
     
     //MARK: - Function
     @objc func addTapped() {
@@ -109,7 +128,7 @@ class QuickMemoViewController: UIViewController {
                         var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
                         currentWord.append(text)
                         UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-                        self?.words.append(text)
+                        self?.QuickMemo.append(text)
                         self?.tableView.reloadData()
                     }
                 }
@@ -129,7 +148,7 @@ class QuickMemoViewController: UIViewController {
             var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
             currentWord.remove(at: index)
             UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            self?.words.remove(at: index)
+            self?.QuickMemo.remove(at: index)
             self?.tableView.deleteSections([index], with: .fade)
         }))
         present(alert, animated: true)
@@ -145,7 +164,7 @@ class QuickMemoViewController: UIViewController {
 //MARK: - TableView DataSource
 extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return words.count
+        return QuickMemo.count
     }
     // 各セクションに対して1つだけ入れるように設定(スペースのため）
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -193,23 +212,44 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
             deleteButton.widthAnchor.constraint(equalToConstant: 30),
             deleteButton.heightAnchor.constraint(equalToConstant: 30)
         ])
-        cell.label.text = words[indexPath.section]
+        cell.label.text = QuickMemo[indexPath.section]
         
         return cell
     }
     
     // スワイプ処理
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete && !words.isEmpty) {
+        if (editingStyle == .delete && !QuickMemo.isEmpty) {
             var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
             currentWord.remove(at: indexPath.section)
             UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            words.remove(at: indexPath.section)
+            QuickMemo.remove(at: indexPath.section)
             
             tableView.deleteSections([indexPath.section], with: .fade)
         }
     }
-    
+}
+
+//MARK: - Search
+extension QuickMemoViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
+            isSearching = false
+            tableView.reloadData()
+            return
+        }
+        
+        isSearching = true
+        filteredWords.removeAll()
+        
+        for (index, word) in QuickMemo.enumerated() {
+            // wordsにsearchTextが含まれているかどうか
+            if word.lowercased().contains(searchText.lowercased()) {
+                filteredWords.append(word)
+            }
+        }
+        tableView.reloadData()
+    }
 }
 
 
