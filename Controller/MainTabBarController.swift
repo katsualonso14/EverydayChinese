@@ -11,18 +11,8 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTab()
-        // Admob広告設定
-        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
-        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
-        bannerView = GADBannerView(adSize: adaptiveSize)
-        
-        addBannerViewToView(bannerView)
-        bannerView.delegate = self
-        bannerView.adUnitID = MyAds.bannerID
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        
+        setupBanner()
+        setupTab()        
         //TODO: 初回のCookie確認後の表示
 //        setupInterstitial()
         
@@ -53,6 +43,18 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
     }
     
     //MARK: -Admob
+    func setupBanner() {
+        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
+        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
+        bannerView = GADBannerView(adSize: adaptiveSize)
+        
+        addBannerViewToView(bannerView)
+        bannerView.delegate = self
+        bannerView.adUnitID = MyAds.bannerID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+    }
+    
     func addBannerViewToView(_ bannerView: GADBannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
