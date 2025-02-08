@@ -91,14 +91,14 @@ class CustomTableViewCell: UITableViewCell {
         heartButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
         // 説明ラベルの設定
         let explainLabel = UILabel()
-        explainLabel.text = "Remind in 1 hour "
+        explainLabel.text = "Remind in 1 hour"
         explainLabel.font = UIFont.systemFont(ofSize: 17)
         explainLabel.textColor = .lightGray
         explainLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let stackView = UIStackView(arrangedSubviews: [heartButton, explainLabel])
         stackView.spacing = 10
-        stackView.alignment = .center
+        stackView.alignment = .leading // Set Start UI from HaertButton
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
@@ -106,6 +106,8 @@ class CustomTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            explainLabel.leadingAnchor.constraint(equalTo: heartButton.trailingAnchor, constant: 10),
+            heartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -160),
             heartButton.widthAnchor.constraint(equalToConstant: 40),
             heartButton.heightAnchor.constraint(equalToConstant: 40),
         ])
@@ -124,7 +126,7 @@ class CustomTableViewCell: UITableViewCell {
         
         let stackView = UIStackView(arrangedSubviews: [heartButton2, explainLabel])
         stackView.spacing = 10
-        stackView.alignment = .center
+        stackView.alignment = .leading // Set Start UI from HaertButton
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
@@ -132,6 +134,8 @@ class CustomTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 62),
+            explainLabel.leadingAnchor.constraint(equalTo: heartButton.trailingAnchor, constant: 10),
+            heartButton2.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -160),
             heartButton2.widthAnchor.constraint(equalToConstant: 40),
             heartButton2.heightAnchor.constraint(equalToConstant: 40),
         ])
@@ -143,14 +147,14 @@ class CustomTableViewCell: UITableViewCell {
         heartButton3.addTarget(self, action: #selector(tapButton3), for: .touchUpInside)
         // 説明ラベルの設定
         let explainLabel = UILabel()
-        explainLabel.text = "Remind in 1 day  "
+        explainLabel.text = "Remind in 1 day"
         explainLabel.font = UIFont.systemFont(ofSize: 17)
         explainLabel.textColor = .lightGray
         explainLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let stackView = UIStackView(arrangedSubviews: [heartButton3, explainLabel])
         stackView.spacing = 10
-        stackView.alignment = .center
+        stackView.alignment = .leading // Set Start UI from HaertButton
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
@@ -158,6 +162,8 @@ class CustomTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 102),
+            explainLabel.leadingAnchor.constraint(equalTo: heartButton.trailingAnchor, constant: 10),
+            heartButton3.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -160),
             heartButton3.widthAnchor.constraint(equalToConstant: 40),
             heartButton3.heightAnchor.constraint(equalToConstant: 40),
         ])
@@ -169,14 +175,14 @@ class CustomTableViewCell: UITableViewCell {
         heartButton4.addTarget(self, action: #selector(tapButton4), for: .touchUpInside)
         // 説明ラベルの設定
         let explainLabel = UILabel()
-        explainLabel.text = "Remind in 3 day  "
+        explainLabel.text = "Remind in 3 day"
         explainLabel.font = UIFont.systemFont(ofSize: 17)
         explainLabel.textColor = .lightGray
         explainLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let stackView = UIStackView(arrangedSubviews: [heartButton4, explainLabel])
         stackView.spacing = 10
-        stackView.alignment = .center
+        stackView.alignment = .leading // Set Start UI from HaertButton
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
@@ -184,6 +190,8 @@ class CustomTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 142),
+            explainLabel.leadingAnchor.constraint(equalTo: heartButton.trailingAnchor, constant: 10),
+            heartButton4.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -160),
             heartButton4.widthAnchor.constraint(equalToConstant: 40),
             heartButton4.heightAnchor.constraint(equalToConstant: 40),
         ])
