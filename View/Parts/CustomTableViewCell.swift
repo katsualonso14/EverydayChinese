@@ -4,7 +4,7 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
     
-    var BiginnerVC: BiginnerViewController?
+    var greetingsVC: GreetingsViewController?
     var IntermediateVC: IntermediateViewController?
     var advancedVC: AdvancedViewController?
     var TripVC: TripViewController?
@@ -12,7 +12,6 @@ class CustomTableViewCell: UITableViewCell {
     var restaurantVC: RestaurantViewController?
     
     var SentenceVC: SentenceViewController?
-    
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -37,6 +36,11 @@ class CustomTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    let heartButton = UIButton(type: .system)
+    let heartButton2 = UIButton(type: .system)
+    let heartButton3 = UIButton(type: .system)
+    let heartButton4 = UIButton(type: .system)
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -69,31 +73,161 @@ class CustomTableViewCell: UITableViewCell {
         japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         japaneseLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
         
-        //pushTriggerButton
-        let button = UIButton(type: .system)
-        let buttonImage = UIImage(named: "heart")
-        button.setImage(buttonImage, for: .normal)
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        accessoryView  = button
-        button.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+        setupHeartButton()
+        setupHeartButton2()
+        setupHeartButton3()
+        setupHeartButton4()
     }
-    //セルのお気に入りボタンをタップしたとき処理
-    @objc private func  tapButton() {
-        BiginnerVC?.CustomCellTapButtonCall(cell: self)
-        IntermediateVC?.CustomCellTapButtonCall(cell: self)
-        advancedVC?.CustomCellTapButtonCall(cell: self)
-        TripVC?.CustomCellTapButtonCall(cell: self)
-        DramaVC?.CustomCellTapButtonCall(cell: self)
-    }
-    
     //    初期化
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    //MARK: -Layout
+    //　ハートボタンの設定
+    func setupHeartButton(){
+        //pushTriggerButton
+        let buttonImage = UIImage(named: "heart")
+        heartButton.setImage(buttonImage, for: .normal)
+        heartButton.addTarget(self, action: #selector(tapButton), for: .touchUpInside)
+        // 説明ラベルの設定
+        let explainLabel = UILabel()
+        explainLabel.text = "Remind in 1 hour "
+        explainLabel.font = UIFont.systemFont(ofSize: 17)
+        explainLabel.textColor = .lightGray
+        explainLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView(arrangedSubviews: [heartButton, explainLabel])
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
+        // StackViewの制約を設定
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+            heartButton.widthAnchor.constraint(equalToConstant: 40),
+            heartButton.heightAnchor.constraint(equalToConstant: 40),
+        ])
+    }
+    
+    func setupHeartButton2(){
+        let buttonImage = UIImage(named: "heart")
+        heartButton2.setImage(buttonImage, for: .normal)
+        heartButton2.addTarget(self, action: #selector(tapButton2), for: .touchUpInside)
+        // 説明ラベルの設定
+        let explainLabel = UILabel()
+        explainLabel.text = "Remind in 4 hour"
+        explainLabel.font = UIFont.systemFont(ofSize: 17)
+        explainLabel.textColor = .lightGray
+        explainLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView(arrangedSubviews: [heartButton2, explainLabel])
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
+        // StackViewの制約を設定
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 62),
+            heartButton2.widthAnchor.constraint(equalToConstant: 40),
+            heartButton2.heightAnchor.constraint(equalToConstant: 40),
+        ])
+    }
+    
+    func setupHeartButton3(){
+        let buttonImage = UIImage(named: "heart")
+        heartButton3.setImage(buttonImage, for: .normal)
+        heartButton3.addTarget(self, action: #selector(tapButton3), for: .touchUpInside)
+        // 説明ラベルの設定
+        let explainLabel = UILabel()
+        explainLabel.text = "Remind in 1 day  "
+        explainLabel.font = UIFont.systemFont(ofSize: 17)
+        explainLabel.textColor = .lightGray
+        explainLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView(arrangedSubviews: [heartButton3, explainLabel])
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
+        // StackViewの制約を設定
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 102),
+            heartButton3.widthAnchor.constraint(equalToConstant: 40),
+            heartButton3.heightAnchor.constraint(equalToConstant: 40),
+        ])
+    }
+    
+    func setupHeartButton4(){
+        let buttonImage = UIImage(named: "heart")
+        heartButton4.setImage(buttonImage, for: .normal)
+        heartButton4.addTarget(self, action: #selector(tapButton4), for: .touchUpInside)
+        // 説明ラベルの設定
+        let explainLabel = UILabel()
+        explainLabel.text = "Remind in 3 day  "
+        explainLabel.font = UIFont.systemFont(ofSize: 17)
+        explainLabel.textColor = .lightGray
+        explainLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let stackView = UIStackView(arrangedSubviews: [heartButton4, explainLabel])
+        stackView.spacing = 10
+        stackView.alignment = .center
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
+        // StackViewの制約を設定
+        NSLayoutConstraint.activate([
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.centerYAnchor.constraint(equalTo: contentView.topAnchor, constant: 142),
+            heartButton4.widthAnchor.constraint(equalToConstant: 40),
+            heartButton4.heightAnchor.constraint(equalToConstant: 40),
+        ])
     }
     
     func setCell(sentence: String, pronunciation: String , japanese: String) {
         sentenceLabel.text = sentence
         soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
         japaneseLabel.text = japanese
+    }
+    //MARK: -Function
+    //セルのお気に入りボタンをタップしたとき処理
+    @objc private func tapButton() {
+        greetingsVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600) // 1 hour
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
+        TripVC?.CustomCellTapButtonCall(cell: self)
+        DramaVC?.CustomCellTapButtonCall(cell: self)
+    }
+    
+    //セルのお気に入りボタン2をタップしたとき処理
+    @objc private func tapButton2() {
+        greetingsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800) // 3 hour
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
+        TripVC?.CustomCellTapButtonCall(cell: self)
+        DramaVC?.CustomCellTapButtonCall(cell: self)
+    }
+    
+    //セルのお気に入りボタン3をタップしたとき処理
+    @objc private func tapButton3() {
+        greetingsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400) // 1 day
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
+        TripVC?.CustomCellTapButtonCall(cell: self)
+        DramaVC?.CustomCellTapButtonCall(cell: self)
+    }
+    
+    //セルのお気に入りボタン4をタップしたとき処理
+    @objc private func tapButton4() {
+        greetingsVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200) // 3 day
+        IntermediateVC?.CustomCellTapButtonCall(cell: self)
+        advancedVC?.CustomCellTapButtonCall(cell: self)
+        TripVC?.CustomCellTapButtonCall(cell: self)
+        DramaVC?.CustomCellTapButtonCall(cell: self)
     }
 }
