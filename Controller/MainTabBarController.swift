@@ -12,8 +12,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenCo
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBanner()
-        setupTab()        
-        //TODO: 初回のCookie確認後の表示
+        setupTab()
 //        setupInterstitial()
         
     }
@@ -39,7 +38,12 @@ class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenCo
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         
-        setViewControllers([nv1, nv2, nv3], animated: false)
+        let calendarVC = CalendarViewController()
+        calendarVC.tabBarItem.image = UIImage(systemName: "calendar")
+        calendarVC.tabBarItem.title = "Calendar"
+        let nv4 = UINavigationController(rootViewController: calendarVC)
+        
+        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
     }
     
     //MARK: -Admob
