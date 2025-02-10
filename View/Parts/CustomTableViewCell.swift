@@ -206,36 +206,40 @@ class CustomTableViewCell: UITableViewCell {
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func tapButton() {
         greetingsVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600) // 1 hour
-        IntermediateVC?.CustomCellTapButtonCall(cell: self)
-        advancedVC?.CustomCellTapButtonCall(cell: self)
-        TripVC?.CustomCellTapButtonCall(cell: self)
-        DramaVC?.CustomCellTapButtonCall(cell: self)
+        IntermediateVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        advancedVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        restaurantVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        TripVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        DramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
     }
     
     //セルのお気に入りボタン2をタップしたとき処理
     @objc private func tapButton2() {
         greetingsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800) // 3 hour
-        IntermediateVC?.CustomCellTapButtonCall(cell: self)
-        advancedVC?.CustomCellTapButtonCall(cell: self)
-        TripVC?.CustomCellTapButtonCall(cell: self)
-        DramaVC?.CustomCellTapButtonCall(cell: self)
+        IntermediateVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        advancedVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        restaurantVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        TripVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        DramaVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
     }
     
     //セルのお気に入りボタン3をタップしたとき処理
     @objc private func tapButton3() {
         greetingsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400) // 1 day
-        IntermediateVC?.CustomCellTapButtonCall(cell: self)
-        advancedVC?.CustomCellTapButtonCall(cell: self)
-        TripVC?.CustomCellTapButtonCall(cell: self)
-        DramaVC?.CustomCellTapButtonCall(cell: self)
+        IntermediateVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        advancedVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        restaurantVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        TripVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        DramaVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
     }
     
     //セルのお気に入りボタン4をタップしたとき処理
     @objc private func tapButton4() {
         greetingsVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200) // 3 day
-        IntermediateVC?.CustomCellTapButtonCall(cell: self)
-        advancedVC?.CustomCellTapButtonCall(cell: self)
-        TripVC?.CustomCellTapButtonCall(cell: self)
-        DramaVC?.CustomCellTapButtonCall(cell: self)
+        IntermediateVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        advancedVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        restaurantVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        TripVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        DramaVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
     }
 }

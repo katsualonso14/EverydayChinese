@@ -79,6 +79,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "greetings"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
