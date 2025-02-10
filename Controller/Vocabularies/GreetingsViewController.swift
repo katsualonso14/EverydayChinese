@@ -4,7 +4,7 @@ import SnapKit
 import AVFoundation
 import UserNotifications
 
-class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     
     let titleName: String
     let sentenceView = SentenceViewController()
@@ -65,14 +65,13 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
            // Dispose of any resources that can be recreated.
        }
     //MARK: -Function
-    //cellの設定
-    func CustomCellTapButtonCall(cell: UITableViewCell) {
+    // ハートボタンをタップした際の設定
+    func CustomCellTapButtonCall(cell: UITableViewCell, pushTime: TimeInterval) {
         //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
         let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        print(contact)
         let hasFavorited = contact.hasFavorited
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
@@ -80,9 +79,10 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "greetings"]
         //通知設定
         if hasFavorited == false {
-            pushRegister()
+            pushRegister(pushTime: pushTime)
         } else {
             pushDelete()
         }
@@ -90,6 +90,78 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
+    // ハートボタン2をタップした際の設定
+    func CustomCellTapButtonCall2(cell: UITableViewCell, pushTime: TimeInterval) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
+        
+        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let hasFavorited = contact.hasFavorited2
+        
+        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
+        //タップしてときの値をpushメッセージに記載
+        content.title = contact.name
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister(pushTime: pushTime)
+        } else {
+            pushDelete()
+        }
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    
+    // ハートボタン3をタップした際の設定
+    func CustomCellTapButtonCall3(cell: UITableViewCell, pushTime: TimeInterval) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
+        
+        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let hasFavorited = contact.hasFavorited3
+        
+        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
+        //タップしてときの値をpushメッセージに記載
+        content.title = contact.name
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister(pushTime: pushTime)
+        } else {
+            pushDelete()
+        }
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    
+    // ハートボタン4をタップした際の設定
+    func CustomCellTapButtonCall4(cell: UITableViewCell, pushTime: TimeInterval) {
+        //タップしたcellの値
+        guard let indexPathTapped = tableView.indexPath(for: cell) else
+        {return}
+        
+        let contact = sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let hasFavorited = contact.hasFavorited4
+        
+        sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
+        //タップしてときの値をpushメッセージに記載
+        content.title = contact.name
+        content.body = contact.name
+        content.sound = UNNotificationSound.default
+        //通知設定
+        if hasFavorited == false {
+            pushRegister(pushTime: pushTime)
+        } else {
+            pushDelete()
+        }
+        
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    //MARK: -TableView
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sentenceView.sentenceArray[0].names.count
@@ -98,15 +170,15 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.BiginnerVC = self
-        
-        
-        
+        cell.greetingsVC = self
         let contact = sentenceView.sentenceArray[0].names[indexPath.row]
         //cellの文字指定
         cell.setCell(sentence: contact.name, pronunciation: sentenceView.Pronunciation[indexPath.row], japanese: sentenceView.english[indexPath.row])
         
-        cell.tintColor = contact.hasFavorited ? .red : .gray
+        cell.heartButton.tintColor = contact.hasFavorited ? .red : .gray
+        cell.heartButton2.tintColor = contact.hasFavorited2 ? .orange : .gray
+        cell.heartButton3.tintColor = contact.hasFavorited3 ? .systemBlue : .gray
+        cell.heartButton4.tintColor = contact.hasFavorited4 ? .systemGreen : .gray
 
             return cell
         }
@@ -125,14 +197,10 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
     }
     //MARK:- Push
     //プッシュ通知登録
-    func pushRegister() {
+    func pushRegister(pushTime: TimeInterval) {
         let notificationCenter = UNUserNotificationCenter.current()
-        
-        var dateComponetsDay = DateComponents()
-        dateComponetsDay.hour = 20
-        dateComponetsDay.minute = 00
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponetsDay, repeats: true)
+        // 受け取った時間をリピート通知
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: pushTime, repeats: true)
         //通知のID(identifier,タイトル,内容、トリガーを設定 )
         let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
         print("request is \(request.content.title)")
@@ -140,7 +208,7 @@ class BiginnerViewController: UITableViewController,AVAudioPlayerDelegate, AVSpe
         notificationCenter.add(request) {
             (error) in
             if error != nil {
-            //print(error.debugDescription)
+            print(error.debugDescription)
             }
         }
     }

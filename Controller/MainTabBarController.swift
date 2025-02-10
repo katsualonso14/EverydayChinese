@@ -4,25 +4,15 @@
 import UIKit
 import GoogleMobileAds
 
-class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullScreenContentDelegate {
+class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenContentDelegate {
     
-    var bannerView: GADBannerView!
-    private var interstitial: GADInterstitialAd?
+    var bannerView: BannerView!
+    private var interstitial: InterstitialAd?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTab()
-        // Admob広告設定
-        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
-        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
-        bannerView = GADBannerView(adSize: adaptiveSize)
-        
-        addBannerViewToView(bannerView)
-        bannerView.delegate = self
-        bannerView.adUnitID = MyAds.bannerID
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        
+        setupBanner()
+        setupTab()        
         //TODO: 初回のCookie確認後の表示
 //        setupInterstitial()
         
@@ -53,7 +43,19 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
     }
     
     //MARK: -Admob
-    func addBannerViewToView(_ bannerView: GADBannerView) {
+    func setupBanner() {
+        let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
+        let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
+        bannerView = BannerView(adSize: adaptiveSize)
+        
+        addBannerViewToView(bannerView)
+        bannerView.delegate = self
+        bannerView.adUnitID = MyAds.bannerID
+        bannerView.rootViewController = self
+        bannerView.load(Request())
+    }
+    
+    func addBannerViewToView(_ bannerView: BannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         
@@ -82,8 +84,8 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
         Task {
             do {
                 // 読み込み
-                interstitial = try await GADInterstitialAd.load(
-                    withAdUnitID: MyAds.interstialAdId, request: GADRequest()
+                interstitial = try await InterstitialAd.load(
+                    with: MyAds.interstialAdId, request: Request()
                 )
                 // Delegate設定
                 interstitial?.fullScreenContentDelegate = self
@@ -93,7 +95,7 @@ class MainTabBarController: UITabBarController, GADBannerViewDelegate, GADFullSc
                 }
                 
                 // The UIViewController parameter is an optional.
-                interstitial.present(fromRootViewController: nil)
+                interstitial.present(from: nil)
                 
             } catch {
                 print("Failed to load interstitial ad with error: \(error.localizedDescription)")

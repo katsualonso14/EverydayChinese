@@ -5,7 +5,8 @@ class SentenceViewController: UITabBarController {
 
     // Beginner Page
     var sentenceArray = [
-        ExpandableNames(isExpanded: true, names:  ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map{Contact(name: $0, hasFavorited: false)})
+        ExpandableNames(isExpanded: true, names:  ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map{Contact(name: $0,
+            hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
     ]
     var sentence = ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"]
     
@@ -26,7 +27,7 @@ class SentenceViewController: UITabBarController {
     
     // Intermediate Page
     var  IntermediateSentenceArray = [
-        ExpandableNames(isExpanded: true, names:  ["我","你","他","她","我们","他们","她们","这","这些","那","那些"].map{Contact(name: $0, hasFavorited: false)})
+        ExpandableNames(isExpanded: true, names:  ["我","你","他","她","我们","他们","她们","这","这些","那","那些"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
     ]
     var IntermediateSentence = ["我","你","他","她","我们","他们","她们","这","这些","那","那些"]
     
@@ -48,7 +49,7 @@ class SentenceViewController: UITabBarController {
     
     // Advanced Page
     var  AdvancedSentenceArray = [
-        ExpandableNames(isExpanded: true, names:  ["你叫什么名字","他是谁？","它需要多长时间","你喜欢什么类型的电影","在哪里完成","什么时候完成","你为什么喜欢这部电影","现在是几奌","你家有几口人","你想去看电影吗"].map{Contact(name: $0, hasFavorited: false)})
+        ExpandableNames(isExpanded: true, names:  ["你叫什么名字","他是谁？","它需要多长时间","你喜欢什么类型的电影","在哪里完成","什么时候完成","你为什么喜欢这部电影","现在是几奌","你家有几口人","你想去看电影吗"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
     ]
     var AdvancedSentence = ["你叫什么名字","他是谁？","它需要多长时间","你喜欢什么类型的电影","在哪里完成","什么时候完成","你为什么喜欢这部电影","现在是几奌","你家有几口人","你想去看电影吗"]
     
@@ -69,7 +70,7 @@ class SentenceViewController: UITabBarController {
     
     // Traveler Page
     var tripSentenceArray = [
-        ExpandableNames(isExpanded: true, names:  ["谢谢", "不好意思", "对不起","我要check in", "能不能帮我保管行李？", "我想知道Wi-Fi的密码", "点菜", "买单", "多少钱", "请再说一遍"].map{Contact(name: $0, hasFavorited: false)})
+        ExpandableNames(isExpanded: true, names:  ["谢谢", "不好意思", "对不起","我要check in", "能不能帮我保管行李？", "我想知道Wi-Fi的密码", "点菜", "买单", "多少钱", "请再说一遍"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
     ]
     
     var tripSentence = [
@@ -99,7 +100,7 @@ class SentenceViewController: UITabBarController {
         ExpandableNames(isExpanded: true, names: [
             "真的吗？", "我懂了", "没关系", "加油", "不要紧",
             "放松", "真是的", "怎么了？", "别这样", "随便"
-        ].map { Contact(name: $0, hasFavorited: false) })
+        ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
     ]
 
     var dramaSentence = [
@@ -128,7 +129,7 @@ class SentenceViewController: UITabBarController {
         ExpandableNames(isExpanded: true, names: [
             "我有预订", "没有预约，有位子吗？", "请给我菜单", "有什么推荐的吗？", "这个菜辣吗？",
             "有没有素食的菜？", "请给我一杯水", "请稍等", "可以打包吗？", "很好吃！"
-        ].map { Contact(name: $0, hasFavorited: false) })
+        ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
     ]
 
     var restaurantSentence = [

@@ -148,7 +148,7 @@ class CategoryViewController: UIViewController {
     }
 //    初心者ボタン押した時のアクション
     @objc func pushBignnerButton(sender: UIButton){
-        let vc = BiginnerViewController(titleName: "Greetings")
+        let vc = GreetingsViewController(titleName: "Greetings")
         navigationController?.pushViewController(vc, animated: true)
     }
     //    中級者ボタン押した時のアクション

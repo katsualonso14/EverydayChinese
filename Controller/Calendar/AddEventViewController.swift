@@ -3,12 +3,12 @@ import UIKit
 import RealmSwift
 import GoogleMobileAds
 
-class AddEventViewController: UIViewController, GADBannerViewDelegate {
+class AddEventViewController: UIViewController, BannerViewDelegate {
 
     let datePickerText = UILabel()
     let textView  = UITextView()
     let datePicker = UIDatePicker()
-    var bannerView: GADBannerView!
+    var bannerView: BannerView!
     var onEventUpdate: (() -> Void)?
     
     override func viewDidLoad() {
@@ -20,8 +20,8 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         setupNavigationBar()
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
-        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
-        bannerView = GADBannerView(adSize: adaptiveSize)
+        let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
+        bannerView = BannerView(adSize: adaptiveSize)
 
         
         addBannerViewToView(bannerView)
@@ -29,7 +29,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         
         bannerView.adUnitID = MyAds.mediumRectangleBannerId
         bannerView.rootViewController = self
-        bannerView.load(GADRequest())
+        bannerView.load(Request())
     }
     
     
@@ -137,7 +137,7 @@ class AddEventViewController: UIViewController, GADBannerViewDelegate {
         }
     
     //MARK: -Admob
-    func addBannerViewToView(_ bannerView: GADBannerView) {
+    func addBannerViewToView(_ bannerView: BannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         
