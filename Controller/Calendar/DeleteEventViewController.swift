@@ -3,11 +3,11 @@ import UIKit
 import RealmSwift
 import GoogleMobileAds
 
-class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
+class DeleteEventViewController: UIViewController, BannerViewDelegate {
 
     let datePickerText = UILabel()
     let formatter = DateFormatter()
-    var bannerView: GADBannerView!
+    var bannerView: BannerView!
     var onEventUpdate: (() -> Void)?
     
     override func viewDidLoad() {
@@ -20,15 +20,15 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
         
         // Admob広告設定
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
-        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth)
-        bannerView = GADBannerView(adSize: adaptiveSize)
+        let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
+        bannerView = BannerView(adSize: adaptiveSize)
         
         addBannerViewToView(bannerView)
         bannerView.delegate = self
         
         bannerView.adUnitID = "ca-app-pub-2751119101175618/2259631200" // AdBanner ID
         bannerView.rootViewController = self
-        bannerView.load(GADRequest())
+        bannerView.load(Request())
     }
     
     //MARK: -Function
@@ -102,7 +102,7 @@ class DeleteEventViewController: UIViewController, GADBannerViewDelegate {
         
     }
     //MARK: -Admob
-    func addBannerViewToView(_ bannerView: GADBannerView) {
+    func addBannerViewToView(_ bannerView: BannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         

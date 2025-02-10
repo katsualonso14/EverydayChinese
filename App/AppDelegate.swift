@@ -9,7 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    //アプリ起動時に呼び出されるメソッド
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //Admob Initialize Setting
-        GADMobileAds.sharedInstance().start(completionHandler: nil)
+        MobileAds.shared.start(completionHandler: nil)
         
         //通知許可の取得
         UNUserNotificationCenter.current().requestAuthorization(
