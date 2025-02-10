@@ -117,6 +117,7 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "intermediate"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -141,6 +142,7 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "intermediate"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -165,6 +167,7 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "intermediate"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -189,6 +192,7 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "intermediate"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)

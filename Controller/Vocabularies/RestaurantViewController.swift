@@ -80,6 +80,7 @@ class RestaurantViewController: UITableViewController,AVAudioPlayerDelegate, AVS
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "restaurant"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -104,6 +105,7 @@ class RestaurantViewController: UITableViewController,AVAudioPlayerDelegate, AVS
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "restaurant"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -128,6 +130,7 @@ class RestaurantViewController: UITableViewController,AVAudioPlayerDelegate, AVS
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "restaurant"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -152,6 +155,7 @@ class RestaurantViewController: UITableViewController,AVAudioPlayerDelegate, AVS
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "restaurant"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
