@@ -81,6 +81,7 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "drama"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -105,6 +106,7 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "drama"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -129,6 +131,7 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "drama"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -153,6 +156,7 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
+        content.userInfo = ["page": "drama"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
