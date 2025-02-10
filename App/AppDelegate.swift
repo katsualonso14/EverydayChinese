@@ -21,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("通知が許可されていない")
                 }
             }
+        
+        // アプリがキルされていた場合の通知データの取得
+              if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
+                  handleNotification(userInfo: notification)
+              }
         return true
     }
 
@@ -47,27 +52,26 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
           
       }
       
-    //TODO: Greetings以外の通知タップの動き確認,アプリキル時への展開
-    //通知をタップした時の処理(起動中)
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // 選択されているタブを取得
-        if let tabBarController = UIApplication.shared.windows.first?.rootViewController as? UITabBarController {
-            if let navController = tabBarController.selectedViewController as? UINavigationController {
-                // 受け取った通知のUserInfoを委任
+    // アプリが起動中 or バックグラウンドのときに通知をタップした場合
+     func userNotificationCenter(_ center: UNUserNotificationCenter,didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void
+     ) {
+         let userInfo = response.notification.request.content.userInfo
+         handleNotification(userInfo: userInfo)
+         completionHandler()
+     }
+    // 通知をタップした際の処理
+    func handleNotification(userInfo: [AnyHashable: Any]) {
+        guard let page = userInfo["page"] as? String else { return }
+        
+        DispatchQueue.main.async {
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = scene.windows.first,
+               let tabBarController = window.rootViewController as? UITabBarController,
+               let navController = tabBarController.selectedViewController as? UINavigationController {
                 let checkNotifController = CheckNotifController()
-                let userInfo = response.notification.request.content.userInfo
-                checkNotifController.navigateToPage(navController: navController, page: userInfo["page"] as! String)
-                
-            } else {
-                // 選択されているタブがUINavigationControllerでない場合、UINavigationControllerを取得
-                let navController = UINavigationController()
-                let checkNotifController = CheckNotifController()
-                let userInfo = response.notification.request.content.userInfo
-                checkNotifController.navigateToPage(navController: navController, page: userInfo["page"] as! String)
+                checkNotifController.navigateToPage(navController: navController, page: page)
             }
         }
-        
-        completionHandler()
     }
 
     
