@@ -19,8 +19,14 @@ class QuickMemoViewController: UIViewController {
         setupSearchController()
         // 説明ダイアログが必要か確認
         checkIsDescription()
+        setRewordAdButton()
     }
     //MARK: - View Layout
+    func setRewordAdButton() {
+        let button = UIBarButtonItem(title: "Ads Hide Settings", style: .plain, target: self, action: #selector(showRewardAlert))
+        navigationItem.rightBarButtonItem = button
+    }
+    
     func setView() {
         conteinerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(conteinerView)
@@ -46,7 +52,6 @@ class QuickMemoViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.separatorStyle = .none // Remove default separator
-
         self.QuickMemo = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
         
         tableView.dataSource = self
@@ -57,7 +62,6 @@ class QuickMemoViewController: UIViewController {
     func setAddButton() {
         let addButton = UIButton()
         addButton.backgroundColor = AppColors.appMainColor
-
         addButton.setTitle("+", for: UIControl.State())
         addButton.setTitleColor(.white, for: UIControl.State())
         addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
@@ -102,6 +106,12 @@ class QuickMemoViewController: UIViewController {
         searchController.searchBar.backgroundImage = UIImage() // 背景を透明に設定
         searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
         definesPresentationContext = true
+    }
+    
+    func getReword() {
+        Task {
+            await AdManager.shared.setupReword(viewController: self)
+        }
     }
     
     //MARK: - Function
@@ -159,6 +169,25 @@ class QuickMemoViewController: UIViewController {
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
+    
+    @objc func showRewardAlert() {
+        let alert = UIAlertController(
+            title: "Reward Ad",
+            message: "If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?",
+            preferredStyle: .alert
+            )
+
+        let watchAction = UIAlertAction(title: "Watch", style: .default) { _ in
+            self.getReword()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+        alert.addAction(watchAction)
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true)
+    }
+    
 }
 
 //MARK: - TableView DataSource
