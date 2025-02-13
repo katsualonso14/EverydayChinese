@@ -1,17 +1,19 @@
-//  MainTabBarController.swift
-//  ChineseApp
-
 import UIKit
 import GoogleMobileAds
+import UserMessagingPlatform
 
-class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenContentDelegate {
+class MainTabBarController: UITabBarController, BannerViewDelegate {
     
     var bannerView: BannerView!
+    let requestParameters = UMPRequestParameters()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTab()
-        checkBanner()
+        // UPM確認後にバナー表示をチェックする
+        checkUPM()
     }
+    
     //MARK: -Layout
     //タブバーの表示
     func setupTab() {
@@ -84,5 +86,34 @@ class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenCo
                                 multiplier: 1,
                                 constant: 0)
             ])
+    }
+    
+    //MARK: Check Admob UPM
+    // Admobのユーロ,イギリス、スイスユーザーに向けてのUPM設定
+    func checkUPM() {
+        // アプリが起動するたびに呼び出す
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: requestParameters) {
+            [weak self] requestConsesentError in
+            guard let self else { return }
+            
+            if let error = requestConsesentError {
+                print(error.localizedDescription)
+            }
+            
+            UMPConsentForm.loadAndPresentIfRequired(from: self) {
+                [weak self] loadAndPresentError in
+                guard let self else { return }
+                
+                if let error = loadAndPresentError {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            // Consent gathering process has completed
+            if UMPConsentInformation.sharedInstance.canRequestAds {
+                MobileAds.shared.start()
+                checkBanner()
+            }
+        }
     }
 }
