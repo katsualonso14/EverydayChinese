@@ -28,7 +28,14 @@ class AdManager: NSObject, FullScreenContentDelegate {
         rewardedAd.present(from: viewController, userDidEarnRewardHandler: {
             let reward = rewardedAd.adReward
             print("Reward received with currency: \(reward.type), amount \(reward.amount).")
-            self.disableBannerAdsForOneHour()
+            //バナー広告の表示・非表示チェック
+            DispatchQueue.main.async {
+                self.disableBannerAdsForOneHour()
+                if let rootViewController = UIApplication.shared.windows.first?.rootViewController as? MainTabBarController {
+                    print("Checking banner... in reward ad")
+                    rootViewController.checkBanner()
+                }
+            }
         })
         
     }
@@ -78,11 +85,8 @@ class AdManager: NSObject, FullScreenContentDelegate {
     // 広告が閉じられた後に呼ばれる設定
     func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
         print("Ad did dismiss full screen content.")
-        Task {
-            //TODO: 広告閉じた際のバナー非表示即時反映
-            // 広告を再読み込み
-            await loadRewardedAd()
-        }
+        
+  
     }
     
 }

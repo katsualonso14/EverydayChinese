@@ -58,6 +58,8 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
             
             if AdManager.shouldShowBannerAds() {
                 self.setupBanner()
+            } else {
+                self.bannerView?.removeFromSuperview()
             }
         }
     }
