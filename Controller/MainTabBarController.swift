@@ -1,6 +1,8 @@
 import UIKit
 import GoogleMobileAds
 import UserMessagingPlatform
+import AppTrackingTransparency
+import AdSupport
 
 class MainTabBarController: UITabBarController, BannerViewDelegate {
     
@@ -10,8 +12,12 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTab()
-        // UPM確認後にバナー表示をチェックする
-        checkUPM()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // トラッキングチェック・UPM確認後にバナー表示
+        requestTrackingPermission()
     }
     
     //MARK: -Layout
@@ -47,10 +53,15 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
     //MARK: -Admob
     // バナー広告の表示・非表示を確認
     func checkBanner() {
-        if AdManager.shouldShowBannerAds() {
-            setupBanner()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            if AdManager.shouldShowBannerAds() {
+                self.setupBanner()
+            }
         }
     }
+
     
     func setupBanner() {
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
@@ -68,24 +79,12 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         
-        let tabBarHeight = self.tabBar.frame.size.height
+        let tabBarY = self.tabBar.frame.origin.y
         
-        view.addConstraints(
-            [NSLayoutConstraint(item: bannerView,
-                                attribute: .bottom,
-                                relatedBy: .equal,
-                                toItem: view.safeAreaLayoutGuide,
-                                attribute: .bottom,
-                                multiplier: 1,
-                                constant: -tabBarHeight),
-             NSLayoutConstraint(item: bannerView,
-                                attribute: .centerX,
-                                relatedBy: .equal,
-                                toItem: view,
-                                attribute: .centerX,
-                                multiplier: 1,
-                                constant: 0)
-            ])
+        NSLayoutConstraint.activate([
+            bannerView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: tabBarY),
+            bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
     //MARK: Check Admob UPM
@@ -105,15 +104,49 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
                 guard let self else { return }
                 
                 if let error = loadAndPresentError {
-                    print(error.localizedDescription)
+                    print("UMP Form Load Error: \(error.localizedDescription)")
                 }
-            }
-            
-            // Consent gathering process has completed
-            if UMPConsentInformation.sharedInstance.canRequestAds {
-                MobileAds.shared.start()
-                checkBanner()
+                
+                print("UMP Form completed, waiting for canRequestAds...")
+                waitForCanRequestAds()
             }
         }
     }
+
+    func waitForCanRequestAds() {
+        DispatchQueue.global().async {
+            while !UMPConsentInformation.sharedInstance.canRequestAds {
+                sleep(1) // 1秒ごとにチェック
+            }
+            
+            DispatchQueue.main.async {
+                print("canRequestAds is now true. Initializing AdMob...")
+                MobileAds.shared.start { status in
+                    print("AdMob SDK initialized")
+                    self.checkBanner()
+                }
+            }
+        }
+    }
+    
+    // ユーザートラッキングの許可(ATT)を求める
+    func requestTrackingPermission() {
+        ATTrackingManager.requestTrackingAuthorization { status in
+            switch status {
+            case .authorized:
+                //認証された場合
+                print("Tracking authorized")
+                self.checkUPM()
+            case .denied, .notDetermined, .restricted:
+                //認証されなかった場合でも、UPMをチェックして広告表示
+                print("Tracking not authorized")
+                self.checkUPM()
+            @unknown default:
+                print("Unknown status")
+                self.checkUPM()
+            }
+        }
+    }
+
+
 }
