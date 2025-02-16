@@ -3,6 +3,7 @@
 import UIKit
 import UserNotifications
 import GoogleMobileAds
+import AppTrackingTransparency
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,6 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } else {
                     print("通知が許可されていない")
                 }
+                
+                // 1秒遅らせて ATT 許可をリクエスト
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                      self.requestTrackingPermission()
+                  }
             }
         
         // アプリがキルされていた場合の通知データの取得
@@ -73,6 +79,24 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             }
         }
     }
+
+    //MARK: - ATT
+    func requestTrackingPermission() {
+        ATTrackingManager.requestTrackingAuthorization { status in
+            switch status {
+            case .authorized:
+                print("Tracking authorized")
+                NotificationCenter.default.post(name: NSNotification.Name("TrackingAuthorized"), object: nil)
+            case .denied, .notDetermined, .restricted:
+                print("Tracking not authorized")
+                NotificationCenter.default.post(name: NSNotification.Name("TrackingNotAuthorized"), object: nil)
+            @unknown default:
+                print("Unknown status")
+                NotificationCenter.default.post(name: NSNotification.Name("TrackingNotAuthorized"), object: nil)
+            }
+        }
+    }
+
 
     
 }

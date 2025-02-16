@@ -12,12 +12,8 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTab()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // トラッキングチェック・UPM確認後にバナー表示
-        requestTrackingPermission()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingAuthorized"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingNotAuthorized"), object: nil)
     }
     
     //MARK: -Layout
@@ -94,9 +90,10 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
     func checkUPM() {
         // アプリが起動するたびに呼び出す
         UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: requestParameters) {
+            
             [weak self] requestConsesentError in
             guard let self else { return }
-            
+            print("enter the checkUPM")
             if let error = requestConsesentError {
                 print(error.localizedDescription)
             }
@@ -130,24 +127,9 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
             }
         }
     }
-    
-    // ユーザートラッキングの許可(ATT)を求める
-    func requestTrackingPermission() {
-        ATTrackingManager.requestTrackingAuthorization { status in
-            switch status {
-            case .authorized:
-                //認証された場合
-                print("Tracking authorized")
-                self.checkUPM()
-            case .denied, .notDetermined, .restricted:
-                //認証されなかった場合でも、UPMをチェックして広告表示
-                print("Tracking not authorized")
-                self.checkUPM()
-            @unknown default:
-                print("Unknown status")
-                self.checkUPM()
-            }
-        }
+    // AppDelegateからの通知を受け取る
+    @objc func handleTrackingStatus(notification: Notification) {
+        checkUPM()
     }
 
 
