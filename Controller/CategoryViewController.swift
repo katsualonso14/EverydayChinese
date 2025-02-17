@@ -153,12 +153,12 @@ class CategoryViewController: UIViewController {
     }
     //    中級者ボタン押した時のアクション
     @objc func pushIntermediateButton(sender: UIButton){
-        let vc = IntermediateViewController(titleName: "Pronouns")
+        let vc = PronounsViewController(titleName: "Pronouns")
         navigationController?.pushViewController(vc, animated: true)
     }
     //    上級者ボタン押した時のアクション
     @objc func pushAdvancedButton(sender: UIButton){
-        let vc = AdvancedViewController(titleName: "Daily conversation")
+        let vc = DailyConversationViewController(titleName: "Daily conversation")
         navigationController?.pushViewController(vc, animated: true)   }
     
     //    旅行用ボタン押した時のアクション
