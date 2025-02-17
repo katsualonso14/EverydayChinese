@@ -69,7 +69,7 @@ class CategoryViewController: UIViewController {
         advancedButton.layer.cornerRadius = 25.0
         advancedButton.layer.masksToBounds = true
         
-        advancedButton.setTitle("Daily conversation", for: .normal)
+        advancedButton.setTitle("Daily Talk", for: .normal)
         advancedButton.setTitleColor(AppColors.textColor, for: .normal)
         advancedButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         advancedButton.setImage(UIImage(named: "advanced"), for: .normal)

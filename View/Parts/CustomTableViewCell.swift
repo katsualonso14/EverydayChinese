@@ -15,24 +15,27 @@ class CustomTableViewCell: UITableViewCell {
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let soundsButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let soundsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     let japaneseLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = UIColor.blue
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,21 +59,21 @@ class CustomTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(sentenceLabel)
-        addSubview(soundsButton)
+        addSubview(soundsLabel)
         addSubview(japaneseLabel)
         //namelabelの配置
         sentenceLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         sentenceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50).isActive = true
-        sentenceLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
         sentenceLabel.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         //soundsButtonの配置
-        soundsButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
-        soundsButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        soundsButton.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
+        soundsLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
+        soundsLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
         //japaneseLabelの配置
         japaneseLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         japaneseLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 50).isActive = true
-        japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
         japaneseLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
         
         setupHeartButton()
@@ -199,7 +202,7 @@ class CustomTableViewCell: UITableViewCell {
     
     func setCell(sentence: String, pronunciation: String , japanese: String) {
         sentenceLabel.text = sentence
-        soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
+        soundsLabel.text = pronunciation
         japaneseLabel.text = japanese
     }
     //MARK: -Function
