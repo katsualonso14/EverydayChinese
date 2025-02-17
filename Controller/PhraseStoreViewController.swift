@@ -22,6 +22,15 @@ class PhraseStoreViewController: UIViewController {
         setupSearchController()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 遷移のたびに確認
+        words = UserDefaults.standard.stringArray(forKey: "word") ?? []
+        sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
+        situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
+        tableView.reloadData()
+    }
+    
 
     //MARK: - View Layout
     func setView() {
