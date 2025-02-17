@@ -11,10 +11,8 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Calendar"
-//        saveToday()
+        saveToday()
         setCalendar()
-        setAddButton()
-        setMemoButton()
     }
     
     //MARK: -Layout
@@ -27,16 +25,15 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         calendar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(calendar)
         //レイアウト制約
-        calendar.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
         calendar.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        calendar.heightAnchor.constraint(equalToConstant: 275).isActive = true
+        calendar.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100).isActive = true
+        calendar.heightAnchor.constraint(equalToConstant: 330).isActive = true
         calendar.widthAnchor.constraint(equalToConstant: view.frame.width - 40).isActive = true
         self.calendar = calendar
     }
     // チェックマーク設定
-    //TODO: noCheckMarkとの出し分け
     func setCheckMark() {
-        let checkMark = UIImage(systemName: "checkmark.circle")
+        let checkMark = UIImage(systemName: "checkmark.circle.fill")
         let checkMarkView = UIImageView(image: checkMark)
         checkMarkView.contentMode = .scaleAspectFit
         view.addSubview(checkMarkView)
@@ -51,7 +48,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     
     func setNoCheckMark() {
-        let checkMark = UIImage(systemName: "star")
+        let checkMark = UIImage(systemName: "checkmark.circle")
         let checkMarkView = UIImageView(image: checkMark)
         checkMarkView.contentMode = .scaleAspectFit
         view.addSubview(checkMarkView)
@@ -64,71 +61,32 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             checkMarkView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
-    func setMemoButton() {
-        view.addSubview(memoButton)
-        memoButton.layer.cornerRadius = 25
-        memoButton.layer.masksToBounds = true
-        memoButton.backgroundColor = UIColor.systemBackground
-        memoButton.setTitleColor(UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black, for: .normal)
-        memoButton.titleLabel?.font = .systemFont(ofSize: 20)
-        memoButton.addTarget(self, action: #selector(tapDeleteButton), for: .touchUpInside)
-        
-        memoButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            memoButton.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: view.frame.height * 0.1),
-            memoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            memoButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
-            memoButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1)
-        ])
+    // 既存のチェックマークを削除する
+    func removeCheckMarks() {
+        for subview in view.subviews {
+            if let imageView = subview as? UIImageView,
+               imageView.image == UIImage(systemName: "checkmark.circle.fill") ||
+               imageView.image == UIImage(systemName: "checkmark.circle") {
+                imageView.removeFromSuperview()
+            }
+        }
     }
-    
-    func setAddButton() {
-        let addButton = UIButton()
-        addButton.backgroundColor =  UIColor.systemRed
-        addButton.setTitle("Add", for: UIControl.State())
-        addButton.setTitleColor(.white, for: UIControl.State())
-        addButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .bold)
-        addButton.addTarget(self, action: #selector(tapAddButton), for: .touchUpInside)
-        addButton.layer.cornerRadius = 30
-        addButton.layer.masksToBounds = true
-        view.addSubview(addButton)
-        
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            addButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: view.frame.height * -0.23),
-            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addButton.widthAnchor.constraint(equalToConstant: view.frame.width * 0.8),
-            addButton.heightAnchor.constraint(equalToConstant: view.frame.height * 0.07)
-        ])
-    }
-    
+    //MARK: -Function
     func updateCalendar() {
         calendar.reloadData()
     }
-    //MARK: -Function
-    //ボタンを押したときの処理
-    @objc func tapAddButton() {
-        let addEventVC = AddEventViewController()
-        addEventVC.onEventUpdate = {[weak self] in
-            self?.updateCalendar()
+    // 今日の日付を保存
+    func saveToday() {
+        let realm = try! Realm()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        
+        try! realm.write{
+            let Events = [EventModel(value: ["date": formatter.string(from: Date()), "event": "Study Chinese"])]
+            realm.add(Events)
         }
-        let navController = UINavigationController(rootViewController: addEventVC)
-        navController.modalPresentationStyle = .fullScreen
-        self.present(navController, animated: true, completion: nil)
     }
     
-    @objc func tapDeleteButton() {
-        let deleteEventVC = DeleteEventViewController()
-        deleteEventVC.onEventUpdate = {[weak self] in
-            self?.updateCalendar()
-        }
-        let navController = UINavigationController(rootViewController: deleteEventVC)
-        navController.modalPresentationStyle = .fullScreen
-        self.present(navController, animated: true, completion: nil)
-    }
-    
-   
     //MARK: -CalendarSupport
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
         let cell = calendar.dequeueReusableCell(withIdentifier: "CELL", for: date, at: position)
@@ -136,6 +94,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     }
     // 日付を選択したときの処理
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        removeCheckMarks()
         let tmpDate = Calendar(identifier: .gregorian)
         let year = tmpDate.component(.year, from: date)
         let month = tmpDate.component(.month, from: date)
@@ -148,11 +107,11 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         let realm = try! Realm()
         let eventModel = realm.objects(EventModel.self)
         
-        // メモを表示
-        for memo in eventModel {
-            if memo.date == workDay {
-                memoButton.setTitle(memo.event, for: .normal)
-            }
+        // イベントがあった場合チェックマークを表示
+        if eventModel.contains(where: { $0.date == workDay }) {
+            setCheckMark()
+        } else {
+            setNoCheckMark()
         }
     }
     //点マークをつける関数
@@ -243,22 +202,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             } else {
                 return nil
             }
-
         }
-    
-    // 今日の日付を保存
-    func saveToday() {
-        let realm = try! Realm()
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd"
-        
-        try! realm.write{
-            let Events = [EventModel(value: ["date": formatter.string(from: Date()), "event": "Study Chinese"])]
-            realm.add(Events)
-        }
-    }
-    
-    
 }
 
 

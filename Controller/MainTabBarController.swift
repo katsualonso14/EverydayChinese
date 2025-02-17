@@ -1,22 +1,21 @@
-//  MainTabBarController.swift
-//  ChineseApp
-
 import UIKit
 import GoogleMobileAds
+import UserMessagingPlatform
+import AppTrackingTransparency
+import AdSupport
 
-class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenContentDelegate {
+class MainTabBarController: UITabBarController, BannerViewDelegate {
     
     var bannerView: BannerView!
-    private var interstitial: InterstitialAd?
-
+    let requestParameters = UMPRequestParameters()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBanner()
-        setupTab()        
-        //TODO: 初回のCookie確認後の表示
-//        setupInterstitial()
-        
+        setupTab()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingAuthorized"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingNotAuthorized"), object: nil)
     }
+    
     //MARK: -Layout
     //タブバーの表示
     func setupTab() {
@@ -39,10 +38,29 @@ class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenCo
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         
-        setViewControllers([nv1, nv2, nv3], animated: false)
+        let calendarVC = CalendarViewController()
+        calendarVC.tabBarItem.image = UIImage(systemName: "calendar")
+        calendarVC.tabBarItem.title = "Calendar"
+        let nv4 = UINavigationController(rootViewController: calendarVC)
+        
+        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
     }
     
     //MARK: -Admob
+    // バナー広告の表示・非表示を確認
+    func checkBanner() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            if AdManager.shouldShowBannerAds() {
+                self.setupBanner()
+            } else {
+                self.bannerView?.removeFromSuperview()
+            }
+        }
+    }
+
+    
     func setupBanner() {
         let viewWidth = view.frame.inset(by: view.safeAreaInsets).width
         let adaptiveSize = currentOrientationAnchoredAdaptiveBanner(width: viewWidth)
@@ -59,49 +77,60 @@ class MainTabBarController: UITabBarController, BannerViewDelegate, FullScreenCo
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         
-        let tabBarHeight = self.tabBar.frame.size.height
+        let tabBarY = self.tabBar.frame.origin.y
         
-        view.addConstraints(
-            [NSLayoutConstraint(item: bannerView,
-                                attribute: .bottom,
-                                relatedBy: .equal,
-                                toItem: view.safeAreaLayoutGuide,
-                                attribute: .bottom,
-                                multiplier: 1,
-                                constant: -tabBarHeight),
-             NSLayoutConstraint(item: bannerView,
-                                attribute: .centerX,
-                                relatedBy: .equal,
-                                toItem: view,
-                                attribute: .centerX,
-                                multiplier: 1,
-                                constant: 0)
-            ])
+        NSLayoutConstraint.activate([
+            bannerView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: tabBarY),
+            bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
-    // インタースティシャル広告設定
-    func setupInterstitial() {
-        Task {
-            do {
-                // 読み込み
-                interstitial = try await InterstitialAd.load(
-                    with: MyAds.interstialAdId, request: Request()
-                )
-                // Delegate設定
-                interstitial?.fullScreenContentDelegate = self
-                // 広告の表示
-                guard let interstitial = interstitial else {
-                    return print("Ad wasn't ready.")
+    //MARK: Check Admob UPM
+    // Admobのユーロ,イギリス、スイスユーザーに向けてのUPM設定
+    func checkUPM() {
+        // アプリが起動するたびに呼び出す
+        UMPConsentInformation.sharedInstance.requestConsentInfoUpdate(with: requestParameters) {
+            
+            [weak self] requestConsesentError in
+            guard let self else { return }
+            print("enter the checkUPM")
+            if let error = requestConsesentError {
+                print(error.localizedDescription)
+            }
+            
+            UMPConsentForm.loadAndPresentIfRequired(from: self) {
+                [weak self] loadAndPresentError in
+                guard let self else { return }
+                
+                if let error = loadAndPresentError {
+                    print("UMP Form Load Error: \(error.localizedDescription)")
                 }
                 
-                // The UIViewController parameter is an optional.
-                interstitial.present(from: nil)
-                
-            } catch {
-                print("Failed to load interstitial ad with error: \(error.localizedDescription)")
-                
+                print("UMP Form completed, waiting for canRequestAds...")
+                waitForCanRequestAds()
             }
         }
     }
-    
+
+    func waitForCanRequestAds() {
+        DispatchQueue.global().async {
+            while !UMPConsentInformation.sharedInstance.canRequestAds {
+                sleep(1) // 1秒ごとにチェック
+            }
+            
+            DispatchQueue.main.async {
+                print("canRequestAds is now true. Initializing AdMob...")
+                MobileAds.shared.start { status in
+                    print("AdMob SDK initialized")
+                    self.checkBanner()
+                }
+            }
+        }
+    }
+    // AppDelegateからの通知を受け取る
+    @objc func handleTrackingStatus(notification: Notification) {
+        checkUPM()
+    }
+
+
 }
