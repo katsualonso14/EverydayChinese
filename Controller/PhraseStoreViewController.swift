@@ -169,6 +169,47 @@ class PhraseStoreViewController: UIViewController {
         
         present(aleat, animated: true)
     }
+    // メモの編集処理
+    func editMemoModal(word: String, sentence: String, situation: String, index: Int) {
+        let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, situation", preferredStyle: .alert)
+        
+        alert.addTextField { $0.text = word }
+        alert.addTextField { $0.text = sentence }
+        alert.addTextField { $0.text = situation }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            guard let textFields = alert.textFields,
+                  let newWord = textFields[0].text, !newWord.isEmpty,
+                  let newSentence = textFields[1].text, !newSentence.isEmpty,
+                  let newSituation = textFields[2].text, !newSituation.isEmpty else {
+                let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(errorAlert, animated: true)
+                return
+            }
+            
+            // データ更新
+            self.words[index] = newWord
+            self.sentences[index] = newSentence
+            self.situation[index] = newSituation
+            
+            // UserDefaults の更新を一回でまとめる
+            UserDefaults.standard.setValue(self.words, forKey: "word")
+            UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
+            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            
+            // テーブルをリロード（UI更新はメインスレッドで）
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }))
+        
+        present(alert, animated: true)
+    }
+
 }
 
 
@@ -216,32 +257,54 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            if isSearching {
-                let originalIndex = words.firstIndex(of: filteredWords[indexPath.row]) ?? indexPath.row
-                words.remove(at: originalIndex)
-                sentences.remove(at: originalIndex)
-                situation.remove(at: originalIndex)
-                
-                filteredWords.remove(at: indexPath.row)
-                filteredSentences.remove(at: indexPath.row)
-                filteredSituations.remove(at: indexPath.row)
-            } else {
-                words.remove(at: indexPath.row)
-                sentences.remove(at: indexPath.row)
-                situation.remove(at: indexPath.row)
-            }
-
-            UserDefaults.standard.setValue(words, forKey: "word")
-            UserDefaults.standard.setValue(sentences, forKey: "sentence")
-            UserDefaults.standard.setValue(situation, forKey: "situation")
-
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.reloadData()
+    //Cellの編集と削除
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // 編集アクション
+        let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
+            print("編集ボタンが押された！")
+            self.editMemoModal(
+                word: self.words[indexPath.row],
+                sentence: self.sentences[indexPath.row],
+                situation: self.situation[indexPath.row],
+                index: indexPath.row
+            )
+            completionHandler(true)
         }
+
+        // 削除アクション
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
+            // 検索中の場合、フィルター時のインデックス指定
+            if(self.isSearching) {
+                let originalIndex = self.words.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
+                self.words.remove(at: originalIndex)
+                self.sentences.remove(at: originalIndex)
+                self.situation.remove(at: originalIndex)
+
+                self.filteredWords.remove(at: indexPath.row)
+                self.filteredSentences.remove(at: indexPath.row)
+                self.filteredSituations.remove(at: indexPath.row)
+            } else {
+                self.words.remove(at: indexPath.row)
+                self.sentences.remove(at: indexPath.row)
+                self.situation.remove(at: indexPath.row)
+            }
+            
+            UserDefaults.standard.setValue(self.words, forKey: "word")
+            UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
+            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            completionHandler(true)
+        }
+        
+        editAction.image = UIImage(systemName: "pencil")
+        editAction.backgroundColor = .systemBlue
+        deleteAction.image = UIImage(systemName: "trash")
+
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     }
+
+
 
     
 }
