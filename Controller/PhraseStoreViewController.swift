@@ -170,7 +170,7 @@ class PhraseStoreViewController: UIViewController {
         present(aleat, animated: true)
     }
     // メモの編集処理
-    func editMemoModal(word: String, sentence: String, situation: String, index: Int) {
+    func openEditMemo(word: String, sentence: String, situation: String, index: Int) {
         let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, situation", preferredStyle: .alert)
         
         alert.addTextField { $0.text = word }
@@ -261,13 +261,23 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // 編集アクション
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
-            print("編集ボタンが押された！")
-            self.editMemoModal(
-                word: self.words[indexPath.row],
-                sentence: self.sentences[indexPath.row],
-                situation: self.situation[indexPath.row],
-                index: indexPath.row
-            )
+            // 検索中の場合、フィルター時のインデックス指定
+            if(self.isSearching) {
+                let originalIndex = self.words.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
+                self.openEditMemo(
+                    word: self.words[originalIndex],
+                    sentence: self.sentences[originalIndex],
+                    situation: self.situation[originalIndex],
+                    index: originalIndex
+                )
+            } else {
+                self.openEditMemo(
+                    word: self.words[indexPath.row],
+                    sentence: self.sentences[indexPath.row],
+                    situation: self.situation[indexPath.row],
+                    index: indexPath.row
+                )
+            }
             completionHandler(true)
         }
 
