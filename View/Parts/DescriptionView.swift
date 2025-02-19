@@ -8,8 +8,9 @@ class DescriptionView: UIView {
     let label = UILabel()
     let checkBoxLabel = UILabel()
     let descriptionCheckBox = UIImageView()
+    let closeButton = UIButton()
     // QuickMemoかPhraseStoreかの判別フラグ
-    var isQuickMemo = true
+    var discriptNumber = 1
     // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理)
     var isDescription: Bool {
         return UserDefaults.standard.bool(forKey: "isDescription")
@@ -50,7 +51,7 @@ class DescriptionView: UIView {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapCheckBox))
         descriptionCheckBox.addGestureRecognizer(gesture)
 
-        // 閉じるボタン
+        // 画面切り替えボタン
         button.backgroundColor = AppColors.appMainColor
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
@@ -59,18 +60,27 @@ class DescriptionView: UIView {
         button.frame = CGRect(x: 20, y: 300, width: 250, height: 40)
         addSubview(button)
         
+        //閉じるボタン
+        closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        closeButton.tintColor = .systemGray
+        closeButton.frame = CGRect(x: 270, y: 0, width: 30, height: 30)
+        closeButton.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
+        addSubview(closeButton)
+        
         updateViewContent()
     }
     
     func updateViewContent() {
-        imageView.image = isQuickMemo ? UIImage(named: "Quick Memo Sample") : UIImage(named: "PhraseStore Sample")
+        imageView.image = discriptNumber == 1 ? UIImage(named: "Quick Memo Sample") :
+        discriptNumber == 2 ? UIImage(named: "Add PhraseStore from Quick Memo") : UIImage(named: "PhraseStore Sample")
         
-        label.text = isQuickMemo ?
+        label.text = discriptNumber == 1 ?
         "You can write down words you don't understand or are curious about in your daily life quickly and easily."
-        : "You can save words and sentences that you want to remember and situations when you find them in PhraseStore."
+        : discriptNumber == 2 ? "You can save sentences and situations with words that you want to remember in Quick Memo." :
+        "You can save words and sentences that you want to remember and situations when you find them in PhraseStore."
         label.sizeToFit()
         
-        button.setTitle(isQuickMemo ? "Next" : "Close", for: .normal)
+        button.setTitle(discriptNumber == 3 ? "Close" : "Next", for: .normal)
         
         updateCheckBox()
     }
@@ -80,19 +90,24 @@ class DescriptionView: UIView {
     }
     
     @objc func changePage() {
-        if isQuickMemo {
-            isQuickMemo = false
+        if discriptNumber == 1 {
+            discriptNumber = 2
+        } else if discriptNumber == 2 {
+            discriptNumber = 3
         } else {
             self.removeFromSuperview()
         }
         updateViewContent()
     }
-    
+    // チェックボックスの状態を切り替え
     @objc func didTapCheckBox() {
-        // チェックボックスの状態を切り替え
         let newState = !UserDefaults.standard.bool(forKey: "isDescription")
         UserDefaults.standard.set(newState, forKey: "isDescription")
         updateCheckBox()
+    }
+    
+    @objc func closeModal() {
+        self.removeFromSuperview()
     }
 
 
