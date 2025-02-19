@@ -11,10 +11,10 @@ class CheckNotifController: UIViewController {
             let greetingsViewController = GreetingsViewController(titleName: "Greetings")
             navController.pushViewController(greetingsViewController, animated: true)
         case "intermediate":
-            let intermediateViewController = IntermediateViewController(titleName: "Intermediate")
+            let intermediateViewController = PronounsViewController(titleName: "Intermediate")
             navController.pushViewController(intermediateViewController, animated: true)
         case "advanced":
-            let advancedViewController = AdvancedViewController(titleName: "Advanced")
+            let advancedViewController = DailyConversationViewController(titleName: "Advanced")
             navController.pushViewController(advancedViewController, animated: true)
         case "trip":
             let tripViewController = TripViewController(titleName: "Trip")

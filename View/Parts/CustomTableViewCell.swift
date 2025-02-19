@@ -5,8 +5,8 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     
     var greetingsVC: GreetingsViewController?
-    var IntermediateVC: IntermediateViewController?
-    var advancedVC: AdvancedViewController?
+    var pronounsVC: PronounsViewController?
+    var dailyConversationVC: DailyConversationViewController?
     var TripVC: TripViewController?
     var DramaVC: DramaViewController?
     var restaurantVC: RestaurantViewController?
@@ -15,24 +15,27 @@ class CustomTableViewCell: UITableViewCell {
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    let soundsButton: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    let soundsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.textColor = UIColor.lightGray
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     let japaneseLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = UIColor.blue
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,21 +59,21 @@ class CustomTableViewCell: UITableViewCell {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
         addSubview(sentenceLabel)
-        addSubview(soundsButton)
+        addSubview(soundsLabel)
         addSubview(japaneseLabel)
         //namelabelの配置
         sentenceLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         sentenceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50).isActive = true
-        sentenceLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
         sentenceLabel.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         //soundsButtonの配置
-        soundsButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
-        soundsButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        soundsButton.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
+        soundsLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
+        soundsLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
         //japaneseLabelの配置
         japaneseLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         japaneseLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 50).isActive = true
-        japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        japaneseLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
         japaneseLabel.heightAnchor.constraint(equalTo: sentenceLabel.heightAnchor).isActive = true
         
         setupHeartButton()
@@ -199,15 +202,15 @@ class CustomTableViewCell: UITableViewCell {
     
     func setCell(sentence: String, pronunciation: String , japanese: String) {
         sentenceLabel.text = sentence
-        soundsButton.setTitle(pronunciation, for: UIControl.State.normal)
+        soundsLabel.text = pronunciation
         japaneseLabel.text = japanese
     }
     //MARK: -Function
     //セルのお気に入りボタンをタップしたとき処理
     @objc private func tapButton() {
         greetingsVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600) // 1 hour
-        IntermediateVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
-        advancedVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        pronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        dailyConversationVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
         restaurantVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
         TripVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
         DramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
@@ -216,8 +219,8 @@ class CustomTableViewCell: UITableViewCell {
     //セルのお気に入りボタン2をタップしたとき処理
     @objc private func tapButton2() {
         greetingsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800) // 3 hour
-        IntermediateVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        advancedVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        pronounsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        dailyConversationVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
         restaurantVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
         TripVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
         DramaVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
@@ -226,8 +229,8 @@ class CustomTableViewCell: UITableViewCell {
     //セルのお気に入りボタン3をタップしたとき処理
     @objc private func tapButton3() {
         greetingsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400) // 1 day
-        IntermediateVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        advancedVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        pronounsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        dailyConversationVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
         restaurantVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
         TripVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
         DramaVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
@@ -236,8 +239,8 @@ class CustomTableViewCell: UITableViewCell {
     //セルのお気に入りボタン4をタップしたとき処理
     @objc private func tapButton4() {
         greetingsVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200) // 3 day
-        IntermediateVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
-        advancedVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        pronounsVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        dailyConversationVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
         restaurantVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
         TripVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
         DramaVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)

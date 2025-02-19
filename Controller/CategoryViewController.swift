@@ -69,7 +69,7 @@ class CategoryViewController: UIViewController {
         advancedButton.layer.cornerRadius = 25.0
         advancedButton.layer.masksToBounds = true
         
-        advancedButton.setTitle("Daily conversation", for: .normal)
+        advancedButton.setTitle("Daily Talk", for: .normal)
         advancedButton.setTitleColor(AppColors.textColor, for: .normal)
         advancedButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         advancedButton.setImage(UIImage(named: "advanced"), for: .normal)
@@ -144,8 +144,19 @@ class CategoryViewController: UIViewController {
         dramaButton.imageView?.layer.cornerRadius = 15.0
         dramaButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
         dramaButton.addTarget(self, action: #selector(pushDramaButton), for: .touchUpInside)
-        //Learnlig Sentence
+        
+        setDeleteNotifButton()
     }
+    
+    func setDeleteNotifButton() {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "bell.circle"), for: .normal)
+        button.tintColor = AppColors.appMainColor
+        button.addTarget(self, action: #selector(openAllNotifDeleteAleart), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        
+    }
+    
 //    初心者ボタン押した時のアクション
     @objc func pushBignnerButton(sender: UIButton){
         let vc = GreetingsViewController(titleName: "Greetings")
@@ -153,12 +164,12 @@ class CategoryViewController: UIViewController {
     }
     //    中級者ボタン押した時のアクション
     @objc func pushIntermediateButton(sender: UIButton){
-        let vc = IntermediateViewController(titleName: "Pronouns")
+        let vc = PronounsViewController(titleName: "Pronouns")
         navigationController?.pushViewController(vc, animated: true)
     }
     //    上級者ボタン押した時のアクション
     @objc func pushAdvancedButton(sender: UIButton){
-        let vc = AdvancedViewController(titleName: "Daily conversation")
+        let vc = DailyConversationViewController(titleName: "Daily conversation")
         navigationController?.pushViewController(vc, animated: true)   }
     
     //    旅行用ボタン押した時のアクション
@@ -173,6 +184,28 @@ class CategoryViewController: UIViewController {
     @objc func pushDramaButton(sender: UIButton){
         let vc = DramaViewController(titleName: "Drama")
         navigationController?.pushViewController(vc, animated: true)   }
+    // 全てのリマインドを削除
+    @objc func openAllNotifDeleteAleart(){
+        let alert = UIAlertController(title: "Delete all reminders",
+                                      message: "If you tap delete, all reminders will be deleted. Are you sure?",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self] _ in
+          deleteAllNotif()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
+    //全ての通知を削除する処理
+    func deleteAllNotif() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removeAllPendingNotificationRequests()
+        //全ての通知を削除しましたのダイアログ表示
+        let alert = UIAlertController(title: "All notifications removed.", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     //大きい画像などのメモリ解放
     override func didReceiveMemoryWarning() {

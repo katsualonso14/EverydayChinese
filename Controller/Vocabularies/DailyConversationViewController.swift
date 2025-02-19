@@ -1,10 +1,10 @@
-//中級者ページ
+//上級者ぺージ
 import UIKit
 import SnapKit
 import AVFoundation
 import UserNotifications
 
-class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+class DailyConversationViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
     let titleName: String
     let sentenceView = SentenceViewController()
@@ -73,12 +73,11 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.IntermediateVC = self
+        cell.dailyConversationVC = self
         
-        
-        let contact = sentenceView.IntermediateSentenceArray[0].names[indexPath.row]
+        let contact = sentenceView.AdvancedSentenceArray[0].names[indexPath.row]
         //cellの文字指定
-        cell.setCell(sentence: sentenceView.IntermediateSentence[indexPath.row], pronunciation: sentenceView.IntermediatePronunciation[indexPath.row], japanese: sentenceView.IntermediateEnglish[indexPath.row
+        cell.setCell(sentence: sentenceView.AdvancedSentence[indexPath.row], pronunciation: sentenceView.AdvancedPronunciation[indexPath.row], japanese: sentenceView.AdvancedEnglish[indexPath.row
         ])
         
         cell.heartButton.tintColor = contact.hasFavorited ? .red : .gray
@@ -94,12 +93,10 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //中国語の読み上げ設定
-        let utterance = AVSpeechUtterance.init(string: sentenceView.IntermediateSentence[indexPath.row])
+        let utterance = AVSpeechUtterance.init(string: sentenceView.AdvancedSentence[indexPath.row])
         let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
         utterance.voice = voice
         synthesizer.speak(utterance)
-        
-//        print("tap")
     }
     
     //お気に入りボタンを押したときの処理
@@ -108,41 +105,40 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         print(contact)
         let hasFavorited = contact.hasFavorited
         
-        sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "intermediate"]
+        content.userInfo = ["page": "advanced"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
         } else {
             pushDelete()
         }
-        print(hasFavorited)
+        
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
-    
     // ハートボタン2をタップした際の設定
     func CustomCellTapButtonCall2(cell: UITableViewCell, pushTime: TimeInterval) {
         //タップしたcellの値
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         let hasFavorited = contact.hasFavorited2
         
-        sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "intermediate"]
+        content.userInfo = ["page": "advanced"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -159,15 +155,15 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         let hasFavorited = contact.hasFavorited3
         
-        sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "intermediate"]
+        content.userInfo = ["page": "advanced"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -184,15 +180,15 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         let hasFavorited = contact.hasFavorited4
         
-        sentenceView.IntermediateSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
+        sentenceView.AdvancedSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "intermediate"]
+        content.userInfo = ["page": "advanced"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -228,3 +224,4 @@ class IntermediateViewController: UITableViewController,AVAudioPlayerDelegate, A
 }
     
     
+

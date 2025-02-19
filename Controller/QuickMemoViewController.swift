@@ -87,11 +87,6 @@ class QuickMemoViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
     }
     
-    func checkIsDescription() {
-        if !UserDefaults.standard.bool(forKey: "isDescription") {
-            setDiscrptionView()
-        }
-    }
     func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -107,11 +102,107 @@ class QuickMemoViewController: UIViewController {
         searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
         definesPresentationContext = true
     }
+    //MARK: - Helper Function
+    func checkIsDescription() {
+        if !UserDefaults.standard.bool(forKey: "isDescription") {
+            setDiscrptionView()
+        }
+    }
     
     func getReword() {
         Task {
             await AdManager.shared.setupReword(viewController: self)
         }
+    }
+    // PhraseStoreに追加
+    func addPhraseStore(word: String) {
+        let phraseStoreVC = PhraseStoreViewController()
+        let aleat = UIAlertController(title: "Save Memo with sentence", message: "save sentence and situation \nwith check vocaburaly: \(word)", preferredStyle: .alert)
+        
+        aleat.addTextField{ (textField) in
+            textField.placeholder = "Enter sentence..."
+        }
+        aleat.addTextField{ (textField) in
+            textField.placeholder = "Enter situation..."
+        }
+        
+        aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
+            // 文字がない場合はエラーメッセージ
+            if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
+                let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(alert, animated: true)
+                return
+            }
+ 
+            //wordの追加
+            DispatchQueue.main.async {
+                var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
+                currentWord.append(word)
+                UserDefaults.standard.setValue(currentWord, forKey: "word")
+                phraseStoreVC.words.append(word)
+                phraseStoreVC.tableView.reloadData()
+            }
+            
+            if let filed = aleat.textFields?.first {
+                if let text = filed.text, !text.isEmpty {
+                    DispatchQueue.main.async {
+                        var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
+                        currentSentence.append(text)
+                        UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
+                        phraseStoreVC.sentences.append(text)
+                        phraseStoreVC.tableView.reloadData()
+                    }
+                }
+            }
+            
+            if let filed2 = aleat.textFields?.last {
+                if let text2 = filed2.text, !text2.isEmpty {
+                    DispatchQueue.main.async {
+                        var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
+                        currentSituation.append(text2)
+                        UserDefaults.standard.setValue(currentSituation, forKey: "situation")
+                        phraseStoreVC.situation.append(text2)
+                        phraseStoreVC.tableView.reloadData()
+                    }
+                }
+            }
+            
+        }))
+        
+        present(aleat, animated: true)
+    }
+    // メモの編集処理
+    func openEditMemo(quickMemo: String, index: Int) {
+        let alert = UIAlertController(title: "Edit Quick Memo", message: "Edit Your Word", preferredStyle: .alert)
+        
+        alert.addTextField { $0.text = quickMemo }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            guard let textFields = alert.textFields,
+                  let newWord = textFields[0].text, !newWord.isEmpty else {
+                let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(errorAlert, animated: true)
+                return
+            }
+            
+            // データ更新
+            self.QuickMemo[index] = newWord
+            
+            // UserDefaults の更新
+            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }))
+        
+        present(alert, animated: true)
     }
     
     //MARK: - Function
@@ -245,17 +336,53 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+    //タップ処理
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        addPhraseStore(word: QuickMemo[indexPath.section])
+    }
     
-    // スワイプ処理
-     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete && !QuickMemo.isEmpty) {
-            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
-            currentWord.remove(at: indexPath.section)
-            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            QuickMemo.remove(at: indexPath.section)
-            
-            tableView.deleteSections([indexPath.section], with: .fade)
+    //Cellの編集と削除
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        // 編集
+        let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
+            // 検索中の場合、フィルター時のインデックス指定
+            if(self.isSearching) {
+                let originalIndex = self.QuickMemo.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
+                self.openEditMemo(
+                    quickMemo: self.QuickMemo[originalIndex],
+                    index: originalIndex
+                )
+            } else {
+                self.openEditMemo(
+                    quickMemo: self.QuickMemo[indexPath.row],
+                    index: indexPath.row
+                )
+            }
+            completionHandler(true)
         }
+
+        // 削除
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
+            // 検索中の場合、フィルター時のインデックス指定
+            if(self.isSearching) {
+                let originalIndex = self.QuickMemo.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
+                self.QuickMemo.remove(at: originalIndex)
+
+                self.filteredWords.remove(at: indexPath.row)
+            } else {
+                self.QuickMemo.remove(at: indexPath.row)
+            }
+    
+            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
+            tableView.deleteSections([indexPath.row], with: .fade) // セクションで設定しているため、セクション削除
+            completionHandler(true)
+        }
+        
+        editAction.image = UIImage(systemName: "pencil")
+        editAction.backgroundColor = .systemBlue
+        deleteAction.image = UIImage(systemName: "trash")
+
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     }
 }
 
