@@ -8,7 +8,7 @@ class SelectSearchWordModal: UIView {
     init(frame: CGRect, parentVC: UIViewController) {
         self.parentVC = parentVC
         super.init(frame: frame)
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = .systemBackground
         self.layer.cornerRadius = 16
         self.layer.masksToBounds = true
         setupDiscriptLabel()
@@ -33,7 +33,7 @@ class SelectSearchWordModal: UIView {
     
     func setupPicker() {
         let pickerView = UIPickerView()
-        pickerView.backgroundColor = UIColor.white
+        pickerView.backgroundColor = .systemBackground
         pickerView.delegate = self
         pickerView.dataSource = self
         pickerView.frame = CGRect(x: 0, y: 100, width: 300, height: 100)
