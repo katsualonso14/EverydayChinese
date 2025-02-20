@@ -16,6 +16,7 @@ class QuickMemoViewController: UIViewController {
         setDescriptionButton()
         setTableView()
         setAddButton()
+        setResearchButton()
         setupSearchController()
         // 説明ダイアログが必要か確認
         checkIsDescription()
@@ -76,6 +77,26 @@ class QuickMemoViewController: UIViewController {
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02),
             addButton.widthAnchor.constraint(equalToConstant: 60),
             addButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
+    func setResearchButton() {
+        let researchButton = UIButton()
+        researchButton.backgroundColor = .systemBlue
+        let searchImage = UIImage(systemName: "magnifyingglass")
+        researchButton.setImage(searchImage, for: .normal)
+        researchButton.tintColor = .white
+        researchButton.addTarget(self, action: #selector(checkSearchWord), for: .touchUpInside)
+        researchButton.layer.cornerRadius = 30
+        researchButton.layer.masksToBounds = true
+        view.addSubview(researchButton)
+        
+        researchButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            researchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: view.frame.height * -0.17),
+            researchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02),
+            researchButton.widthAnchor.constraint(equalToConstant: 60),
+            researchButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
     
@@ -255,15 +276,22 @@ class QuickMemoViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    @objc func checkSearchWord() {
+        let modal = SelectSearchWordModal(frame: CGRect(x: 0, y: 0, width: 300, height: 300), parentVC: self)
+        modal.searchWord = QuickMemo
+        modal.center = view.center
+        view.addSubview(modal)
+    }
+
     @objc func setDiscrptionView() {
-        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 300, height: 350))
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 330, height: 350))
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
     
     @objc func showRewardAlert() {
         let alert = UIAlertController(
-            title: "Reward Ad",
+            title: "Delete Ads for 24 hours",
             message: "If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?",
             preferredStyle: .alert
             )
