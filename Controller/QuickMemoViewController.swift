@@ -93,7 +93,7 @@ class QuickMemoViewController: UIViewController {
         
         researchButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            researchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: view.frame.height * -0.17),
+            researchButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: view.frame.height * -0.19),
             researchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: view.frame.width * -0.02),
             researchButton.widthAnchor.constraint(equalToConstant: 60),
             researchButton.heightAnchor.constraint(equalToConstant: 60)
