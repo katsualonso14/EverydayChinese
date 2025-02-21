@@ -4,6 +4,7 @@ import UIKit
 import UserNotifications
 import GoogleMobileAds
 import AppTrackingTransparency
+import RealmSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                   }
             }
         
+        // 連続ログイン通知の設定
+        scheduleDailyNotification()
         // アプリがキルされていた場合の通知データの取得
               if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
                   handleNotification(userInfo: notification)
@@ -97,6 +100,61 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
     }
 
+    //MARK: - Notification
+    // 連続ログイン日数を取得
+    func getConsecutiveLoginDays() -> Int {
+        let realm = try! Realm()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd"
+        
+        let savedDates = realm.objects(EventModel.self).sorted(byKeyPath: "date", ascending: false).compactMap { event -> Date? in
+            return formatter.date(from: event.date)
+        }
+        
+        guard let latestDate = savedDates.first else { return 0 }
+        
+        var consecutiveDays = 1
+        var prevDate = latestDate
+
+        for date in savedDates.dropFirst() {
+            // 1日以内にログインしていたら
+            if let expectedDate = Calendar.current.date(byAdding: .day, value: -1, to: prevDate),
+               Calendar.current.isDate(date, inSameDayAs: expectedDate) {
+
+                consecutiveDays += 1
+                prevDate = date
+            } else {
+                break
+            }
+        }
+
+        return consecutiveDays
+    }
+    // 連続ログイン通知設定
+    func scheduleDailyNotification() {
+        let center = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        let loginDays = getConsecutiveLoginDays()
+        content.title = "You've logged in for \(loginDays) consecutive days!"
+        content.body = "Impressive! Keep it up!"
+        content.sound = .default
+        content.userInfo = ["page": "calendar"] // 通知をタップした際にカレンダーページへ遷移指定
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 8
+        dateComponents.minute = 0
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: "dailyLoginNotification", content: content, trigger: trigger)
+        
+        center.add(request) { error in
+            if let error = error {
+                print("通知のスケジュール設定エラー: \(error)")
+            }
+        }
+    }
 
     
 }
