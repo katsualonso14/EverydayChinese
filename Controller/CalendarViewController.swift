@@ -116,7 +116,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //MARK: -objc
     @objc func openFeedbackModal() {
-        let alert = UIAlertController(title: "Feedback", message: "Please enter your feedback", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Feedback",
+                                      message: "We would love to hear your feedback on this application. \nIf you have any feedback, please write it here and press the Submit button.",
+                                      preferredStyle: .alert)
         alert.addTextField { textField in
             textField.placeholder = "Feedback"
         }
