@@ -331,9 +331,9 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     //タップ処理
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        addPhraseStore(word: QuickMemo[indexPath.section])
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        addPhraseStore(word: QuickMemo[indexPath.section])
+    }
     
     //Cellの編集と削除
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
