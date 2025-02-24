@@ -30,7 +30,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         let phraseStoreVC = PhraseStoreViewController()
         let pencilLine = UIImage(systemName: "pencil.and.outline")
         phraseStoreVC.tabBarItem.image = pencilLine
-        phraseStoreVC.tabBarItem.title = "PhraseStore"
+        phraseStoreVC.tabBarItem.title = "Phrase Store"
         let nv2 = UINavigationController(rootViewController: phraseStoreVC)
         
         let categoryViewController = CategoryViewController()

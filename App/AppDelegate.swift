@@ -5,15 +5,16 @@ import UserNotifications
 import GoogleMobileAds
 import AppTrackingTransparency
 import RealmSwift
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-   //アプリ起動時に呼び出されるメソッド
+   //Methoed when the app is launched
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //Admob Initialize Setting
         MobileAds.shared.start(completionHandler: nil)
         
-        //通知許可の取得
+        // Request for App Notification
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.alert, .sound, .badge]){
                 (granted, _) in
@@ -23,23 +24,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     print("通知が許可されていない")
                 }
                 
-                // 1秒遅らせて ATT 許可をリクエスト
+                // ATT Request for 1 second delay
                   DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                       self.requestTrackingPermission()
                   }
             }
         
-        // 連続ログイン通知の設定
+        // Settting for Daily Record Reminder
         scheduleDailyNotification()
-        // アプリがキルされていた場合の通知データの取得
+        // When the app killed and user tap the notification
               if let notification = launchOptions?[.remoteNotification] as? [String: AnyObject] {
                   handleNotification(userInfo: notification)
               }
+        
+        //Firebase Setting
+        FirebaseApp.configure()
         return true
     }
-
     // MARK: UISceneSession Lifecycle
-
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
