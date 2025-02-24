@@ -9,7 +9,7 @@ class QuickMemoCell: UITableViewCell {
         // layer
         self.layer.cornerRadius = 16
         self.layer.masksToBounds = true
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = .clear
         // contentView layer
         self.contentView.layer.cornerRadius = 16
         self.contentView.layer.masksToBounds = true
