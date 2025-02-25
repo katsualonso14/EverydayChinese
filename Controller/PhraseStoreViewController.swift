@@ -228,12 +228,12 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     // テーブルビューのセルの中身
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PhraseStoreCell") as! PhraseStoreCell
-        // Layout Setting
-        cell.layer.cornerRadius = 16
-        cell.layer.masksToBounds = true
-        cell.backgroundColor = .systemBackground
-        cell.layer.borderWidth = 5
-        cell.layer.borderColor = UIColor.systemGray6.cgColor
+        // Background view for selection
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = UIColor.systemGray.withAlphaComponent(0.5)
+        selectedBackgroundView.layer.cornerRadius = 16
+        selectedBackgroundView.layer.masksToBounds = true
+        cell.selectedBackgroundView = selectedBackgroundView
         
         guard indexPath.row < (isSearching ? filteredWords.count : words.count),
               indexPath.row < (isSearching ? filteredSentences.count : sentences.count),
