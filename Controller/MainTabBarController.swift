@@ -43,7 +43,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         calendarVC.tabBarItem.title = "Calendar"
         let nv4 = UINavigationController(rootViewController: calendarVC)
         
-        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
+        setViewControllers([nv3, nv1, nv2, nv4], animated: false)
     }
     
     //MARK: -Admob

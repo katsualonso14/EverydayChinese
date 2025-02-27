@@ -57,13 +57,23 @@ class SelectSearchWordModal: UIView {
         cancelButton.frame = CGRect(x: 0, y: 250, width: 150, height: 50)
         self.addSubview(cancelButton)
     }
+    
+    func openNoSeachWordAlert() {
+        let alert = UIAlertController(title: "No search word", message: "Please select a search word.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        parentVC?.present(alert, animated: true, completion: nil)
+    }
     //MARK - objc
     @objc func openWebView() {
-        print("tap")
         self.removeFromSuperview()
+        if (searchWord.isEmpty) {
+            openNoSeachWordAlert()
+        }
+        
         let webView = WebModalViewController()
         // pickerで選択した単語を渡す
-        webView.selectedWord = selecetedWord == nil ? searchWord[0] : selecetedWord
+        webView.selectedWord = selecetedWord
         webView.modalPresentationStyle = .popover
         // 親ビューの上に表示
         parentVC?.present(webView, animated: true, completion: nil)
