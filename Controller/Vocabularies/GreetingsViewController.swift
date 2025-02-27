@@ -13,6 +13,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
+    let favoritesLocalKey = "favoriteContacts_greetings"
     
     init(titleName: String) {
         self.titleName = titleName
@@ -48,12 +49,13 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         } catch {
             print("Audio Setting Failed.")
             return
-        }        
+        }
         // TableViewのcontentInsetを調整して、広告スペースを確保
         let bannerHeight: CGFloat = 50 // AdMobバナーの高さ
         tableView.contentInset.bottom = bannerHeight
         tableView.scrollIndicatorInsets.bottom = bannerHeight
         
+        loadFavorites() // 起動時にハートボタンの色の状態を取得
         tableView.dataSource = self
         tableView.delegate  = self
         //CustomCellの登録
@@ -75,6 +77,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         let hasFavorited = contact.hasFavorited
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -100,6 +103,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         let hasFavorited = contact.hasFavorited2
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -125,6 +129,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         let hasFavorited = contact.hasFavorited3
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -150,6 +155,7 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         let hasFavorited = contact.hasFavorited4
         
         sentenceView.sentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -164,6 +170,26 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
+    // ハートボタンの状態をローカルに保存
+    func saveFavorites() {
+        if let encoded = try? JSONEncoder().encode(sentenceView.sentenceArray[0].names) {
+            UserDefaults.standard.set(encoded, forKey: favoritesLocalKey)
+        }
+    }
+    // ハートボタンの状態をローカルから取得
+    func loadFavorites() {
+        if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
+           let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
+            sentenceView.sentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
+        } else {
+            sentenceView.sentenceArray = [
+                ExpandableNames(isExpanded: true, names: ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map {
+                    Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+                })
+            ]
+        }
+    }
+    
     //MARK: -TableView
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

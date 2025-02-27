@@ -13,6 +13,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
+    let favoritesLocalKey = "favoriteContacts_trip"
     
     init(titleName: String) {
         self.titleName = titleName
@@ -55,6 +56,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         tableView.contentInset.bottom = bannerHeight
         tableView.scrollIndicatorInsets.bottom = bannerHeight
         
+        loadFavorites() // 起動時にハートボタンの色の状態を取得
         tableView.dataSource = self
         tableView.delegate  = self
         //CustomCellの登録
@@ -77,6 +79,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         let hasFavorited = contact.hasFavorited
         
         sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -102,6 +105,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         let hasFavorited = contact.hasFavorited2
         
         sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -127,6 +131,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         let hasFavorited = contact.hasFavorited3
         
         sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -152,6 +157,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         let hasFavorited = contact.hasFavorited4
         
         sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
+        saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
@@ -165,6 +171,23 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
+    // ハートボタンの状態をローカルに保存
+    func saveFavorites() {
+        if let encoded = try? JSONEncoder().encode(sentenceView.tripSentenceArray[0].names) {
+            UserDefaults.standard.set(encoded, forKey: favoritesLocalKey)
+        }
+    }
+    // ハートボタンの状態をローカルから取得
+    func loadFavorites() {
+        if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
+           let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
+            sentenceView.tripSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
+        } else {
+            sentenceView.tripSentenceArray = [
+                ExpandableNames(isExpanded: true, names:  ["谢谢", "不好意思", "对不起","我要check in", "能不能帮我保管行李？", "我想知道Wi-Fi的密码", "点菜", "买单", "多少钱", "请再说一遍"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
+            ]
+        }
     }
     
     //cellの数
@@ -203,6 +226,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         synthesizer.speak(utterance)
 
     }
+    
     //MARK:- Push
     //プッシュ通知登録
     func pushRegister(pushTime: TimeInterval) {

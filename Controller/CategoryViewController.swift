@@ -2,6 +2,13 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
+    
+    let greetingVC = GreetingsViewController(titleName: "Greetings")
+    let pronounsVC = PronounsViewController(titleName: "Pronouns")
+    let dailyVC = DailyConversationViewController(titleName: "Daily conversation")
+    let tripVC = TripViewController(titleName: "Trip")
+    let restaurantVC = RestaurantViewController(titleName: "Restaurant")
+    let dramaVC = DramaViewController(titleName: "Drama")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,7 +18,6 @@ class CategoryViewController: UIViewController {
         //    初心者ボタン
         let button:UIButton = UIButton()
         self.view.addSubview(button)
-
         //Autosizingのレイアウトの仕組みをAuto Layoutに変換するかどうかを設定するフラグを既存がオンなのでfalse(オフ)に設定
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .systemBackground
@@ -190,7 +196,8 @@ class CategoryViewController: UIViewController {
                                       message: "If you tap delete, all reminders will be deleted. Are you sure?",
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self] _ in
-          deleteAllNotif()
+            deleteAllNotif()
+            deleteAllFavorites()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -206,6 +213,16 @@ class CategoryViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    // 全てのハートボタンの状態を削除
+    func deleteAllFavorites() {
+        UserDefaults.standard.removeObject(forKey: greetingVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: pronounsVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: dailyVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: tripVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: restaurantVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: dramaVC.favoritesLocalKey)
+        
+    }
     
     //大きい画像などのメモリ解放
     override func didReceiveMemoryWarning() {
