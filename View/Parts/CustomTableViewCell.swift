@@ -6,7 +6,7 @@ class CustomTableViewCell: UITableViewCell {
     
     var greetingsVC: GreetingsViewController?
     var pronounsVC: PronounsViewController?
-    var dailyConversationVC: DailyConversationViewController?
+    var dailyConversationVC: DailyTalkViewController?
     var TripVC: TripViewController?
     var DramaVC: DramaViewController?
     var restaurantVC: RestaurantViewController?

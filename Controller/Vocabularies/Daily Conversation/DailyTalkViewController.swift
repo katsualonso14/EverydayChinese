@@ -4,7 +4,7 @@ import SnapKit
 import AVFoundation
 import UserNotifications
 
-class DailyConversationViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
     let titleName: String
     let sentenceView = SentenceViewController()
