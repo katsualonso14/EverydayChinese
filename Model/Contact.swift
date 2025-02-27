@@ -12,7 +12,7 @@ struct ExpandableNames {
     var names: [Contact]
 }
     
-struct Contact {
+struct Contact: Codable {
     let name : String
     var hasFavorited: Bool
     var hasFavorited2: Bool

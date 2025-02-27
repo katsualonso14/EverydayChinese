@@ -6,7 +6,7 @@ class CustomTableViewCell: UITableViewCell {
     
     var greetingsVC: GreetingsViewController?
     var pronounsVC: PronounsViewController?
-    var dailyConversationVC: DailyConversationViewController?
+    var dailyConversationVC: DailyTalkViewController?
     var TripVC: TripViewController?
     var DramaVC: DramaViewController?
     var restaurantVC: RestaurantViewController?
@@ -64,7 +64,7 @@ class CustomTableViewCell: UITableViewCell {
         //namelabelの配置
         sentenceLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
         sentenceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -50).isActive = true
-        soundsLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
+        sentenceLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -220).isActive = true // 通知ボタンと被るので途中で折り返す
         sentenceLabel.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         //soundsButtonの配置
         soundsLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
@@ -122,7 +122,7 @@ class CustomTableViewCell: UITableViewCell {
         heartButton2.addTarget(self, action: #selector(tapButton2), for: .touchUpInside)
         // 説明ラベルの設定
         let explainLabel = UILabel()
-        explainLabel.text = "Remind in 4 hour"
+        explainLabel.text = "Remind in 3 hour"
         explainLabel.font = UIFont.systemFont(ofSize: 17)
         explainLabel.textColor = .lightGray
         explainLabel.translatesAutoresizingMaskIntoConstraints = false

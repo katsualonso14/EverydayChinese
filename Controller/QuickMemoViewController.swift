@@ -260,22 +260,6 @@ class QuickMemoViewController: UIViewController {
         present(aleat, animated: true)
     }
     
-    @objc func deleteTapped(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this word?", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] (_) in
-            // タグの判別
-            let index = sender.tag
-            var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
-            currentWord.remove(at: index)
-            UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-            self?.QuickMemo.remove(at: index)
-            self?.tableView.deleteSections([index], with: .fade)
-        }))
-        present(alert, animated: true)
-    }
-    
     @objc func checkSearchWord() {
         let modal = SelectSearchWordModal(frame: CGRect(x: 0, y: 0, width: 300, height: 300), parentVC: self)
         modal.searchWord = QuickMemo
@@ -335,31 +319,13 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuickMemoCell") as! QuickMemoCell
-        // Cell design
-        cell.layer.cornerRadius = 16
-        cell.layer.masksToBounds = true
-        cell.backgroundColor = .systemBackground
         // Background view for selection
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = UIColor.systemGray.withAlphaComponent(0.5)
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
-        // Delete button
-        let deleteButton = UIButton(type: .custom)
-        deleteButton.setImage(UIImage(systemName: "trash.fill"), for: .normal)
-        deleteButton.tintColor = AppColors.appMainColor
-        deleteButton.addTarget(self, action: #selector(deleteTapped(_:)), for: .touchUpInside)
-        deleteButton.tag = indexPath.section // Set the section index as the tag
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        cell.addSubview(deleteButton)
         
-        NSLayoutConstraint.activate([
-            deleteButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -10),
-            deleteButton.centerYAnchor.constraint(equalTo: cell.centerYAnchor),
-            deleteButton.widthAnchor.constraint(equalToConstant: 30),
-            deleteButton.heightAnchor.constraint(equalToConstant: 30)
-        ])
         cell.label.text = QuickMemo[indexPath.section]
         
         return cell
@@ -408,6 +374,7 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
         
         editAction.image = UIImage(systemName: "pencil")
         editAction.backgroundColor = .systemBlue
+        
         deleteAction.image = UIImage(systemName: "trash")
 
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])

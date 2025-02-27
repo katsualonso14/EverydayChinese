@@ -6,6 +6,22 @@ class PhraseStoreCell: UITableViewCell {
     let secondLabel = UILabel()
     let thirdLabel = UILabel()
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.cornerRadius = 16
+        self.layer.masksToBounds = true
+        self.backgroundColor = .clear
+        
+        self.contentView.layer.cornerRadius = 16
+        self.contentView.layer.masksToBounds = true
+        self.contentView.backgroundColor = .systemBackground
+        
+        self.contentView.layer.borderWidth = 3
+        self.contentView.layer.borderColor = UIColor.systemGray6.cgColor
+        
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
