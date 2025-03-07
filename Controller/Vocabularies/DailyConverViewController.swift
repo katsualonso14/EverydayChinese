@@ -16,6 +16,32 @@ class DailyConverViewController: UIViewController {
     
     
     //MARK: - Layout
+    func setupGreetingButton() {
+        let button:UIButton = UIButton()
+        self.view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemBackground
+        //set layout
+        button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 150).isActive = true
+        button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
+        button.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
+        button.layer.cornerRadius = 25.0
+        button.layer.masksToBounds = true
+        
+        button.setTitle("Greetings", for: .normal)
+        button.setTitleColor(AppColors.textColor, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+
+        button.setImage(UIImage(named: "Greetings"), for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.layer.cornerRadius = 15.0
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
+        button.addTarget(self, action: #selector(pushGreetingButton), for: .touchUpInside)
+    }
+    
     func setupPersonalPronounsButton() {
         let button:UIButton = UIButton()
         self.view.addSubview(button)
@@ -42,7 +68,7 @@ class DailyConverViewController: UIViewController {
         button.addTarget(self, action: #selector(pushPersonalPronounsButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 150),
+            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 280),
             button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
             button.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1),
@@ -78,7 +104,7 @@ class DailyConverViewController: UIViewController {
         button.addTarget(self, action: #selector(pushDemonstrativePronounsButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 280),
+            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 410),
             button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
             button.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1),
@@ -114,7 +140,7 @@ class DailyConverViewController: UIViewController {
         button.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 410),
+            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 540),
             button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
             button.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1),
@@ -123,33 +149,6 @@ class DailyConverViewController: UIViewController {
             subTitleLabel.leadingAnchor.constraint(equalTo: button.titleLabel!.leadingAnchor, constant: 0),
         ])
     }
-    
-    func setupGreetingButton() {
-        let button:UIButton = UIButton()
-        self.view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemBackground
-        //set layout
-        button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 540).isActive = true
-        button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        button.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
-        button.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.1).isActive = true
-        button.layer.cornerRadius = 25.0
-        button.layer.masksToBounds = true
-        
-        button.setTitle("Greetings", for: .normal)
-        button.setTitleColor(AppColors.textColor, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-
-        button.setImage(UIImage(named: "Greetings"), for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.imageView?.contentMode = .scaleAspectFit
-        button.imageView?.layer.cornerRadius = 15.0
-        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
-        button.addTarget(self, action: #selector(pushGreetingButton), for: .touchUpInside)
-    }
-    
     
     func setupDailyTalkButton() {
         let button:UIButton = UIButton()
