@@ -40,6 +40,12 @@
 "what" = "何";
 "which" = "どちら";
 "which ones" = "どれ";
+"when" = "いつ";
+"where" = "どこ";
+"why" = "なぜ";
+"how" = "どのように";
+"how many" = "いくつ";
+
 
 // MARK: - AdvancedEnglish
 "What's your name?" = "あなたの名前は何ですか？";

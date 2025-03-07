@@ -64,18 +64,24 @@ class SentenceViewController: UITabBarController {
     // 疑問代名詞（Interrogative Pronouns）
     var interrogativePronounsSentenceArray = [
         ExpandableNames(isExpanded: true, names: [
-            "谁", "什么", "哪", "哪些"
+            "谁", "什么", "哪", "哪些", "什么时候", "哪里", "为什么", "怎么", "多少"
         ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
     ]
 
-    var interrogativePronounsSentence = ["谁", "什么", "哪", "哪些"]
-    var interrogativePronounsPronunciation = ["shéi", "shénme", "nǎ", "nǎxiē"]
+    var interrogativePronounsSentence = ["谁", "什么", "哪", "哪些", "什么时候", "哪里", "为什么", "怎么", "多少"]
+    var interrogativePronounsPronunciation = ["shéi", "shénme", "nǎ", "nǎxiē", "shénme shíhou", "nǎlǐ", "wèishénme", "zěnme", "duōshǎo"]
     var interrogativePronounsEnglish = [
         NSLocalizedString("who", comment: ""),
         NSLocalizedString("what", comment: ""),
         NSLocalizedString("which", comment: ""),
-        NSLocalizedString("which ones", comment: "")
+        NSLocalizedString("which ones", comment: ""),
+        NSLocalizedString("when", comment: ""),
+        NSLocalizedString("where", comment: ""),
+        NSLocalizedString("why", comment: ""),
+        NSLocalizedString("how", comment: ""),
+        NSLocalizedString("how many", comment: "")
     ]
+
 
     
     // Advanced Page
