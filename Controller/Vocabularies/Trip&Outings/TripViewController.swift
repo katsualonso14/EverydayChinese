@@ -183,10 +183,6 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
             sentenceView.tripSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
-        } else {
-            sentenceView.tripSentenceArray = [
-                ExpandableNames(isExpanded: true, names:  ["谢谢", "不好意思", "对不起","我要check in", "能不能帮我保管行李？", "我想知道Wi-Fi的密码", "点菜", "买单", "多少钱", "请再说一遍"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
-            ]
         }
     }
     

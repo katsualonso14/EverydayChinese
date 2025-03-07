@@ -8,23 +8,29 @@ class CheckNotifController: UIViewController {
     func navigateToPage(navController: UINavigationController, page: String) {
         switch page {
         case "greetings":
-            let greetingsViewController = GreetingsViewController(titleName: "Greetings")
-            navController.pushViewController(greetingsViewController, animated: true)
-        case "intermediate":
-            let intermediateViewController = PronounsViewController(titleName: "Intermediate")
-            navController.pushViewController(intermediateViewController, animated: true)
+            let vc = GreetingsViewController(titleName: "Greetings")
+            navController.pushViewController(vc, animated: true)
+        case "personal":
+            let vc = PersonalPronounsViewController(titleName: "Personal Pronouns")
+            navController.pushViewController(vc, animated: true)
+        case "demonstrative":
+            let vc = DemonstrativePronounsViewController(titleName: "Demonstrative Pronouns")
+            navController.pushViewController(vc, animated: true)
+        case "interrogative":
+            let vc = InterrogativePronounsViewController(titleName: "Interrogative Pronouns")
+            navController.pushViewController(vc, animated: true)
         case "advanced":
-            let advancedViewController = DailyTalkViewController(titleName: "Advanced")
-            navController.pushViewController(advancedViewController, animated: true)
+            let vc = DailyTalkViewController(titleName: "Advanced")
+            navController.pushViewController(vc, animated: true)
         case "trip":
-            let tripViewController = TripViewController(titleName: "Trip")
-            navController.pushViewController(tripViewController, animated: true)
+            let vc = TripViewController(titleName: "Trip")
+            navController.pushViewController(vc, animated: true)
         case "restaurant":
-            let restaurantViewController = RestaurantViewController(titleName: "Restaurant")
-            navController.pushViewController(restaurantViewController, animated: true)
+            let vc = RestaurantViewController(titleName: "Restaurant")
+            navController.pushViewController(vc, animated: true)
         case "drama":
-            let dramaViewController = DramaViewController(titleName: "Drama")
-            navController.pushViewController(dramaViewController, animated: true)
+            let vc = DramaViewController(titleName: "Drama")
+            navController.pushViewController(vc, animated: true)
         default:
             break
         }

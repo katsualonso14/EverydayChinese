@@ -1,4 +1,4 @@
-/* 
+/*
   Localizable.strings
   ChineseApp
 
@@ -6,7 +6,7 @@
   
 */
 
-// MARK: - English
+// MARK: - Greating
 "Good moring" = "おはよう";
 "Good afternoon" = "こんにちは";
 "Good evening" = "こんばんは";
@@ -17,18 +17,29 @@
 "How are you?" = "元気ですか？";
 "Thank you" = "ありがとう";
 "Sorry" = "ごめんなさい";
-
-// MARK: - IntermediateEnglish
+// MARK: - Personal Pronouns
+// 単数
 "I" = "私";
 "you" = "あなた";
 "he" = "彼";
 "she" = "彼女";
+"it" = "それ";
 "we" = "私たち";
+// 複数
+"you (plural)" = "あなたたち";
 "they (male)" = "彼ら";
 "they (female)" = "彼女たち";
+"they (neuter)" = "それら";
+//MARK: - Demonstrative Pronouns
 "this" = "これ";
 "these" = "これら";
 "that" = "それ";
+"those" = "それら";
+//MARK: - Interrogative Pronouns
+"who" = "誰";
+"what" = "何";
+"which" = "どちら";
+"which ones" = "どれ";
 
 // MARK: - AdvancedEnglish
 "What's your name?" = "あなたの名前は何ですか？";

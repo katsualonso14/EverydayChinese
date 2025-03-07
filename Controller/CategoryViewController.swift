@@ -4,7 +4,7 @@ import UIKit
 class CategoryViewController: UIViewController {
     
     let greetingVC = GreetingsViewController(titleName: "Greetings")
-    let pronounsVC = PronounsViewController(titleName: "Pronouns")
+    let pronounsVC = PersonalPronounsViewController(titleName: "Pronouns")
     let dailyVC = DailyTalkViewController(titleName: "Daily conversation")
     let tripVC = TripViewController(titleName: "Trip")
     let restaurantVC = RestaurantViewController(titleName: "Restaurant")
