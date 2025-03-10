@@ -12,6 +12,9 @@ class CategoryViewController: UIViewController {
     
     let container = UIView()
     let scrollView = UIScrollView()
+    let dailyButton:UIButton = UIButton()
+    let greetingButton:UIButton = UIButton()
+    let tripButton:UIButton = UIButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +23,8 @@ class CategoryViewController: UIViewController {
         setupContainer()
         // Buttons Setting
         setupDailyButton()
-        setupTripAndOutingsButton()
+        setupGreetingButton()
+        setupTripButton()
         setupDramaButton()
         setDeleteNotifButton()
         setRewordAdButton()
@@ -59,9 +63,7 @@ class CategoryViewController: UIViewController {
     }
     
     // 日常会話ボタン
-    //TODO: 角丸と位置の調整
     func setupDailyButton() {
-        let dailyButton:UIButton = UIButton()
         self.container.addSubview(dailyButton)
         self.view.addSubview(dailyButton)
         dailyButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,44 +100,84 @@ class CategoryViewController: UIViewController {
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
         ])
     }
-    
-    
-    // 旅行用ボタン
-    func setupTripAndOutingsButton() {
-        let tripButton:UIButton = UIButton()
-        self.container.addSubview(tripButton)
-        tripButton.translatesAutoresizingMaskIntoConstraints = false
-        tripButton.backgroundColor = .systemBackground
-        tripButton.layer.cornerRadius = 25.0
-        tripButton.layer.masksToBounds = true
+    // 挨拶ボタン
+    func setupGreetingButton() {
+        self.container.addSubview(greetingButton)
+        self.view.addSubview(greetingButton)
+        greetingButton.translatesAutoresizingMaskIntoConstraints = false
+        greetingButton.addTarget(self, action: #selector(pushGreetingButton), for: .touchUpInside)
         
-        tripButton.setTitle("Trip&Outings", for: .normal)
-        tripButton.setTitleColor(AppColors.textColor, for: .normal)
-        tripButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        let subTitleLabel = UILabel()
-        subTitleLabel.text = "Trip, Restaurant"
-        subTitleLabel.font = .systemFont(ofSize: 13)
-        subTitleLabel.textColor = .systemGray
-        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tripButton.addSubview(subTitleLabel)
+        let titleLabel = UILabel()
+        titleLabel.text = "Greeting"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        greetingButton.addSubview(titleLabel)
         
-        tripButton.setImage(UIImage(named: "trip_100*100"), for: .normal)
-        tripButton.contentHorizontalAlignment = .left
-        tripButton.imageView?.contentMode = .scaleAspectFit
-        tripButton.imageView?.layer.cornerRadius = 15.0
-        tripButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
-        tripButton.addTarget(self, action: #selector(pushTripAndOutingsButton), for: .touchUpInside)
+        let imageView = UIImageView(image: UIImage(named: "Greetings"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        greetingButton.addSubview(imageView)
+    
         
         NSLayoutConstraint.activate([
-            tripButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 380),
-            tripButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.8),
-            tripButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.06),
-            
-            subTitleLabel.topAnchor.constraint(equalTo: tripButton.titleLabel!.bottomAnchor, constant: 5),
-            subTitleLabel.leadingAnchor.constraint(equalTo: tripButton.titleLabel!.leadingAnchor, constant: 0),
+            // button
+            greetingButton.topAnchor.constraint(equalTo: dailyButton.bottomAnchor, constant: 70),
+            greetingButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            greetingButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
+            greetingButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: greetingButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: greetingButton.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
         ])
     }
+    
+    // 旅行用ボタン
+    func setupTripButton() {
+        self.container.addSubview(tripButton)
+        self.view.addSubview(tripButton)
+        tripButton.translatesAutoresizingMaskIntoConstraints = false
+        tripButton.addTarget(self, action: #selector(pushTripButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Trip"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tripButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "trip"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        tripButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            tripButton.topAnchor.constraint(equalTo: greetingButton.bottomAnchor, constant: 70),
+            tripButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
+            tripButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: tripButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: tripButton.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+        ])
+    }
+    //TODO: ここから下のUI修正
     // ドラマ用ボタン
     func setupDramaButton() {
         let dramaButton:UIButton = UIButton()
@@ -192,12 +234,20 @@ class CategoryViewController: UIViewController {
         let vc = DailyConverViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
+    @objc func pushGreetingButton(sender: UIButton){
+        let vc = GreetingsViewController(titleName: "Greeting")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushTripButton(sender: UIButton){
+        let vc = TripViewController(titleName: "Trip")
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc func pushTripAndOutingsButton(sender: UIButton){
         let vc = TripAndOutingsViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
-    // ドラマ用ボタン押した時のアクション
+    
     @objc func pushDramaButton(sender: UIButton){
         navigationController?.pushViewController(dramaVC, animated: true)
     }
