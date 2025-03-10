@@ -2,20 +2,23 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
-    
+    // 各カテゴリのViewControllerをインスタンス化
     let greetingVC = GreetingsViewController(titleName: "Greetings")
     let pronounsVC = PersonalPronounsViewController(titleName: "Pronouns")
     let dailyVC = DailyTalkViewController(titleName: "Daily conversation")
     let tripVC = TripViewController(titleName: "Trip")
     let restaurantVC = RestaurantViewController(titleName: "Restaurant")
     let dramaVC = DramaViewController(titleName: "Drama")
+    
+    let container = UIView()
+    let scrollView = UIScrollView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Category"
-        let scrollView = UIScrollView() // for scroll
-        self.view.addSubview(scrollView)
-        
+        setupScrollView()
+        setupContainer()
+        // Buttons Setting
         setupDailyButton()
         setupTripAndOutingsButton()
         setupDramaButton()
@@ -23,48 +26,84 @@ class CategoryViewController: UIViewController {
         setRewordAdButton()
     }
     
-    // 日常会話ボタン
-    func setupDailyButton() {
-        let dailyButton:UIButton = UIButton()
-        self.view.addSubview(dailyButton)
-        dailyButton.translatesAutoresizingMaskIntoConstraints = false
-        dailyButton.backgroundColor = .systemBackground
-        dailyButton.layer.cornerRadius = 25.0
-        dailyButton.layer.masksToBounds = true
-        
-        dailyButton.setTitle("Daily Conversation", for: .normal)
-        dailyButton.setTitleColor(AppColors.textColor, for: .normal)
-        dailyButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        dailyButton.titleLabel?.numberOfLines = 0
-        let subTitleLabel = UILabel()
-        subTitleLabel.text = "Greetings, DailyTalk, Pronouns"
-        subTitleLabel.font = .systemFont(ofSize: 13)
-        subTitleLabel.textColor = .systemGray
-        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        dailyButton.addSubview(subTitleLabel)
-        
-        dailyButton.setImage(UIImage(named: "conversation_100*100"), for: .normal)
-        dailyButton.contentHorizontalAlignment = .left
-        dailyButton.imageView?.contentMode = .scaleAspectFit
-        dailyButton.imageView?.layer.cornerRadius = 15.0
-        dailyButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-        dailyButton.addTarget(self, action: #selector(pushDailyButton), for: .touchUpInside)
+    
+    func setupScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(scrollView)
+
+
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            
+        ])
+        // contentSizeを設定
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2300)
+    }
+    
+    func setupContainer() {
+        container.translatesAutoresizingMaskIntoConstraints = false
+        self.scrollView.addSubview(container)
         
         NSLayoutConstraint.activate([
-            dailyButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 130),
-            dailyButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            dailyButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
-            dailyButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.13),
+            container.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            container.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            container.heightAnchor.constraint(equalToConstant: 3000), // 全体の高さを設定
+            container.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             
-            subTitleLabel.topAnchor.constraint(equalTo: dailyButton.titleLabel!.bottomAnchor, constant: 5),
-            subTitleLabel.leadingAnchor.constraint(equalTo: dailyButton.titleLabel!.leadingAnchor, constant: 0),
         ])
-        
     }
+    
+    // 日常会話ボタン
+    //TODO: 角丸と位置の調整
+    func setupDailyButton() {
+        let dailyButton:UIButton = UIButton()
+        self.container.addSubview(dailyButton)
+        self.view.addSubview(dailyButton)
+        dailyButton.translatesAutoresizingMaskIntoConstraints = false
+        dailyButton.addTarget(self, action: #selector(pushDailyButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "DailyTalk"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        dailyButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "conversation_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        dailyButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            dailyButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 30),
+            dailyButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            dailyButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
+            dailyButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: dailyButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: dailyButton.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+        ])
+    }
+    
+    
     // 旅行用ボタン
     func setupTripAndOutingsButton() {
         let tripButton:UIButton = UIButton()
-        self.view.addSubview(tripButton)
+        self.container.addSubview(tripButton)
         tripButton.translatesAutoresizingMaskIntoConstraints = false
         tripButton.backgroundColor = .systemBackground
         tripButton.layer.cornerRadius = 25.0
@@ -88,10 +127,10 @@ class CategoryViewController: UIViewController {
         tripButton.addTarget(self, action: #selector(pushTripAndOutingsButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            tripButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 280),
-            tripButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            tripButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
-            tripButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.13),
+            tripButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 380),
+            tripButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.8),
+            tripButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.06),
             
             subTitleLabel.topAnchor.constraint(equalTo: tripButton.titleLabel!.bottomAnchor, constant: 5),
             subTitleLabel.leadingAnchor.constraint(equalTo: tripButton.titleLabel!.leadingAnchor, constant: 0),
@@ -100,7 +139,7 @@ class CategoryViewController: UIViewController {
     // ドラマ用ボタン
     func setupDramaButton() {
         let dramaButton:UIButton = UIButton()
-        self.view.addSubview(dramaButton)
+        self.container.addSubview(dramaButton)
         dramaButton.translatesAutoresizingMaskIntoConstraints = false
         dramaButton.backgroundColor = .systemBackground
         dramaButton.layer.cornerRadius = 25.0
@@ -124,10 +163,10 @@ class CategoryViewController: UIViewController {
         dramaButton.addTarget(self, action: #selector(pushDramaButton), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
-            dramaButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 430),
-            dramaButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            dramaButton.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8),
-            dramaButton.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.13),
+            dramaButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 630),
+            dramaButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.8),
+            dramaButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.06),
             
             subTitleLabel.topAnchor.constraint(equalTo: dramaButton.titleLabel!.bottomAnchor, constant: 5),
             subTitleLabel.leadingAnchor.constraint(equalTo: dramaButton.titleLabel!.leadingAnchor, constant: 0),
