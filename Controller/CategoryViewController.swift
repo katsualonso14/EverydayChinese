@@ -15,7 +15,9 @@ class CategoryViewController: UIViewController {
     let dailyButton:UIButton = UIButton()
     let greetingButton:UIButton = UIButton()
     let tripButton:UIButton = UIButton()
-
+    let restaurantButton:UIButton = UIButton()
+    let dramaButton:UIButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Category"
@@ -25,7 +27,9 @@ class CategoryViewController: UIViewController {
         setupDailyButton()
         setupGreetingButton()
         setupTripButton()
+        setupRestaurantButton()
         setupDramaButton()
+        // TODO: Pronaunts追加
         setDeleteNotifButton()
         setRewordAdButton()
     }
@@ -65,7 +69,6 @@ class CategoryViewController: UIViewController {
     // 日常会話ボタン
     func setupDailyButton() {
         self.container.addSubview(dailyButton)
-        self.view.addSubview(dailyButton)
         dailyButton.translatesAutoresizingMaskIntoConstraints = false
         dailyButton.addTarget(self, action: #selector(pushDailyButton), for: .touchUpInside)
         
@@ -103,7 +106,6 @@ class CategoryViewController: UIViewController {
     // 挨拶ボタン
     func setupGreetingButton() {
         self.container.addSubview(greetingButton)
-        self.view.addSubview(greetingButton)
         greetingButton.translatesAutoresizingMaskIntoConstraints = false
         greetingButton.addTarget(self, action: #selector(pushGreetingButton), for: .touchUpInside)
         
@@ -142,7 +144,6 @@ class CategoryViewController: UIViewController {
     // 旅行用ボタン
     func setupTripButton() {
         self.container.addSubview(tripButton)
-        self.view.addSubview(tripButton)
         tripButton.translatesAutoresizingMaskIntoConstraints = false
         tripButton.addTarget(self, action: #selector(pushTripButton), for: .touchUpInside)
         
@@ -153,7 +154,7 @@ class CategoryViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         tripButton.addSubview(titleLabel)
         
-        let imageView = UIImageView(image: UIImage(named: "trip"))
+        let imageView = UIImageView(image: UIImage(named: "trip_100*100"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 25.0
@@ -177,43 +178,81 @@ class CategoryViewController: UIViewController {
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
         ])
     }
-    //TODO: ここから下のUI修正
-    // ドラマ用ボタン
-    func setupDramaButton() {
-        let dramaButton:UIButton = UIButton()
-        self.container.addSubview(dramaButton)
-        dramaButton.translatesAutoresizingMaskIntoConstraints = false
-        dramaButton.backgroundColor = .systemBackground
-        dramaButton.layer.cornerRadius = 25.0
-        dramaButton.layer.masksToBounds = true
+    // レストラン用ボタン
+    func setupRestaurantButton() {
+        self.container.addSubview(restaurantButton)
+        restaurantButton.translatesAutoresizingMaskIntoConstraints = false
+        restaurantButton.addTarget(self, action: #selector(pushRestaurantButton), for: .touchUpInside)
         
-        dramaButton.setTitle("Drama", for: .normal)
-        dramaButton.setTitleColor(AppColors.textColor, for: .normal)
-        dramaButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
-        let subTitleLabel = UILabel()
-        subTitleLabel.text = "Drama"
-        subTitleLabel.font = .systemFont(ofSize: 13)
-        subTitleLabel.textColor = .systemGray
-        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        dramaButton.addSubview(subTitleLabel)
+        let titleLabel = UILabel()
+        titleLabel.text = "Restaurant"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        restaurantButton.addSubview(titleLabel)
         
-        dramaButton.setImage(UIImage(named: "drama_100*100"), for: .normal)
-        dramaButton.contentHorizontalAlignment = .left
-        dramaButton.imageView?.contentMode = .scaleAspectFit
-        dramaButton.imageView?.layer.cornerRadius = 15.0
-        dramaButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 0)
-        dramaButton.addTarget(self, action: #selector(pushDramaButton), for: .touchUpInside)
+        let imageView = UIImageView(image: UIImage(named: "restaurant_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        restaurantButton.addSubview(imageView)
+    
         
         NSLayoutConstraint.activate([
-            dramaButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 630),
-            dramaButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.8),
-            dramaButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.06),
-            
-            subTitleLabel.topAnchor.constraint(equalTo: dramaButton.titleLabel!.bottomAnchor, constant: 5),
-            subTitleLabel.leadingAnchor.constraint(equalTo: dramaButton.titleLabel!.leadingAnchor, constant: 0),
+            // button
+            restaurantButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 70),
+            restaurantButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            restaurantButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
+            restaurantButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: restaurantButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: restaurantButton.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
         ])
     }
+    // ドラマ用ボタン用
+    func setupDramaButton() {
+        self.container.addSubview(dramaButton)
+        dramaButton.translatesAutoresizingMaskIntoConstraints = false
+        dramaButton.addTarget(self, action: #selector(pushDramaButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Drama"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        dramaButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "drama_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        dramaButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            dramaButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 70),
+            dramaButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
+            dramaButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: dramaButton.topAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: dramaButton.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+        ])
+    }
+    //TODO: ここから下のUI修正
     
     func setDeleteNotifButton() {
         let button = UIButton(type: .system)
@@ -242,9 +281,9 @@ class CategoryViewController: UIViewController {
         let vc = TripViewController(titleName: "Trip")
         navigationController?.pushViewController(vc, animated: true)
     }
-    
-    @objc func pushTripAndOutingsButton(sender: UIButton){
-        let vc = TripAndOutingsViewController()
+    @objc func pushRestaurantButton(sender: UIButton){
+        print("restaurant tap")
+        let vc = RestaurantViewController(titleName: "Restaurant")
         navigationController?.pushViewController(vc, animated: true)
     }
     
