@@ -54,7 +54,7 @@ class CategoryViewController: UIViewController {
             
         ])
         // contentSizeを設定
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2300)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1500)
     }
     
     func setupContainer() {
@@ -66,7 +66,7 @@ class CategoryViewController: UIViewController {
             container.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            container.heightAnchor.constraint(equalToConstant: 3000), // 全体の高さを設定
+            container.heightAnchor.constraint(equalToConstant: 1500), // 全体の高さを設定
             container.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             
         ])
