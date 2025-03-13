@@ -181,12 +181,6 @@ class GreetingsViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
             sentenceView.sentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
-        } else {
-            sentenceView.sentenceArray = [
-                ExpandableNames(isExpanded: true, names: ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map {
-                    Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
-                })
-            ]
         }
     }
     

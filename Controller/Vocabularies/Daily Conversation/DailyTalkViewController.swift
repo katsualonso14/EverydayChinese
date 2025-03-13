@@ -215,10 +215,6 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
             sentenceView.AdvancedSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
-        } else {
-            sentenceView.AdvancedSentenceArray = [
-                ExpandableNames(isExpanded: true, names:  ["你叫什么名字","他是谁？","它需要多长时间","你喜欢什么类型的电影","在哪里完成","什么时候完成","你为什么喜欢这部电影","现在是几奌","你家有几口人","你想去看电影吗"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
-            ]
         }
     }
     //プッシュ通知登録

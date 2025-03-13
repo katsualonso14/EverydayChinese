@@ -20,14 +20,8 @@ class QuickMemoViewController: UIViewController {
         setupSearchController()
         // 説明ダイアログが必要か確認
         checkIsDescription()
-        setRewordAdButton()
     }
     //MARK: - View Layout
-    func setRewordAdButton() {
-        let button = UIBarButtonItem(title: "Ads Hide Settings", style: .plain, target: self, action: #selector(showRewardAlert))
-        navigationItem.rightBarButtonItem = button
-    }
-    
     func setView() {
         conteinerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(conteinerView)
@@ -130,11 +124,6 @@ class QuickMemoViewController: UIViewController {
         }
     }
     
-    func getReword() {
-        Task {
-            await AdManager.shared.setupReword(viewController: self)
-        }
-    }
     // PhraseStoreに追加
     func addPhraseStore(word: String) {
         let phraseStoreVC = PhraseStoreViewController()
@@ -272,25 +261,6 @@ class QuickMemoViewController: UIViewController {
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
-    
-    @objc func showRewardAlert() {
-        let alert = UIAlertController(
-            title: "Delete Ads for 24 hours",
-            message: "If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?",
-            preferredStyle: .alert
-            )
-
-        let watchAction = UIAlertAction(title: "Watch", style: .default) { _ in
-            self.getReword()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-
-        alert.addAction(watchAction)
-        alert.addAction(cancelAction)
-
-        present(alert, animated: true)
-    }
-    
 }
 
 //MARK: - TableView DataSource

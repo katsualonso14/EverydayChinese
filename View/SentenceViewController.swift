@@ -3,7 +3,7 @@ import UIKit
 
 class SentenceViewController: UITabBarController {
 
-    // Beginner Page
+    //MARK: - Greetings
     var sentenceArray = [
         ExpandableNames(isExpanded: true, names:  ["你早","下午好","晚上好","再见","明天见","下周见","回头见","你好吗？","谢谢","对不起"].map{Contact(name: $0,
             hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
@@ -25,27 +25,64 @@ class SentenceViewController: UITabBarController {
         NSLocalizedString("Sorry", comment: "")
     ]
     
-    // Intermediate Page
-    var  IntermediateSentenceArray = [
-        ExpandableNames(isExpanded: true, names:  ["我","你","他","她","我们","他们","她们","这","这些","那","那些"].map{Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)})
+    //MARK: - Pronouns
+    // 人称代名詞（Personal Pronouns）
+    var personalPronounsSentenceArray = [
+        ExpandableNames(isExpanded: true, names: [
+            "我", "你", "他", "她", "它","我们", "你们", "他们", "她们", "它们"
+        ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
     ]
-    var IntermediateSentence = ["我","你","他","她","我们","他们","她们","这","这些","那","那些"]
-    
-    var IntermediatePronunciation = ["wǒ","nǐ","tā","tā","wǒmen","tāmen","tāmen","zhè","zhèxiē","nà","nàxiē"]
-    
-    var IntermediateEnglish = [
+    var personalPronounsSentence = ["我", "你", "他", "她", "它", "我们", "你们", "他们", "她们", "它们"]
+    var personalPronounsPronunciation = ["wǒ", "nǐ", "tā", "tā", "tā", "wǒmen", "nǐmen", "tāmen", "tāmen", "tāmen"]
+    var personalPronounsEnglish = [
         NSLocalizedString("I", comment: ""),
         NSLocalizedString("you", comment: ""),
         NSLocalizedString("he", comment: ""),
         NSLocalizedString("she", comment: ""),
+        NSLocalizedString("it", comment: ""),
         NSLocalizedString("we", comment: ""),
+        NSLocalizedString("you (plural)", comment: ""),
         NSLocalizedString("they (male)", comment: ""),
         NSLocalizedString("they (female)", comment: ""),
+        NSLocalizedString("they (neuter)", comment: "")
+    ]
+
+    // 指示代名詞（Demonstrative Pronouns）
+    var demonstrativePronounsSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["这", "这些", "那", "那些"
+        ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
+    ]
+    var demonstrativePronounsSentence = ["这", "这些", "那", "那些"]
+    var demonstrativePronounsPronunciation = ["zhè", "zhèxiē", "nà", "nàxiē"]
+    var demonstrativePronounsEnglish = [
         NSLocalizedString("this", comment: ""),
         NSLocalizedString("these", comment: ""),
         NSLocalizedString("that", comment: ""),
         NSLocalizedString("those", comment: "")
     ]
+
+    // 疑問代名詞（Interrogative Pronouns）
+    var interrogativePronounsSentenceArray = [
+        ExpandableNames(isExpanded: true, names: [
+            "谁", "什么", "哪", "哪些", "什么时候", "哪里", "为什么", "怎么", "多少"
+        ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
+    ]
+
+    var interrogativePronounsSentence = ["谁", "什么", "哪", "哪些", "什么时候", "哪里", "为什么", "怎么", "多少"]
+    var interrogativePronounsPronunciation = ["shéi", "shénme", "nǎ", "nǎxiē", "shénme shíhou", "nǎlǐ", "wèishénme", "zěnme", "duōshǎo"]
+    var interrogativePronounsEnglish = [
+        NSLocalizedString("who", comment: ""),
+        NSLocalizedString("what", comment: ""),
+        NSLocalizedString("which", comment: ""),
+        NSLocalizedString("which ones", comment: ""),
+        NSLocalizedString("when", comment: ""),
+        NSLocalizedString("where", comment: ""),
+        NSLocalizedString("why", comment: ""),
+        NSLocalizedString("how", comment: ""),
+        NSLocalizedString("how many", comment: "")
+    ]
+
+
     
     // Advanced Page
     var  AdvancedSentenceArray = [

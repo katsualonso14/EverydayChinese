@@ -184,12 +184,6 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
             sentenceView.dramaSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
-        } else {
-            sentenceView.dramaSentenceArray = [
-                ExpandableNames(isExpanded: true, names: [
-                    "真的吗？", "我懂了", "没关系", "加油", "不要紧","放松", "真是的", "怎么了？", "别这样", "随便"
-                ].map { Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false) })
-            ]
         }
     }
     //cellの数
