@@ -4,7 +4,7 @@ import UIKit
 class CategoryViewController: UIViewController {
     // 各カテゴリのViewControllerをインスタンス化
     let greetingVC = GreetingsViewController(titleName: "Greetings")
-    let pronounsVC = PersonalPronounsViewController(titleName: "Pronouns")
+    let personalPronounsVC = PersonalPronounsViewController(titleName: "Personal Pronouns")
     let dailyVC = DailyTalkViewController(titleName: "Daily conversation")
     let tripVC = TripViewController(titleName: "Trip")
     let restaurantVC = RestaurantViewController(titleName: "Restaurant")
@@ -17,6 +17,9 @@ class CategoryViewController: UIViewController {
     let tripButton:UIButton = UIButton()
     let restaurantButton:UIButton = UIButton()
     let dramaButton:UIButton = UIButton()
+    let personalPronounsButton:UIButton = UIButton()
+    let demonstrativePronounsButton:UIButton = UIButton()
+    let interrogativePronounsButton:UIButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +33,9 @@ class CategoryViewController: UIViewController {
         setupRestaurantButton()
         setupDramaButton()
         // TODO: Pronaunts追加
+        setupPersonalPronounsButton()
+        setupDemonstrativePronounsButton()
+        setupInterrogativePronounsButton()
         setDeleteNotifButton()
         setRewordAdButton()
     }
@@ -89,18 +95,18 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            dailyButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 30),
+            dailyButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 50),
             dailyButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            dailyButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
-            dailyButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            dailyButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            dailyButton.heightAnchor.constraint(equalTo: dailyButton.widthAnchor),
             // title
-            titleLabel.topAnchor.constraint(equalTo: dailyButton.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: dailyButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
             // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.topAnchor.constraint(equalTo: dailyButton.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: dailyButton.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.widthAnchor.constraint(equalTo: dailyButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: dailyButton.heightAnchor),
         ])
     }
     // 挨拶ボタン
@@ -126,18 +132,18 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            greetingButton.topAnchor.constraint(equalTo: dailyButton.bottomAnchor, constant: 70),
+            greetingButton.topAnchor.constraint(equalTo: dailyButton.bottomAnchor, constant: 50),
             greetingButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            greetingButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
-            greetingButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            greetingButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            greetingButton.heightAnchor.constraint(equalTo: greetingButton.widthAnchor),
             // title
-            titleLabel.topAnchor.constraint(equalTo: greetingButton.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: greetingButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
             // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.topAnchor.constraint(equalTo: greetingButton.topAnchor),
             imageView.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: greetingButton.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.widthAnchor.constraint(equalTo: greetingButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: greetingButton.heightAnchor)
         ])
     }
     
@@ -164,18 +170,18 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            tripButton.topAnchor.constraint(equalTo: greetingButton.bottomAnchor, constant: 70),
+            tripButton.topAnchor.constraint(equalTo: greetingButton.bottomAnchor, constant: 50),
             tripButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
-            tripButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            tripButton.heightAnchor.constraint(equalTo: tripButton.widthAnchor),
             // title
-            titleLabel.topAnchor.constraint(equalTo: tripButton.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: tripButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
             // imageView
             imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
             imageView.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: tripButton.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.widthAnchor.constraint(equalTo: tripButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: tripButton.heightAnchor),
         ])
     }
     // レストラン用ボタン
@@ -201,18 +207,18 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            restaurantButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 70),
+            restaurantButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 50),
             restaurantButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            restaurantButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
-            restaurantButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            restaurantButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            restaurantButton.heightAnchor.constraint(equalTo:restaurantButton.widthAnchor),
             // title
-            titleLabel.topAnchor.constraint(equalTo: restaurantButton.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: restaurantButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
             // imageView
             imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
             imageView.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: restaurantButton.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.widthAnchor.constraint(equalTo: restaurantButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: restaurantButton.heightAnchor),
         ])
     }
     // ドラマ用ボタン用
@@ -238,21 +244,131 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            dramaButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 70),
+            dramaButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 50),
             dramaButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.3),
-            dramaButton.heightAnchor.constraint(equalTo: self.container.heightAnchor, multiplier: 0.03),
+            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            dramaButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
             // title
-            titleLabel.topAnchor.constraint(equalTo: dramaButton.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: dramaButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
             // imageView
             imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
             imageView.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: dramaButton.widthAnchor, multiplier: 0.8),
-            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
+            imageView.widthAnchor.constraint(equalTo: dramaButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: dramaButton.heightAnchor)
         ])
     }
-    //TODO: ここから下のUI修正
+    // 人物名詞ボタン
+    func setupPersonalPronounsButton() {
+        self.container.addSubview(personalPronounsButton)
+        personalPronounsButton.translatesAutoresizingMaskIntoConstraints = false
+        personalPronounsButton.addTarget(self, action: #selector(pushPersonalPronounsButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "PersonalPronouns"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        personalPronounsButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Personal Pronouns"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        personalPronounsButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            personalPronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
+            personalPronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            personalPronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            personalPronounsButton.heightAnchor.constraint(equalTo: personalPronounsButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: personalPronounsButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: personalPronounsButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: personalPronounsButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: personalPronounsButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: personalPronounsButton.heightAnchor)
+        ])
+    }
+    // 名詞ボタン(これ・それ）
+    func setupDemonstrativePronounsButton() {
+        self.container.addSubview(demonstrativePronounsButton)
+        demonstrativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
+        demonstrativePronounsButton.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Demonstartive Pronouns"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        demonstrativePronounsButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Demonstrative Pronouns"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        demonstrativePronounsButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            demonstrativePronounsButton.topAnchor.constraint(equalTo: personalPronounsButton.bottomAnchor, constant: 50),
+            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            demonstrativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            demonstrativePronounsButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: demonstrativePronounsButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: demonstrativePronounsButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: demonstrativePronounsButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: demonstrativePronounsButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: demonstrativePronounsButton.heightAnchor)
+        ])
+    }
+    //
+    func setupInterrogativePronounsButton() {
+        self.container.addSubview(interrogativePronounsButton)
+        interrogativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
+        interrogativePronounsButton.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Interrogative Pronouns"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        interrogativePronounsButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Interrogative Pronouns"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        interrogativePronounsButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            interrogativePronounsButton.topAnchor.constraint(equalTo: demonstrativePronounsButton.bottomAnchor, constant: 50),
+            interrogativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            interrogativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            interrogativePronounsButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: interrogativePronounsButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: interrogativePronounsButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: interrogativePronounsButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: interrogativePronounsButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: interrogativePronounsButton.heightAnchor)
+        ])
+    }
     
     func setDeleteNotifButton() {
         let button = UIButton(type: .system)
@@ -286,9 +402,19 @@ class CategoryViewController: UIViewController {
         let vc = RestaurantViewController(titleName: "Restaurant")
         navigationController?.pushViewController(vc, animated: true)
     }
-    
     @objc func pushDramaButton(sender: UIButton){
         navigationController?.pushViewController(dramaVC, animated: true)
+    }
+    @objc func pushPersonalPronounsButton(sender: UIButton){
+        navigationController?.pushViewController(personalPronounsVC, animated: true)
+    }
+    @objc func pushDemonstrativePronounsButton(sender: UIButton) {
+        let vc = DemonstrativePronounsViewController(titleName: "Demonstrative Pronouns")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushInterrogativePronounsButton(sender: UIButton) {
+        let vc = InterrogativePronounsViewController(titleName: "Interrogative Pronouns")
+        navigationController?.pushViewController(vc, animated: true)
     }
     // 全てのリマインドを削除
     @objc func openAllNotifDeleteAleart(){
@@ -335,7 +461,7 @@ class CategoryViewController: UIViewController {
     // 全てのハートボタンの状態を削除
     func deleteAllFavorites() {
         UserDefaults.standard.removeObject(forKey: greetingVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: pronounsVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: personalPronounsVC.favoritesLocalKey)
         UserDefaults.standard.removeObject(forKey: dailyVC.favoritesLocalKey)
         UserDefaults.standard.removeObject(forKey: tripVC.favoritesLocalKey)
         UserDefaults.standard.removeObject(forKey: restaurantVC.favoritesLocalKey)
