@@ -265,7 +265,7 @@ class CategoryViewController: UIViewController {
         personalPronounsButton.addTarget(self, action: #selector(pushPersonalPronounsButton), for: .touchUpInside)
         
         let titleLabel = UILabel()
-        titleLabel.text = "PersonalPronouns"
+        titleLabel.text = "Personal"
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = AppColors.textColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -282,7 +282,7 @@ class CategoryViewController: UIViewController {
         NSLayoutConstraint.activate([
             // button
             personalPronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
-            personalPronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            personalPronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor, constant: -90),
             personalPronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
             personalPronounsButton.heightAnchor.constraint(equalTo: personalPronounsButton.widthAnchor),
             // title
@@ -299,10 +299,10 @@ class CategoryViewController: UIViewController {
     func setupDemonstrativePronounsButton() {
         self.container.addSubview(demonstrativePronounsButton)
         demonstrativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
-        demonstrativePronounsButton.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
+        demonstrativePronounsButton.addTarget(self, action: #selector(pushDemonstrativePronounsButton), for: .touchUpInside)
         
         let titleLabel = UILabel()
-        titleLabel.text = "Demonstartive Pronouns"
+        titleLabel.text = "Demonstartive"
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = AppColors.textColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -318,10 +318,10 @@ class CategoryViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             // button
-            demonstrativePronounsButton.topAnchor.constraint(equalTo: personalPronounsButton.bottomAnchor, constant: 50),
-            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            demonstrativePronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
+            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor, constant: 90),
             demonstrativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            demonstrativePronounsButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
+            demonstrativePronounsButton.heightAnchor.constraint(equalTo: demonstrativePronounsButton.widthAnchor),
             // title
             titleLabel.topAnchor.constraint(equalTo: demonstrativePronounsButton.topAnchor, constant: -7),
             titleLabel.centerXAnchor.constraint(equalTo: demonstrativePronounsButton.centerXAnchor),
@@ -339,7 +339,7 @@ class CategoryViewController: UIViewController {
         interrogativePronounsButton.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
         
         let titleLabel = UILabel()
-        titleLabel.text = "Interrogative Pronouns"
+        titleLabel.text = "Interrogative"
         titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
         titleLabel.textColor = AppColors.textColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
