@@ -32,7 +32,6 @@ class CategoryViewController: UIViewController {
         setupTripButton()
         setupRestaurantButton()
         setupDramaButton()
-        // TODO: Pronaunts追加
         setupPersonalPronounsButton()
         setupDemonstrativePronounsButton()
         setupInterrogativePronounsButton()
