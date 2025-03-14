@@ -386,7 +386,7 @@ class CategoryViewController: UIViewController {
     
 // MARK: - objc
     @objc func pushDailyButton(sender: UIButton){
-        let vc = DailyConverViewController()
+        let vc = DailyTalkViewController(titleName: "Daily conversation")
         navigationController?.pushViewController(vc, animated: true)
     }
     @objc func pushGreetingButton(sender: UIButton){
