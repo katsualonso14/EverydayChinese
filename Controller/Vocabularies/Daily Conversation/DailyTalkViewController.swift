@@ -8,8 +8,8 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
 
     let titleName: String
     let sentenceView = SentenceViewController()
-    let  synthesizer = AVSpeechSynthesizer()
-    //     マナーモード時音鳴らすための宣言 AVAudioSession
+    let synthesizer = AVSpeechSynthesizer()
+    // マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()

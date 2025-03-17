@@ -38,10 +38,10 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         categoryViewController.tabBarItem.title = "Word&Sentence"
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         
-        let calendarVC = CalendarViewController()
-        calendarVC.tabBarItem.image = UIImage(systemName: "calendar")
-        calendarVC.tabBarItem.title = "Calendar"
-        let nv4 = UINavigationController(rootViewController: calendarVC)
+        let remindListVC = RemindListController()
+        remindListVC.tabBarItem.image = UIImage(systemName: "list.bullet.clipboard")
+        remindListVC.tabBarItem.title = "Remind List"
+        let nv4 = UINavigationController(rootViewController: remindListVC)
         
         setViewControllers([nv3, nv1, nv2, nv4], animated: false)
     }
