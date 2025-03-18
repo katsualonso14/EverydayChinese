@@ -4,15 +4,18 @@ import FirebaseFirestore
 
 
 class RemindListController: UITableViewController {
-    var sentences: [String] = ["test1", "test2", "test3"]
-    var pronunciations: [String] = ["pronunciation1", "pronunciation2", "pronunciation3"]
-    var meanings: [String] = ["meaning1", "meaning2", "meaning3"]
+    var sentences: [String] = []
+    var pronunciations: [String] = []
+    var meanings: [String] = []
    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Remind List"
         setupFeedBackForm()
         setupCalendarButton()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateData(_:)), name: NSNotification.Name("addRemind"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteData(_:)), name: Notification.Name("deleteRemind"), object: nil)
+            
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -79,9 +82,37 @@ class RemindListController: UITableViewController {
         navigationController?.pushViewController(calendarVC, animated: true)
     }
     
+    @objc func updateData(_ notification: Notification) {
+        guard let data = notification.userInfo as? [String: String] else { return }
+        //同じものがあれば追加しない
+        if sentences.contains(data["sentence"]!) {
+            return
+        } else {
+            sentences.append(data["sentence"]!)
+            pronunciations.append(data["pronunciation"]!)
+            meanings.append(data["meaning"]!)
+            tableView.reloadData()
+        }
+    }
+    
+    @objc func deleteData(_ notification: Notification) {
+        guard let tapSentence = notification.userInfo?["sentence"] as? String else { return }
+        
+        // sentenceが一致している行を取得し削除
+        let rowIndex = sentences.firstIndex(of: tapSentence)!
+        sentences.remove(at: rowIndex)
+        pronunciations.remove(at: rowIndex)
+        meanings.remove(at: rowIndex)
+        
+        // TableViewの行を削除
+        tableView.deleteRows(at: [IndexPath(row: rowIndex, section: 0)], with: .automatic)
+    }
+
+    
+    
     //MARK: -Tableview
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return sentences.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -118,11 +118,13 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         content.body = contact.name
         content.sound = UNNotificationSound.default
         content.userInfo = ["page": "advanced"]
-        //通知設定
+        // ハートボタンの色の変化による処理
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -240,6 +242,28 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         
         print("request is \(content.title)")
     }
+    //RemindListへの追加
+    func addRemindList(tappedRow: Int) {
+        print("Add RemindList")
+        let data = [
+            "sentence": sentenceView.AdvancedSentence[tappedRow],
+            "pronunciation": sentenceView.AdvancedPronunciation[tappedRow],
+            "meaning": sentenceView.AdvancedEnglish[tappedRow]
+        ]
+        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
+        
+    }
+    //RemindListからの削除
+    //TODO: ここの動きを修正
+    func deleteRemindList(tappedRow: Int) {
+        print("Delete Remind List")
+        let dataToDelete = ["sentence": sentenceView.AdvancedSentence[tappedRow]]
+        NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
+    }
+
+    
+    
+    
 }
     
     
