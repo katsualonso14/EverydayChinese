@@ -84,26 +84,19 @@ class RemindListController: UITableViewController {
     
     @objc func updateData(_ notification: Notification) {
         guard let data = notification.userInfo as? [String: String] else { return }
-        //同じものがあれば追加しない
-        if sentences.contains(data["sentence"]!) {
-            return
-        } else {
+        //TODO: 複数を許容するか要確認
             sentences.append(data["sentence"]!)
             pronunciations.append(data["pronunciation"]!)
             meanings.append(data["meaning"]!)
             tableView.reloadData()
-        }
     }
     
     @objc func deleteData(_ notification: Notification) {
         guard let tapSentence = notification.userInfo?["sentence"] as? String else { return }
-        
-        // sentenceが一致している行を取得し削除
-        let rowIndex = sentences.firstIndex(of: tapSentence)!
+        guard let rowIndex = sentences.firstIndex(of: tapSentence) else { return }
         sentences.remove(at: rowIndex)
         pronunciations.remove(at: rowIndex)
         meanings.remove(at: rowIndex)
-        
         // TableViewの行を削除
         tableView.deleteRows(at: [IndexPath(row: rowIndex, section: 0)], with: .automatic)
     }

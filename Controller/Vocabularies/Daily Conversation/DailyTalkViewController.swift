@@ -148,8 +148,10 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -244,7 +246,6 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
     }
     //RemindListへの追加
     func addRemindList(tappedRow: Int) {
-        print("Add RemindList")
         let data = [
             "sentence": sentenceView.AdvancedSentence[tappedRow],
             "pronunciation": sentenceView.AdvancedPronunciation[tappedRow],
@@ -254,9 +255,7 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         
     }
     //RemindListからの削除
-    //TODO: ここの動きを修正
     func deleteRemindList(tappedRow: Int) {
-        print("Delete Remind List")
         let dataToDelete = ["sentence": sentenceView.AdvancedSentence[tappedRow]]
         NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
     }
