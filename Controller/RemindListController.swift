@@ -13,9 +13,9 @@ class RemindListController: UITableViewController {
         navigationItem.title = "Remind List"
         setupFeedBackForm()
         setupCalendarButton()
+        loadRemind()
         NotificationCenter.default.addObserver(self, selector: #selector(updateData(_:)), name: NSNotification.Name("addRemind"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteData(_:)), name: Notification.Name("deleteRemind"), object: nil)
-            
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -59,6 +59,15 @@ class RemindListController: UITableViewController {
         }
     }
     
+    //リマインドのローカルからの読み込み
+    func loadRemind() {
+        if let remindArray = UserDefaults.standard.stringArray(forKey: "remind") {
+            print("remindArray: \(remindArray)")
+            sentences = remindArray
+        }
+        tableView.reloadData()
+    }
+    
     //MARK: -objc
     @objc func openFeedbackModal() {
         let alert = UIAlertController(title: "Feedback",
@@ -86,8 +95,6 @@ class RemindListController: UITableViewController {
         guard let data = notification.userInfo as? [String: String] else { return }
         //TODO: 複数を許容するか要確認
             sentences.append(data["sentence"]!)
-            pronunciations.append(data["pronunciation"]!)
-            meanings.append(data["meaning"]!)
             tableView.reloadData()
     }
     
@@ -95,13 +102,9 @@ class RemindListController: UITableViewController {
         guard let tapSentence = notification.userInfo?["sentence"] as? String else { return }
         guard let rowIndex = sentences.firstIndex(of: tapSentence) else { return }
         sentences.remove(at: rowIndex)
-        pronunciations.remove(at: rowIndex)
-        meanings.remove(at: rowIndex)
         // TableViewの行を削除
         tableView.deleteRows(at: [IndexPath(row: rowIndex, section: 0)], with: .automatic)
     }
-
-    
     
     //MARK: -Tableview
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -110,13 +113,13 @@ class RemindListController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "remindCell") as! RemindListCell
-        cell.setCell(sentence: sentences[indexPath.row], pronunciation: pronunciations[indexPath.row], japanese: meanings[indexPath.row])
+        cell.setCell(sentence: sentences[indexPath.row])
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 180
+        return 80
     }
     
     //TODO: タップ時に発音を
