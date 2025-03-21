@@ -13,7 +13,6 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         super.viewDidLoad()
         setupTab()
         NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingAuthorized"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleTrackingStatus), name: NSNotification.Name("TrackingNotAuthorized"), object: nil)
     }
     
     //MARK: -Layout
