@@ -32,6 +32,7 @@ class DescriptionView: UIView {
         label.frame = CGRect(x: 20, y: 180, width: 280, height: 20)
         label.font = UIFont.systemFont(ofSize: 15)
         label.numberOfLines = 0
+        label.textColor = .systemBackground
         addSubview(label)
         
         // チェックボックスの説明

@@ -8,8 +8,8 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
 
     let titleName: String
     let sentenceView = SentenceViewController()
-    let  synthesizer = AVSpeechSynthesizer()
-    //     マナーモード時音鳴らすための宣言 AVAudioSession
+    let synthesizer = AVSpeechSynthesizer()
+    // マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
@@ -118,11 +118,13 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         content.body = contact.name
         content.sound = UNNotificationSound.default
         content.userInfo = ["page": "advanced"]
-        //通知設定
+        // ハートボタンの色の変化による処理
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -146,8 +148,10 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -172,8 +176,10 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -198,8 +204,10 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -239,6 +247,36 @@ class DailyTalkViewController: UITableViewController,AVAudioPlayerDelegate, AVSp
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
         
         print("request is \(content.title)")
+    }
+    //TODO: ローカル保存のみで対応するためこの関数と削除関数の削除対応
+    //　現状はNotificationCenterとローカル保存の２つで対応
+    //RemindListへの追加
+    func addRemindList(tappedRow: Int) {
+        // 別VCへの値渡し
+        let data = ["sentence": sentenceView.AdvancedSentence[tappedRow]]
+        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
+        
+        //ローカルへの保存
+        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
+            savedRemindData.append(sentenceView.AdvancedSentence[tappedRow])
+            UserDefaults.standard.set(savedRemindData, forKey: "remind")
+        } else {
+            UserDefaults.standard.set([sentenceView.AdvancedSentence[tappedRow]], forKey: "remind")
+        }
+        
+    }
+    //RemindListからの削除
+    func deleteRemindList(tappedRow: Int) {
+        let dataToDelete = ["sentence": sentenceView.AdvancedSentence[tappedRow]]
+        NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
+        
+        //ローカルからの削除
+        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
+            savedRemindData.removeAll { $0 == sentenceView.AdvancedSentence[tappedRow] }
+            UserDefaults.standard.set(savedRemindData, forKey: "remind")
+        } else {
+            print("No data to delete")
+        }
     }
 }
     

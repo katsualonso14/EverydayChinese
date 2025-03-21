@@ -135,11 +135,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // 連続ログイン通知設定
     func scheduleDailyNotification() {
         let center = UNUserNotificationCenter.current()
+        // 既存の通知を削除
+        center.removePendingNotificationRequests(withIdentifiers: ["dailyLoginNotification"])
         
         let content = UNMutableNotificationContent()
         let loginDays = getConsecutiveLoginDays()
-        content.title = "You've logged in for \(loginDays) consecutive days!"
-        content.body = "Impressive! Keep it up!"
+        // 2日以内の場合は通知しない
+        if(loginDays < 2) {
+            return
+        }
+        
+        content.title = "Consecutive Logins"
+        content.body = "You have logged in for \(loginDays) days in a row! Keep it up!"
         content.sound = .default
         content.userInfo = ["page": "calendar"] // 通知をタップした際にカレンダーページへ遷移指定
         
@@ -148,7 +155,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         dateComponents.minute = 0
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
         let request = UNNotificationRequest(identifier: "dailyLoginNotification", content: content, trigger: trigger)
         
         center.add(request) { error in

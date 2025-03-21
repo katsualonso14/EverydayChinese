@@ -18,11 +18,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" insetsLayoutMarginsFromSafeArea="NO" image="LaunchScreenIcon" id="vLS-yt-hkO">
-                                <rect key="frame" x="42" y="236" width="328" height="556"/>
+                                <rect key="frame" x="79" y="273" width="282" height="500"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Learn Chinese" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" id="OwK-k6-zlM">
-                                <rect key="frame" x="42" y="164" width="356" height="329"/>
+                                <rect key="frame" x="103" y="236" width="235" height="29"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" systemColor="systemRedColor"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="31"/>
@@ -36,7 +36,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+            <point key="canvasLocation" x="51.81818181818182" y="374.68619246861925"/>
         </scene>
     </scenes>
     <resources>

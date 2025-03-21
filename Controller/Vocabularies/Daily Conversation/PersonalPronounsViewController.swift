@@ -123,10 +123,11 @@ class PersonalPronounsViewController: UITableViewController,AVAudioPlayerDelegat
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
-        print(hasFavorited)
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
@@ -149,8 +150,10 @@ class PersonalPronounsViewController: UITableViewController,AVAudioPlayerDelegat
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -175,8 +178,10 @@ class PersonalPronounsViewController: UITableViewController,AVAudioPlayerDelegat
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -201,8 +206,10 @@ class PersonalPronounsViewController: UITableViewController,AVAudioPlayerDelegat
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
+            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
         } else {
             pushDelete()
+            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
@@ -242,6 +249,35 @@ class PersonalPronounsViewController: UITableViewController,AVAudioPlayerDelegat
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
         
         print("request is \(content.title)")
+    }
+    
+    //RemindListへの追加
+    func addRemindList(tappedRow: Int) {
+        // 別VCへの値渡し
+        let data = ["sentence": sentenceView.personalPronounsSentence[tappedRow]]
+        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
+        
+        //ローカルへの保存
+        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
+            savedRemindData.append(sentenceView.personalPronounsSentence[tappedRow])
+            UserDefaults.standard.set(savedRemindData, forKey: "remind")
+        } else {
+            UserDefaults.standard.set([sentenceView.personalPronounsSentence[tappedRow]], forKey: "remind")
+        }
+        
+    }
+    //RemindListからの削除
+    func deleteRemindList(tappedRow: Int) {
+        let dataToDelete = ["sentence": sentenceView.personalPronounsSentence[tappedRow]]
+        NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
+        
+        //ローカルからの削除
+        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
+            savedRemindData.removeAll { $0 == sentenceView.personalPronounsSentence[tappedRow] }
+            UserDefaults.standard.set(savedRemindData, forKey: "remind")
+        } else {
+            print("No data to delete")
+        }
     }
 }
     
