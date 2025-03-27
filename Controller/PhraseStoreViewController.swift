@@ -90,16 +90,8 @@ class PhraseStoreViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Words"
-        tableView.tableHeaderView = searchController.searchBar
-        // Layout Setting
-        tableView.tableHeaderView?.layer.cornerRadius = 16
-        tableView.tableHeaderView?.layer.masksToBounds = true
-        tableView.tableHeaderView?.layer.borderWidth = 5
-        tableView.tableHeaderView?.layer.borderColor = UIColor.systemGray6.cgColor
-        
-        searchController.searchBar.backgroundImage = UIImage() // 背景を透明に設定
-        searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
-        definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     //MARK: - Function

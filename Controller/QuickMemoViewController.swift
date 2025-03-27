@@ -106,16 +106,9 @@ class QuickMemoViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Words"
-        tableView.tableHeaderView = searchController.searchBar
-        // Layout Setting
-        tableView.tableHeaderView?.layer.cornerRadius = 16
-        tableView.tableHeaderView?.layer.masksToBounds = true
-        tableView.tableHeaderView?.layer.borderWidth = 5
-        tableView.tableHeaderView?.layer.borderColor = UIColor.systemGray6.cgColor
         
-        searchController.searchBar.backgroundImage = UIImage() // 背景を透明に設定
-        searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
-        definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     //MARK: - Helper Function
     func checkIsDescription() {
@@ -266,7 +259,11 @@ class QuickMemoViewController: UIViewController {
 //MARK: - TableView DataSource
 extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return QuickMemo.count
+        if isSearching {
+            return filteredWords.count
+        } else {
+            return QuickMemo.count
+        }
     }
     // 各セクションに対して1つだけ入れるように設定(スペースのため）
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -296,7 +293,11 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
         
-        cell.label.text = QuickMemo[indexPath.section]
+        if isSearching {
+            cell.label.text = filteredWords[indexPath.section]
+        } else {
+            cell.label.text = QuickMemo[indexPath.section]
+        }
         
         return cell
     }

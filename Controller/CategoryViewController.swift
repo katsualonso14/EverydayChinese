@@ -53,7 +53,7 @@ class CategoryViewController: UIViewController {
             
         ])
         // contentSizeを設定
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1500)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2400)
     }
     
     func setupContainer() {
@@ -65,7 +65,7 @@ class CategoryViewController: UIViewController {
             container.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            container.heightAnchor.constraint(equalToConstant: 1500), // 全体の高さを設定
+            container.heightAnchor.constraint(equalToConstant: 2400), // 全体の高さを設定
             container.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             
         ])
@@ -318,7 +318,7 @@ class CategoryViewController: UIViewController {
         NSLayoutConstraint.activate([
             // button
             demonstrativePronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
-            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor, constant: 90),
+            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: personalPronounsButton.trailingAnchor, constant: 140),
             demonstrativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
             demonstrativePronounsButton.heightAnchor.constraint(equalTo: demonstrativePronounsButton.widthAnchor),
             // title
