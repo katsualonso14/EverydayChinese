@@ -77,8 +77,8 @@ class DescriptionView: UIView {
         
         label.text = discriptNumber == 1 ?
         "You can write down words you don't understand or are curious about in your daily life quickly and easily."
-        : discriptNumber == 2 ? "You can save sentences and situations with words that you want to remember in Quick Memo." :
-        "You can save words and sentences that you want to remember and situations when you find them in PhraseStore."
+        : discriptNumber == 2 ? "You can save sentences and memo with words that you want to remember in Quick Memo." :
+        "You can save words and sentences that you want to remember and memo when you find them in PhraseStore."
         label.sizeToFit()
         
         button.setTitle(discriptNumber == 3 ? "Close" : "Next", for: .normal)

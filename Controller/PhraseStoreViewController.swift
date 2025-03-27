@@ -6,11 +6,11 @@ class PhraseStoreViewController: UIViewController {
     //TODO: UseDefaultsの値のみで良い場合は削除を検討
     var words = [String]()
     var sentences = [String]()
-    var situation = [String]()
+    var memo = [String]()
     let searchController = UISearchController(searchResultsController: nil)
     var filteredWords = [String]()
     var filteredSentences = [String]()
-    var filteredSituations = [String]()
+    var filteredMemo = [String]()
     var isSearching = false // 検索中かどうか判定
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ class PhraseStoreViewController: UIViewController {
         // 遷移のたびに確認
         words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
+        memo = UserDefaults.standard.stringArray(forKey: "memo") ?? []
         tableView.reloadData()
     }
     
@@ -58,7 +58,7 @@ class PhraseStoreViewController: UIViewController {
         
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        self.situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
+        self.memo = UserDefaults.standard.stringArray(forKey: "memo") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -106,7 +106,7 @@ class PhraseStoreViewController: UIViewController {
             textField.placeholder = "Enter sentence..."
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter situation..."
+            textField.placeholder = "Enter memo..."
         }
         
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -148,10 +148,10 @@ class PhraseStoreViewController: UIViewController {
             if let filed3 = aleat.textFields?.last {
                 if let text3 = filed3.text, !text3.isEmpty {
                     DispatchQueue.main.async {
-                        var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
-                        currentSituation.append(text3)
-                        UserDefaults.standard.setValue(currentSituation, forKey: "situation")
-                        self?.situation.append(text3)
+                        var currentMemo = UserDefaults.standard.array(forKey: "memo") ?? []
+                        currentMemo.append(text3)
+                        UserDefaults.standard.setValue(currentMemo, forKey: "memo")
+                        self?.memo.append(text3)
                         self?.tableView.reloadData()
                     }
                 }
@@ -162,12 +162,12 @@ class PhraseStoreViewController: UIViewController {
         present(aleat, animated: true)
     }
     // メモの編集処理
-    func openEditMemo(word: String, sentence: String, situation: String, index: Int) {
-        let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, situation", preferredStyle: .alert)
+    func openEditMemo(word: String, sentence: String, memo: String, index: Int) {
+        let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, memo", preferredStyle: .alert)
         
         alert.addTextField { $0.text = word }
         alert.addTextField { $0.text = sentence }
-        alert.addTextField { $0.text = situation }
+        alert.addTextField { $0.text = memo }
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -176,7 +176,7 @@ class PhraseStoreViewController: UIViewController {
             guard let textFields = alert.textFields,
                   let newWord = textFields[0].text, !newWord.isEmpty,
                   let newSentence = textFields[1].text, !newSentence.isEmpty,
-                  let newSituation = textFields[2].text, !newSituation.isEmpty else {
+                  let newMemo = textFields[2].text, !newMemo.isEmpty else {
                 let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(errorAlert, animated: true)
@@ -186,12 +186,12 @@ class PhraseStoreViewController: UIViewController {
             // データ更新
             self.words[index] = newWord
             self.sentences[index] = newSentence
-            self.situation[index] = newSituation
+            self.memo[index] = newMemo
             
             // UserDefaults の更新を一回でまとめる
             UserDefaults.standard.setValue(self.words, forKey: "word")
             UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
-            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            UserDefaults.standard.setValue(self.memo, forKey: "memo")
             
             // テーブルをリロード（UI更新はメインスレッドで）
             DispatchQueue.main.async {
@@ -210,9 +210,9 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     // テーブルビューのセクション数を返す
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
-            return min(filteredWords.count, filteredSentences.count, filteredSituations.count)
+            return min(filteredWords.count, filteredSentences.count, filteredMemo.count)
         } else {
-            return min(words.count, sentences.count, situation.count)
+            return min(words.count, sentences.count, memo.count)
         }
     }
 
@@ -229,17 +229,17 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
         
         guard indexPath.row < (isSearching ? filteredWords.count : words.count),
               indexPath.row < (isSearching ? filteredSentences.count : sentences.count),
-              indexPath.row < (isSearching ? filteredSituations.count : situation.count) else {
+              indexPath.row < (isSearching ? filteredMemo.count : memo.count) else {
             return cell
         }
         
         let word = isSearching ? filteredWords[indexPath.row] : words[indexPath.row]
         let sentence = isSearching ? filteredSentences[indexPath.row] : sentences[indexPath.row]
-        let situation = isSearching ? filteredSituations[indexPath.row] : situation[indexPath.row]
+        let memo = isSearching ? filteredMemo[indexPath.row] : memo[indexPath.row]
 
         cell.label.text = "Word: \(word)"
         cell.secondLabel.text = "Sentence: \(sentence)"
-        cell.thirdLabel.text = "Situation: \(situation)"
+        cell.thirdLabel.text = "Memo: \(memo)"
         
         return cell
     }
@@ -259,14 +259,14 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 self.openEditMemo(
                     word: self.words[originalIndex],
                     sentence: self.sentences[originalIndex],
-                    situation: self.situation[originalIndex],
+                    memo: self.memo[originalIndex],
                     index: originalIndex
                 )
             } else {
                 self.openEditMemo(
                     word: self.words[indexPath.row],
                     sentence: self.sentences[indexPath.row],
-                    situation: self.situation[indexPath.row],
+                    memo: self.memo[indexPath.row],
                     index: indexPath.row
                 )
             }
@@ -280,20 +280,20 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 let originalIndex = self.words.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
                 self.words.remove(at: originalIndex)
                 self.sentences.remove(at: originalIndex)
-                self.situation.remove(at: originalIndex)
+                self.memo.remove(at: originalIndex)
 
                 self.filteredWords.remove(at: indexPath.row)
                 self.filteredSentences.remove(at: indexPath.row)
-                self.filteredSituations.remove(at: indexPath.row)
+                self.filteredMemo.remove(at: indexPath.row)
             } else {
                 self.words.remove(at: indexPath.row)
                 self.sentences.remove(at: indexPath.row)
-                self.situation.remove(at: indexPath.row)
+                self.memo.remove(at: indexPath.row)
             }
             
             UserDefaults.standard.setValue(self.words, forKey: "word")
             UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
-            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            UserDefaults.standard.setValue(self.memo, forKey: "memo")
             
             tableView.deleteRows(at: [indexPath], with: .fade)
             completionHandler(true)
@@ -322,19 +322,19 @@ extension PhraseStoreViewController: UISearchResultsUpdating {
         isSearching = true
         filteredWords.removeAll()
         filteredSentences.removeAll()
-        filteredSituations.removeAll()
+        filteredMemo.removeAll()
 
         for (index, word) in words.enumerated() {
             let sentence = sentences[index]
-            let situ = situation[index]
+            let memo = memo[index]
 
-            // words, sentences, situation のどれかに検索ワードが含まれていたら追加
+            // words, sentences, memo のどれかに検索ワードが含まれていたら追加
             if word.lowercased().contains(searchText.lowercased()) ||
                sentence.lowercased().contains(searchText.lowercased()) ||
-               situ.lowercased().contains(searchText.lowercased()) {
+               memo.lowercased().contains(searchText.lowercased()) {
                 filteredWords.append(word)
                 filteredSentences.append(sentence)
-                filteredSituations.append(situ)
+                filteredMemo.append(memo)
             }
         }
         tableView.reloadData()

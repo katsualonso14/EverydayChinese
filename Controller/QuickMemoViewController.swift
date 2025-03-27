@@ -120,13 +120,13 @@ class QuickMemoViewController: UIViewController {
     // PhraseStoreに追加
     func addPhraseStore(word: String) {
         let phraseStoreVC = PhraseStoreViewController()
-        let aleat = UIAlertController(title: "Save Memo with sentence", message: "save sentence and situation \nwith check vocaburaly: \(word)", preferredStyle: .alert)
+        let aleat = UIAlertController(title: "Save Memo with sentence", message: "save sentence and memo \nwith check vocaburaly: \(word)", preferredStyle: .alert)
         
         aleat.addTextField{ (textField) in
             textField.placeholder = "Enter sentence..."
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter situation..."
+            textField.placeholder = "Enter memo..."
         }
         
         aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -164,10 +164,10 @@ class QuickMemoViewController: UIViewController {
             if let filed2 = aleat.textFields?.last {
                 if let text2 = filed2.text, !text2.isEmpty {
                     DispatchQueue.main.async {
-                        var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
-                        currentSituation.append(text2)
-                        UserDefaults.standard.setValue(currentSituation, forKey: "situation")
-                        phraseStoreVC.situation.append(text2)
+                        var currentMemo = UserDefaults.standard.array(forKey: "memo") ?? []
+                        currentMemo.append(text2)
+                        UserDefaults.standard.setValue(currentMemo, forKey: "memo")
+                        phraseStoreVC.memo.append(text2)
                         phraseStoreVC.tableView.reloadData()
                     }
                 }
