@@ -11,15 +11,17 @@ class DescriptionView: UIView {
     let closeButton = UIButton()
     // QuickMemoかPhraseStoreかの判別フラグ
     //TODO: VCごとに可変できるように対応する
-    var discriptNumber = 1
+    var discriptNumber: Int
     // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理)
     var isDescription: Bool {
         return UserDefaults.standard.bool(forKey: "isDescription")
     }
     override init(frame: CGRect) {
+        self.discriptNumber = 1
         super.init(frame: frame)
         self.backgroundColor = AppColors.backgroundColorCheckMode
         self.layer.cornerRadius = 12
+        NotificationCenter.default.addObserver(self, selector: #selector(checkNumber), name: NSNotification.Name("addDescription"), object: nil)
         setupView()
     }
     
@@ -114,7 +116,14 @@ class DescriptionView: UIView {
     @objc func closeModal() {
         self.removeFromSuperview()
     }
-
+    // 初期表示画面のフラグチェック
+    @objc func checkNumber(_ notification: Notification) {
+        if let userInfo = notification.userInfo,
+           let number = userInfo["discriptNumber"] as? Int {
+            discriptNumber = number
+        }
+        updateViewContent()
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

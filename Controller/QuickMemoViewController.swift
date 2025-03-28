@@ -98,6 +98,10 @@ class QuickMemoViewController: UIViewController {
         let descriptionButton = UIButton(type: .system)
         descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
         descriptionButton.tintColor = AppColors.appMainColor
+        // QuickMemoからの遷移は1ページ目を初期表示に設定
+        let data = ["discriptNumber": 1]
+        NotificationCenter.default.post(name: Notification.Name("addDescription"), object: nil, userInfo: data)
+        print("send data \(data)")
         descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
     }

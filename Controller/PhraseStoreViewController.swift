@@ -216,6 +216,9 @@ class PhraseStoreViewController: UIViewController {
     @objc func setDiscrptionView() {
         let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 330, height: 350))
         explanationView.center = view.center
+        // PhraseStoreからの遷移はPhraseStore説明ページを初期表示に設定
+        let data = ["discriptNumber": 3]
+        NotificationCenter.default.post(name: Notification.Name("addDescription"), object: nil, userInfo: data)
         view.addSubview(explanationView)
     }
 
