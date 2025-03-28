@@ -18,6 +18,7 @@ class PhraseStoreViewController: UIViewController {
         navigationItem.title = "Phrase Store"
         setView()
         setTableView()
+        setDescriptionButton()
         setAddButton()
         setupSearchController()
     }
@@ -64,6 +65,15 @@ class PhraseStoreViewController: UIViewController {
         tableView.delegate = self
         tableView.register(PhraseStoreCell.self, forCellReuseIdentifier: "PhraseStoreCell")
     }
+    
+    func setDescriptionButton() {
+        let descriptionButton = UIButton(type: .system)
+        descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
+        descriptionButton.tintColor = AppColors.appMainColor
+        descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
+    }
+    
     
     func setAddButton() {
         let addButton = UIButton()
@@ -200,6 +210,13 @@ class PhraseStoreViewController: UIViewController {
         }))
         
         present(alert, animated: true)
+    }
+    
+    //MARK: - objc
+    @objc func setDiscrptionView() {
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 330, height: 350))
+        explanationView.center = view.center
+        view.addSubview(explanationView)
     }
 
 }

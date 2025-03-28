@@ -42,9 +42,13 @@ class PhraseStoreCell: UITableViewCell {
         
         secondLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
         secondLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        secondLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
+        secondLabel.numberOfLines = 3
         
         thirdLabel.topAnchor.constraint(equalTo: secondLabel.bottomAnchor, constant: 30).isActive = true
         thirdLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        thirdLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
+        thirdLabel.numberOfLines = 3
     }
     
     required init?(coder: NSCoder) {

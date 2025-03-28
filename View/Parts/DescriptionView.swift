@@ -10,6 +10,7 @@ class DescriptionView: UIView {
     let descriptionCheckBox = UIImageView()
     let closeButton = UIButton()
     // QuickMemoかPhraseStoreかの判別フラグ
+    //TODO: VCごとに可変できるように対応する
     var discriptNumber = 1
     // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理)
     var isDescription: Bool {
@@ -73,16 +74,17 @@ class DescriptionView: UIView {
     
     func updateViewContent() {
         imageView.image = discriptNumber == 1 ? UIImage(named: "Quick Memo Sample") :
-        discriptNumber == 2 ? UIImage(named: "Add PhraseStore from Quick Memo") : UIImage(named: "PhraseStore Sample")
+        discriptNumber == 2 ? UIImage(named: "Add PhraseStore from Quick Memo") :
+        discriptNumber == 3 ? UIImage(named: "PhraseStore Sample") : UIImage(named: "Memo sample")
         
         label.text = discriptNumber == 1 ?
         "You can write down words you don't understand or are curious about in your daily life quickly and easily."
         : discriptNumber == 2 ? "You can save sentences and memo with words that you want to remember in Quick Memo." :
-        "You can save words and sentences that you want to remember and memo when you find them in PhraseStore."
+        discriptNumber == 3 ? "You can save words and sentences that you want to remember and memo (Situation, Meaning, etc.) in PhraseStore."
+        : "We recommend writing in Memo the situation in which you encountered the word and the meaning of the word."
         label.sizeToFit()
-        
-        button.setTitle(discriptNumber == 3 ? "Close" : "Next", for: .normal)
-        
+
+        button.setTitle(discriptNumber == 4 ? "Close" : "Next", for: .normal)
         updateCheckBox()
     }
     
@@ -95,6 +97,8 @@ class DescriptionView: UIView {
             discriptNumber = 2
         } else if discriptNumber == 2 {
             discriptNumber = 3
+        } else if discriptNumber == 3 {
+            discriptNumber = 4
         } else {
             self.removeFromSuperview()
         }
