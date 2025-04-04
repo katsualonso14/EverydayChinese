@@ -21,6 +21,7 @@ class PhraseStoreViewController: UIViewController {
         setDescriptionButton()
         setAddButton()
         setupSearchController()
+        updateBackgroundView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -104,6 +105,31 @@ class PhraseStoreViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
+    // cellのが0の場合の背景
+    func updateBackgroundView() {
+        if words.isEmpty {
+            let emptyView = UIView(frame: tableView.bounds)
+            emptyView.backgroundColor = AppColors.backgroundColorCheckMode
+            emptyView.layer.cornerRadius = 16
+            emptyView.layer.masksToBounds = true
+
+            let label = UILabel()
+            let explanationText = """
+            No phrases added yet.\nSave words, create example sentences, and add notes about their meanings or the situations where you found them.\n\n🔹 Example:\nWord: 多少钱？\nSentence: 这个面包多少钱？\nMemo: When I bought a bread at a bakery.
+            """
+            label.text = explanationText
+            label.textAlignment = .left
+            label.numberOfLines = 10
+            label.frame = CGRect(x: 40, y: 0, width: 300, height: 300)
+            label.font = .systemFont(ofSize: 16)
+
+            emptyView.addSubview(label)
+            tableView.backgroundView = emptyView
+        } else {
+            tableView.backgroundView = nil
+        }
+    }
+    
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
@@ -139,6 +165,7 @@ class PhraseStoreViewController: UIViewController {
                         UserDefaults.standard.setValue(currentWord, forKey: "word")
                         self?.words.append(text)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -151,6 +178,7 @@ class PhraseStoreViewController: UIViewController {
                         UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
                         self?.sentences.append(text2)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -163,6 +191,7 @@ class PhraseStoreViewController: UIViewController {
                         UserDefaults.standard.setValue(currentMemo, forKey: "memo")
                         self?.memo.append(text3)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -267,10 +296,14 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     
     //セルの高さ
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 160
     }
+    //TODO: 1→0の例文表示処理がエラーなので解消する
     //Cellの編集と削除
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if words.count == 0 {
+            return nil
+        }
         // 編集アクション
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
@@ -291,7 +324,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 )
             }
             completionHandler(true)
-        }
+        }		
 
         // 削除アクション
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
@@ -301,7 +334,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 self.words.remove(at: originalIndex)
                 self.sentences.remove(at: originalIndex)
                 self.memo.remove(at: originalIndex)
-
+                
                 self.filteredWords.remove(at: indexPath.row)
                 self.filteredSentences.remove(at: indexPath.row)
                 self.filteredMemo.remove(at: indexPath.row)
@@ -316,6 +349,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
             UserDefaults.standard.setValue(self.memo, forKey: "memo")
             
             tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateBackgroundView()
             completionHandler(true)
         }
         
