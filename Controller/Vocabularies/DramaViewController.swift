@@ -7,7 +7,7 @@ import UserNotifications
 class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     
     let titleName: String
-    let sentenceView = SentenceViewController()
+    let sentenceView = SentenseList()
     let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
@@ -201,9 +201,7 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.DramaVC = self
-        
-        
+        cell.dramaVC = self
         
         let contact = sentenceView.dramaSentenceArray[0].names[indexPath.row]
         //cellの文字指定

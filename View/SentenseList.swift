@@ -1,7 +1,7 @@
 // 文章データ
 import UIKit
 
-class SentenceViewController: UITabBarController {
+class SentenseList {
 
     //MARK: - Greetings
     var sentenceArray = [
@@ -207,10 +207,87 @@ class SentenceViewController: UITabBarController {
         NSLocalizedString("Can I take this to go?", comment: ""),
         NSLocalizedString("It’s very delicious!", comment: "")
     ];
-
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    //MARK: - Shopping
+    var shoppingSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["这个多少钱？","有没有别的颜色？","可以试穿吗？","我想买这个","可以刷卡吗？"].map{
+            Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+        })
+    ]
+    var shoppingSentence = ["这个多少钱？","有没有别的颜色？","可以试穿吗？","我想买这个","可以刷卡吗？"]
+    var shoppingPronunciation = ["Zhège duōshǎo qián?","Yǒu méiyǒu bié de yánsè?","Kěyǐ shìchuān ma?","Wǒ xiǎng mǎi zhège","Kěyǐ shuākǎ ma?"]
+    var shoppingEnglish = [
+        NSLocalizedString("How much is this?", comment: ""),
+        NSLocalizedString("Do you have other colors?", comment: ""),
+        NSLocalizedString("Can I try it on?", comment: ""),
+        NSLocalizedString("I want to buy this", comment: ""),
+        NSLocalizedString("Can I pay by card?", comment: "")
+    ]
+
+    //MARK: - Phone and Message
+    var phoneSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["喂，你好","请问是谁？","稍等一下","我再打给你","我发给你"].map{
+            Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+        })
+    ]
+    var phoneSentence = ["喂，你好","请问是谁？","稍等一下","我再打给你","我发给你"]
+    var phonePronunciation = ["Wéi, nǐ hǎo","Qǐngwèn shì shéi?","Shāoděng yíxià","Wǒ zài dǎ gěi nǐ","Wǒ fā gěi nǐ"]
+    var phoneEnglish = [
+        NSLocalizedString("Hello on the phone", comment: ""),
+        NSLocalizedString("May I ask who's calling?", comment: ""),
+        NSLocalizedString("Hold on a moment", comment: ""),
+        NSLocalizedString("I'll call you back", comment: ""),
+        NSLocalizedString("I’ll send it to you", comment: "")
+    ]
+
+    //MARK: - Weather and Season
+    var weatherSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["今天天气很好","今天下雨了","外面很冷","夏天快到了","冬天很冷"].map{
+            Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+        })
+    ]
+    var weatherSentence = ["今天天气很好","今天下雨了","外面很冷","夏天快到了","冬天很冷"]
+    var weatherPronunciation = ["Jīntiān tiānqì hěn hǎo","Jīntiān xiàyǔ le","Wàimiàn hěn lěng","Xiàtiān kuài dàole","Dōngtiān hěn lěng"]
+    var weatherEnglish = [
+        NSLocalizedString("The weather is nice today", comment: ""),
+        NSLocalizedString("It's raining today", comment: ""),
+        NSLocalizedString("It's cold outside", comment: ""),
+        NSLocalizedString("Summer is coming", comment: ""),
+        NSLocalizedString("Winter is cold", comment: "")
+    ]
+
+    //MARK: - Health and Hospital
+    var healthSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["我头疼","我发烧了","需要看医生","有药吗？","请帮我叫救护车"].map{
+            Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+        })
+    ]
+    var healthSentence = ["我头疼","我发烧了","需要看医生","有药吗？","请帮我叫救护车"]
+    var healthPronunciation = ["Wǒ tóuténg","Wǒ fāshāo le","Xūyào kàn yīshēng","Yǒu yào ma?","Qǐng bāng wǒ jiào jiùhùchē"]
+    var healthEnglish = [
+        NSLocalizedString("I have a headache", comment: ""),
+        NSLocalizedString("I have a fever", comment: ""),
+        NSLocalizedString("Need to see a doctor", comment: ""),
+        NSLocalizedString("Do you have medicine?", comment: ""),
+        NSLocalizedString("Please call an ambulance", comment: "")
+    ]
+
+    //MARK: - Business
+    var businessSentenceArray = [
+        ExpandableNames(isExpanded: true, names: ["请问，您方便吗？","我明天再联系您","很高兴认识您","请确认一下","麻烦您了"].map{
+            Contact(name: $0, hasFavorited: false, hasFavorited2: false, hasFavorited3: false, hasFavorited4: false)
+        })
+    ]
+    var businessSentence = ["请问，您方便吗？","我明天再联系您","很高兴认识您","请确认一下","麻烦您了"]
+    var businessPronunciation = ["Qǐngwèn, nín fāngbiàn ma?","Wǒ míngtiān zài liánxì nín","Hěn gāoxìng rènshi nín","Qǐng quèrèn yíxià","Máfan nín le"]
+    var businessEnglish = [
+        NSLocalizedString("May I ask, is it convenient for you?", comment: ""),
+        NSLocalizedString("I’ll contact you again tomorrow", comment: ""),
+        NSLocalizedString("Nice to meet you (formal)", comment: ""),
+        NSLocalizedString("Please confirm", comment: ""),
+        NSLocalizedString("Sorry for the trouble", comment: "")
+    ]
+
+
 }
 

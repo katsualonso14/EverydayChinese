@@ -20,6 +20,11 @@ class CategoryViewController: UIViewController {
     let personalPronounsButton:UIButton = UIButton()
     let demonstrativePronounsButton:UIButton = UIButton()
     let interrogativePronounsButton:UIButton = UIButton()
+    let shoppingButton:UIButton = UIButton()
+    let phoneButton:UIButton = UIButton()
+    let weatherButton:UIButton = UIButton()
+    let healthButton:UIButton = UIButton()
+    let businessButton:UIButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +40,13 @@ class CategoryViewController: UIViewController {
         setupPersonalPronounsButton()
         setupDemonstrativePronounsButton()
         setupInterrogativePronounsButton()
+        setupShoppingButton()
+        setupPhoneButton()
+        setupWeatherButton()
+        setupHealthButton()
+        setupBusinessButton()
+        
+        // Butttons in AppBar
         setDeleteNotifButton()
         setRewordAdButton()
     }
@@ -70,7 +82,7 @@ class CategoryViewController: UIViewController {
             
         ])
     }
-    
+    // MARK: - Setup Buttons
     // 日常会話ボタン
     func setupDailyButton() {
         self.container.addSubview(dailyButton)
@@ -331,7 +343,7 @@ class CategoryViewController: UIViewController {
             imageView.heightAnchor.constraint(equalTo: demonstrativePronounsButton.heightAnchor)
         ])
     }
-    //
+    // 疑問詞ボタン
     func setupInterrogativePronounsButton() {
         self.container.addSubview(interrogativePronounsButton)
         interrogativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
@@ -368,7 +380,193 @@ class CategoryViewController: UIViewController {
             imageView.heightAnchor.constraint(equalTo: interrogativePronounsButton.heightAnchor)
         ])
     }
+    // ショッピングボタン
+    func setupShoppingButton() {
+        self.container.addSubview(shoppingButton)
+        shoppingButton.translatesAutoresizingMaskIntoConstraints = false
+        shoppingButton.addTarget(self, action: #selector(pushShoppingButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Shopping"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        shoppingButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Shopping_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        shoppingButton.addSubview(imageView)
     
+        
+        NSLayoutConstraint.activate([
+            // button
+            shoppingButton.topAnchor.constraint(equalTo: interrogativePronounsButton.bottomAnchor, constant: 50),
+            shoppingButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            shoppingButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            shoppingButton.heightAnchor.constraint(equalTo: shoppingButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: shoppingButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: shoppingButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: shoppingButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: shoppingButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: shoppingButton.heightAnchor)
+        ])
+    }
+    // 電話ボタン
+    func setupPhoneButton() {
+        self.container.addSubview(phoneButton)
+        phoneButton.translatesAutoresizingMaskIntoConstraints = false
+        phoneButton.addTarget(self, action: #selector(pushPhoneButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Phone"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        phoneButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Phone_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        phoneButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            phoneButton.topAnchor.constraint(equalTo: shoppingButton.bottomAnchor, constant: 50),
+            phoneButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            phoneButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            phoneButton.heightAnchor.constraint(equalTo: phoneButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: phoneButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: phoneButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: phoneButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: phoneButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: phoneButton.heightAnchor)
+        ])
+    }
+    // 天気ボタン
+    func setupWeatherButton() {
+        self.container.addSubview(weatherButton)
+        weatherButton.translatesAutoresizingMaskIntoConstraints = false
+        weatherButton.addTarget(self, action: #selector(pushWeatherButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Weather"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        weatherButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Weather_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        weatherButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            weatherButton.topAnchor.constraint(equalTo: phoneButton.bottomAnchor, constant: 50),
+            weatherButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            weatherButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            weatherButton.heightAnchor.constraint(equalTo: weatherButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: weatherButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: weatherButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: weatherButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: weatherButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: weatherButton.heightAnchor)
+        ])
+    }
+    // 健康ボタン
+    func setupHealthButton() {
+        self.container.addSubview(healthButton)
+        healthButton.translatesAutoresizingMaskIntoConstraints = false
+        healthButton.addTarget(self, action: #selector(pushHealthButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Health"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        healthButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Health_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        healthButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            healthButton.topAnchor.constraint(equalTo: weatherButton.bottomAnchor, constant: 50),
+            healthButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            healthButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            healthButton.heightAnchor.constraint(equalTo: healthButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: healthButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: healthButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: healthButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: healthButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: healthButton.heightAnchor)
+        ])
+    }
+    // ビジネスボタン
+    func setupBusinessButton() {
+        self.container.addSubview(businessButton)
+        businessButton.translatesAutoresizingMaskIntoConstraints = false
+        businessButton.addTarget(self, action: #selector(pushBusinessButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Business"
+        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        titleLabel.textColor = AppColors.textColor
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        businessButton.addSubview(titleLabel)
+        
+        let imageView = UIImageView(image: UIImage(named: "Business_100*100"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 25.0
+        imageView.layer.masksToBounds = true
+        businessButton.addSubview(imageView)
+    
+        
+        NSLayoutConstraint.activate([
+            // button
+            businessButton.topAnchor.constraint(equalTo: healthButton.bottomAnchor, constant: 50),
+            businessButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
+            businessButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
+            businessButton.heightAnchor.constraint(equalTo: businessButton.widthAnchor),
+            // title
+            titleLabel.topAnchor.constraint(equalTo: businessButton.topAnchor, constant: -7),
+            titleLabel.centerXAnchor.constraint(equalTo: businessButton.centerXAnchor),
+            // imageView
+            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
+            imageView.centerXAnchor.constraint(equalTo: businessButton.centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: businessButton.widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: businessButton.heightAnchor)
+        ])
+    }
+    
+    // Mark: - AppBar Buttons
     func setDeleteNotifButton() {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "bell.circle"), for: .normal)
@@ -415,6 +613,27 @@ class CategoryViewController: UIViewController {
         let vc = InterrogativePronounsViewController(titleName: "Interrogative Pronouns")
         navigationController?.pushViewController(vc, animated: true)
     }
+    @objc func pushShoppingButton(sender: UIButton) {
+        let vc = ShoppingViewController(titleName: "Shopping")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushPhoneButton(sender: UIButton) {
+        let vc = PhoneViewController(titleName: "Phone")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushWeatherButton(sender: UIButton) {
+        let vc = WeatherViewController(titleName: "Weather")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushHealthButton(sender: UIButton) {
+        let vc = HealthViewController(titleName: "Health")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    @objc func pushBusinessButton(sender: UIButton) {
+        let vc = BusinessViewController(titleName: "Business")
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     // 全てのリマインドを削除
     @objc func openAllNotifDeleteAleart(){
         let alert = UIAlertController(title: "Delete all reminders",

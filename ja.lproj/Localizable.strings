@@ -94,3 +94,38 @@
 "Please wait a moment" = "少々お待ちください";
 "Can I take this to go?" = "これを持ち帰りできますか？";
 "It’s very delicious!" = "とても美味しい！";
+
+// MARK: - Shopping
+"How much is this?" = "これはいくらですか？";
+"Do you have other colors?" = "他の色はありますか？";
+"Can I try it on?" = "試着できますか？";
+"I want to buy this" = "これを買いたいです";
+"Can I pay by card?" = "カードで支払えますか？";
+
+// MARK: - CallAndMessage
+"Hello on the phone" = "もしもし、こんにちは";
+"May I ask who's calling?" = "どちら様ですか？";
+"Hold on a moment" = "少々お待ちください";
+"I'll call you back" = "あとでかけ直します";
+"I’ll send it to you" = "あなたに送ります";
+
+// MARK: - WeatherAndSeason
+"The weather is nice today" = "今日は天気がいいです";
+"It's raining today" = "今日は雨が降っています";
+"It's cold outside" = "外は寒いです";
+"Summer is coming" = "夏が近づいています";
+"Winter is cold" = "冬は寒いです";
+
+// MARK: - HealthAndHospital
+"I have a headache" = "頭が痛いです";
+"I have a fever" = "熱があります";
+"Need to see a doctor" = "医者に診てもらう必要があります";
+"Do you have medicine?" = "薬はありますか？";
+"Please call an ambulance" = "救急車を呼んでください";
+
+// MARK: - Business
+"May I ask, is it convenient for you?" = "ご都合よろしいでしょうか？";
+"I’ll contact you again tomorrow" = "明日またご連絡します";
+"Nice to meet you (formal)" = "お会いできて光栄です";
+"Please confirm" = "ご確認ください";
+"Sorry for the trouble" = "お手数おかけします";

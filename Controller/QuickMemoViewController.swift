@@ -312,7 +312,6 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
     
     //Cellの編集と削除
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        print("indexPath.row1 \(indexPath.row)")
         // 編集
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定

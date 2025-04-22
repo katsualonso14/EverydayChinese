@@ -7,7 +7,7 @@ import UserNotifications
 class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     
     let titleName: String
-    let sentenceView = SentenceViewController()
+    let sentenceView = SentenseList()
     let synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
@@ -200,7 +200,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.TripVC = self
+        cell.tripVC = self
         
         
         

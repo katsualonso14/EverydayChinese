@@ -9,11 +9,14 @@ class CustomTableViewCell: UITableViewCell {
     var demonstrativepronounsVC: DemonstrativePronounsViewController?
     var interrogativepronounsVC: InterrogativePronounsViewController?
     var dailyConversationVC: DailyTalkViewController?
-    var TripVC: TripViewController?
-    var DramaVC: DramaViewController?
+    var tripVC: TripViewController?
+    var dramaVC: DramaViewController?
     var restaurantVC: RestaurantViewController?
-    
-    var SentenceVC: SentenceViewController?
+    var shoppingVC: ShoppingViewController?
+    var phoneVC: PhoneViewController?
+    var weatherVC: WeatherViewController?
+    var healthVC: HealthViewController?
+    var businessVC: BusinessViewController?
     
     let sentenceLabel: UILabel = {
         let label = UILabel()
@@ -216,8 +219,13 @@ class CustomTableViewCell: UITableViewCell {
         interrogativepronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
         dailyConversationVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
         restaurantVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
-        TripVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
-        DramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        tripVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        dramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        shoppingVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        phoneVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        weatherVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        healthVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
+        businessVC?.CustomCellTapButtonCall(cell: self, pushTime: 3600)
     }
     
     //セルのお気に入りボタン2をタップしたとき処理
@@ -228,8 +236,13 @@ class CustomTableViewCell: UITableViewCell {
         interrogativepronounsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
         dailyConversationVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
         restaurantVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        TripVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        DramaVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        tripVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        dramaVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        shoppingVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        phoneVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        weatherVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        healthVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        businessVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
     }
     
     //セルのお気に入りボタン3をタップしたとき処理
@@ -240,8 +253,13 @@ class CustomTableViewCell: UITableViewCell {
         interrogativepronounsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
         dailyConversationVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
         restaurantVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        TripVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        DramaVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        tripVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        dramaVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        shoppingVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        phoneVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        weatherVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        healthVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        businessVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
     }
     
     //セルのお気に入りボタン4をタップしたとき処理
@@ -252,7 +270,12 @@ class CustomTableViewCell: UITableViewCell {
         interrogativepronounsVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
         dailyConversationVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
         restaurantVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
-        TripVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
-        DramaVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        tripVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        dramaVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        shoppingVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        phoneVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        weatherVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        healthVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
+        businessVC?.CustomCellTapButtonCall4(cell: self, pushTime: 259200)
     }
 }

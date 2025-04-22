@@ -6,7 +6,7 @@ import UserNotifications
 class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
     let titleName: String
-    let sentenceView = SentenceViewController()
+    let sentenceView = SentenseList()
     let  synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
