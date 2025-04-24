@@ -9,6 +9,11 @@ class CategoryViewController: UIViewController {
     let tripVC = TripViewController(titleName: "Trip")
     let restaurantVC = RestaurantViewController(titleName: "Restaurant")
     let dramaVC = DramaViewController(titleName: "Drama")
+    let shoppingVC = ShoppingViewController(titleName: "Shopping")
+    let phoneVC = PhoneViewController(titleName: "Phone")
+    let weatherVC = WeatherViewController(titleName: "Weather")
+    let healthVC = HealthViewController(titleName: "Health")
+    let businessVC = BusinessViewController(titleName: "Business")
     
     let container = UIView()
     let scrollView = UIScrollView()
@@ -25,6 +30,7 @@ class CategoryViewController: UIViewController {
     let weatherButton:UIButton = UIButton()
     let healthButton:UIButton = UIButton()
     let businessButton:UIButton = UIButton()
+    let sentenceList = SentenseList()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -642,6 +648,7 @@ class CategoryViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self] _ in
             deleteAllNotif()
             deleteAllFavorites()
+            deleteAllRemindList()
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(alert, animated: true, completion: nil)
@@ -684,8 +691,28 @@ class CategoryViewController: UIViewController {
         UserDefaults.standard.removeObject(forKey: tripVC.favoritesLocalKey)
         UserDefaults.standard.removeObject(forKey: restaurantVC.favoritesLocalKey)
         UserDefaults.standard.removeObject(forKey: dramaVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: shoppingVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: phoneVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: weatherVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: healthVC.favoritesLocalKey)
+        UserDefaults.standard.removeObject(forKey: businessVC.favoritesLocalKey)
         
     }
+    
+    // RemidListから全データ削除
+    func deleteAllRemindList() {
+        let dataToDelete = ["sentence": sentenceList.sentence[0]]
+        NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
+        
+        //ローカルからの削除
+        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
+            savedRemindData.removeAll()
+            UserDefaults.standard.set(savedRemindData, forKey: "remind")
+        } else {
+            print("No data to delete")
+        }
+    }
+    
     //MARK: - Reward Ads
     func getReword() {
         Task {
