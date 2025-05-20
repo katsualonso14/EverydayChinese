@@ -6,6 +6,21 @@
   
 */
 
+//MARK: - Vocabulary Page
+"vocab_daily_button_title" = "日常会話";
+"vocab_greeting_button_title" = "あいさつ";
+"vocab_trip_button_title" = "旅行";
+"vocab_restaurant_button_title" = "レストラン";
+"vocab_drama_button_title" = "ドラマ・映画";
+"vocab_personal_pronouns_button_title" = "人称代名詞";
+"vocab_demonstrative_pronouns_button_title" = "指示代名詞";
+"vocab_interrogative_pronouns_button_title" = "疑問代名詞";
+"vocab_shopping_button_title" = "買い物";
+"vocab_phone_button_title" = "電話・メッセージ";
+"vocab_weather_button_title" = "天気・季節";
+"vocab_health_button_title" = "健康・病院";
+"vocab_business_button_title" = "仕事・ビジネス";
+
 // MARK: - Greating
 "Good moring" = "おはよう";
 "Good afternoon" = "こんにちは";

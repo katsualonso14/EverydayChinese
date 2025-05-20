@@ -6,5 +6,18 @@
   
 */
 
-"welcome_message" = "Welcome to the app!";
-"error_message" = "An error has occurred.";
+//MARK: - Vocabulary Page
+
+"vocab_daily_button_title" = "Daily Conversation";
+"vocab_greeting_button_title" = "Greetings";
+"vocab_trip_button_title" = "Travel";
+"vocab_restaurant_button_title" = "Restaurant";
+"vocab_drama_button_title" = "Drama & Movies";
+"vocab_personal_pronouns_button_title" = "Personal Pronouns";
+"vocab_demonstrative_pronouns_button_title" = "Demonstrative Pronouns";
+"vocab_interrogative_pronouns_button_title" = "Interrogative Pronouns";
+"vocab_shopping_button_title" = "Shopping";
+"vocab_phone_button_title" = "Phone & Messages";
+"vocab_weather_button_title" = "Weather & Seasons";
+"vocab_health_button_title" = "Health & Hospitals";
+"vocab_business_button_title" = "Business";
