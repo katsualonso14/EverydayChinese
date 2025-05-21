@@ -7,7 +7,6 @@
 */
 
 //MARK: - Vocabulary Page
-
 "vocab_daily_button_title" = "Daily Conversation";
 "vocab_greeting_button_title" = "Greetings";
 "vocab_trip_button_title" = "Travel";
@@ -21,3 +20,12 @@
 "vocab_weather_button_title" = "Weather & Seasons";
 "vocab_health_button_title" = "Health & Hospitals";
 "vocab_business_button_title" = "Business";
+
+// MARK: - Remind Bottom Sheet
+"remind_bottom_sheet_title" = "Reminder";
+"remind_bottom_sheet_message" = "Please select the reminder time.";
+"remind_bottom_sheet_1hour" = "1 hour later";
+"remind_bottom_sheet_3hour" = "3 hours later";
+"remind_bottom_sheet_1day" = "1 day later";
+"remind_completed_title" = "Remind Completed";
+"remind_completed_message" = "The reminder has been set successfully.";

@@ -144,3 +144,13 @@
 "Nice to meet you (formal)" = "お会いできて光栄です";
 "Please confirm" = "ご確認ください";
 "Sorry for the trouble" = "お手数おかけします";
+
+
+// MARK: - Remind Bottom Sheet
+"remind_bottom_sheet_title" = "リマインド";
+"remind_bottom_sheet_message" = "リマインドの時間を選択してください。";
+"remind_bottom_sheet_1hour" = "1時間後";
+"remind_bottom_sheet_3hour" = "3時間後";
+"remind_bottom_sheet_1day" = "1日後";
+"remind_completed_title" = "リマインドの設定完了";
+"remind_completed_message" = "リマインドの設定が完了しました。";

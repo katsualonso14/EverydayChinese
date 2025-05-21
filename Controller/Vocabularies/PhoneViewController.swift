@@ -55,6 +55,7 @@ class PhoneViewController: UITableViewController, AVAudioPlayerDelegate, AVSpeec
         loadFavorites()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
@@ -195,7 +196,7 @@ class PhoneViewController: UITableViewController, AVAudioPlayerDelegate, AVSpeec
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(180)
+        return CGFloat(145)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

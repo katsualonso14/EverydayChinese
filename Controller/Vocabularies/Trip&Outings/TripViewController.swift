@@ -59,6 +59,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         loadFavorites() // 起動時にハートボタンの色の状態を取得
         tableView.dataSource = self
         tableView.delegate  = self
+        tableView.separatorStyle = .none
         //CustomCellの登録
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
     }
@@ -217,7 +218,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         }
 //    セルの高さ
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(180)
+        return CGFloat(145)
     }
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
