@@ -2,6 +2,7 @@
 import Foundation
 import UIKit
 
+//TODO: Fix Strings for localization
 class DescriptionView: UIView {
     let imageView = UIImageView()
     let button = UIButton(type: .system)
@@ -39,7 +40,7 @@ class DescriptionView: UIView {
         addSubview(label)
         
         // チェックボックスの説明
-        checkBoxLabel.text = "Do not show this message again."
+        checkBoxLabel.text = NSLocalizedString("dicript_check_box_label", comment: "")
         checkBoxLabel.frame = CGRect(x: 5, y: 260, width: 250, height: 20)
         checkBoxLabel.font = UIFont.systemFont(ofSize: 15)
         checkBoxLabel.textColor = .systemGray
@@ -79,14 +80,22 @@ class DescriptionView: UIView {
         discriptNumber == 2 ? UIImage(named: "Add PhraseStore from Quick Memo") :
         discriptNumber == 3 ? UIImage(named: "PhraseStore Sample") : UIImage(named: "Memo sample")
         
-        label.text = discriptNumber == 1 ?
-        "You can write down words you don't understand or are curious about in your daily life quickly and easily."
-        : discriptNumber == 2 ? "You can save sentences and memo with words that you want to remember in Quick Memo." :
-        discriptNumber == 3 ? "You can save words and sentences that you want to remember and memo (Situation, Meaning, etc.) in PhraseStore."
-        : "We recommend writing in Memo the situation in which you encountered the word and the meaning of the word."
+        switch discriptNumber {
+        case 1:
+            label.text = NSLocalizedString("discript_text_1", comment: "")
+        case 2:
+            label.text = NSLocalizedString("discript_text_2", comment: "")
+        case 3:
+            label.text = NSLocalizedString("discript_text_3", comment: "")
+        default:
+            label.text = NSLocalizedString("discript_text_default", comment: "")
+        }
+
         label.sizeToFit()
 
-        button.setTitle(discriptNumber == 4 ? "Close" : "Next", for: .normal)
+        button.setTitle(
+            discriptNumber == 4 ? NSLocalizedString("close", comment: "") : NSLocalizedString("next", comment: ""),
+            for: .normal)
         updateCheckBox()
     }
     

@@ -1,9 +1,6 @@
 /*
   Localizable.strings
   ChineseApp
-
-  Created by KatsuyaTamai on 2024/12/07.
-  
 */
 
 //MARK: - Common
@@ -14,6 +11,38 @@
 "remind_list_title" = "リマインドリスト";
 "calendar_title" = "カレンダー";
 "category_bottom_tab_title" = "単語・フレーズ";
+
+//MARK: - Common Components
+// Placeholder Text
+"search_placeholder" = "単語を検索";
+"example_sentence_placeholder" = "例文を入力...";
+"memo_placeholder" = "メモを入力...";
+"word_placeholder" = "単語を入力...";
+// Button Text
+"done" = "完了";
+"cancel" = "キャンセル";
+"close" = "閉じる";
+"delete" = "削除";
+"submit" = "送信";
+"watch" = "視聴";
+"next" = "次へ";
+// Remind Time
+"in 1hour" = "1時間後";
+"in 3hour" = "3時間後";
+"in 1day" = "1日後";
+"not set" = "未設定";
+
+//MARK: - Ads Hide
+"ads_hide_button_title" = "広告非表示";
+"ads_hide_title" = "24時間広告非表示";
+"ads_hide_message" = "リワード広告を視聴すると、画面下の広告が24時間非表示になります。\n視聴しますか？";
+
+//MARK: - Discpription Modal
+"dicript_check_box_label" = "アプリ起動時に説明を表示しない";
+"discript_text_1" = "日常生活でわからなかった単語や気になった単語を、すばやく簡単に書き留めることができます。";
+"discript_text_2" = "覚えたい単語と一緒に文やメモを単語のタネに保存できます。";
+"discript_text_3" = "覚えたい単語や文、そしてその状況や意味などのメモをカスタム単語帳に保存できます。";
+"discript_text_default" = "単語に出会った状況やその意味を単語のタネに書き留めることをおすすめします。";
 
 //MARK: - Vocabulary Page
 "vocab_daily_button_title" = "日常会話";
@@ -163,3 +192,17 @@
 "remind_bottom_sheet_1day" = "1日後";
 "remind_completed_title" = "リマインドの設定完了";
 "remind_completed_message" = "リマインドの設定が完了しました。";
+
+//MARK: - Remind
+// Delete Alert
+"delete_all_remind_title" = "全てのリマインドを削除";
+"delete_all_remind_message" = "全てのリマインドを削除可能です。全てのリマインドを削除しますか？";
+
+// Notification Delete
+"delete_all_notif_title" = "全ての通知を削除";
+"delete_all_notif_message" = "全ての通知をリセット可能です。全ての通知を削除しますか？";
+"delete_all_notif_finish_title" = "全ての通知を削除しました";
+
+//MARK: - Feedback
+"feedback_title" = "フィードバック";
+"feedback_message" = "こちらのアプリについてのご意見を募集しております。こんな機能が欲しい・ここを改善して欲しいなどご要望をこちらに記載し送信ボタンを押してください。";

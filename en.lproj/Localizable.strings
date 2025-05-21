@@ -1,9 +1,6 @@
 /* 
   Localizable.strings
   ChineseApp
-
-  Created by KatsuyaTamai on 2024/12/07.
-  
 */
 
 //MARK: - Common
@@ -14,6 +11,39 @@
 "remind_list_title" = "Remind List";
 "calendar_title" = "Calendar";
 "category_bottom_tab_title" = "Vocab";
+
+//MARK: - Common Components
+// Placeholder Text
+"search_placeholder" = "Search for words";
+"example_sentence_placeholder" = "Enter sentence...";
+"memo_placeholder" = "Enter memo...";
+"word_placeholder" = "Enter word...";
+// Button Text
+"done" = "Done";
+"cancel" = "Cancel";
+"close" = "Close";
+"delete" = "Delete";
+"submit" = "Submit";
+"watch" = "Watch";
+"next" = "Next";
+// Remind Time
+"in 1hour" = "in 1hour";
+"in 3hour" = "in 3hour";
+"in 1day" = "in 1day";
+"not set" = "not set";
+
+//MARK: - Ads Hide
+"ads_hide_button_title" = "Hide Ads";
+"ads_hide_title" = "Hide Ads for 24 hours";
+"ads_hide_message" =
+"If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?";
+
+//MARK: - Discpription Modal
+"dicript_check_box_label" = "Do not show description at startup";
+"discript_text_1" = "You can write down words you don't understand or are curious about in your daily life quickly and easily.";
+"discript_text_2" = "You can save sentences and memo with words that you want to remember in Quick Memo.";
+"discript_text_3" = "You can save words and sentences that you want to remember and memo (Situation, Meaning, etc.) in Custom Words.";
+"discript_text_default" = "We recommend writing in Memo the situation in which you encountered the word and the meaning of the word.";
 
 //MARK: - Vocabulary Page
 "vocab_daily_button_title" = "Daily Conversation";
@@ -38,3 +68,17 @@
 "remind_bottom_sheet_1day" = "1 day later";
 "remind_completed_title" = "Remind Completed";
 "remind_completed_message" = "The reminder has been set successfully.";
+
+//MARK: - Remind
+// Delete Alert
+"delete_all_remind_title" = "Delete all reminders";
+"delete_all_remind_message" = "If you tap delete, all reminders will be deleted. Are you sure?";
+
+// Notification Delete
+"delete_all_notif_title" = "Delete All Notifications";
+"delete_all_notif_message" = "You can reset all notifications. Do you want to delete all notifications?";
+"delete_all_notif_finish_title" = "All notifications have been deleted";
+
+//MARK: - Feedback
+"feedback_title" = "Feedback";
+"feedback_message" = "We are looking for your feedback on this app. Please write any requests such as 'I want this feature' or 'I want this to be improved' here and press the Submit button.";

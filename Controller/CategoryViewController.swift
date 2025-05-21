@@ -2,18 +2,6 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
-    // 各カテゴリのViewControllerをインスタンス化
-    let greetingVC = GreetingsViewController(titleName: "Greetings")
-    let personalPronounsVC = PersonalPronounsViewController(titleName: "Personal Pronouns")
-    let dailyVC = DailyTalkViewController(titleName: "Daily conversation")
-    let tripVC = TripViewController(titleName: "Trip")
-    let restaurantVC = RestaurantViewController(titleName: "Restaurant")
-    let dramaVC = DramaViewController(titleName: "Drama")
-    let shoppingVC = ShoppingViewController(titleName: "Shopping")
-    let phoneVC = PhoneViewController(titleName: "Phone")
-    let weatherVC = WeatherViewController(titleName: "Weather")
-    let healthVC = HealthViewController(titleName: "Health")
-    let businessVC = BusinessViewController(titleName: "Business")
     
     let container = UIView()
     let scrollView = UIScrollView()
@@ -54,7 +42,6 @@ class CategoryViewController: UIViewController {
         setupScrollView()
         setupContainer()
         setupVocabButtons()
-        setDeleteNotifButton()
         setRewordAdButton()
     }
     
@@ -89,7 +76,6 @@ class CategoryViewController: UIViewController {
         ])
     }
     // MARK: - Vocab Buttons Setting
-    //TODO: カード形式にUI変更後の微調整
     func createVocabItemView(
         titleKey: String,
         imageName: String,
@@ -193,16 +179,10 @@ class CategoryViewController: UIViewController {
     }
     
     // Mark: - AppBar Buttons
-    func setDeleteNotifButton() {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bell.circle"), for: .normal)
-        button.tintColor = AppColors.appMainColor
-        button.addTarget(self, action: #selector(openAllNotifDeleteAleart), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
-    }
-    
     func setRewordAdButton() {
-        let button = UIBarButtonItem(title: "Ads Hide Settings", style: .plain, target: self, action: #selector(showRewardAlert))
+        let button = UIBarButtonItem(
+            title: NSLocalizedString("ads_hide_button_title", comment: ""),
+            style: .plain, target: self, action: #selector(showRewardAlert))
         button.tintColor = AppColors.appMainColor
         navigationItem.rightBarButtonItem = button
     }
@@ -274,31 +254,17 @@ class CategoryViewController: UIViewController {
     }
 
     
-    // 全てのリマインドを削除
-    @objc func openAllNotifDeleteAleart(){
-        let alert = UIAlertController(title: "Delete all reminders",
-                                      message: "If you tap delete, all reminders will be deleted. Are you sure?",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self] _ in
-            deleteAllNotif()
-            deleteAllFavorites()
-            deleteAllRemindList()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
     @objc func showRewardAlert() {
         let alert = UIAlertController(
-            title: "Delete Ads for 24 hours",
-            message: "If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?",
+            title: NSLocalizedString("ads_hide_title", comment: ""),
+            message: NSLocalizedString("ads_hide_message", comment: ""),
             preferredStyle: .alert
             )
 
-        let watchAction = UIAlertAction(title: "Watch", style: .default) { _ in
+        let watchAction = UIAlertAction(title: NSLocalizedString("watch", comment: ""), style: .default) { _ in
             self.getReword()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil)
 
         alert.addAction(watchAction)
         alert.addAction(cancelAction)
@@ -306,46 +272,6 @@ class CategoryViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    //MARK - Delete Notification
-    //全ての通知を削除する処理
-    func deleteAllNotif() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests()
-        //全ての通知を削除しましたのダイアログ表示
-        let alert = UIAlertController(title: "All notifications removed.", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
-    // 全てのハートボタンの状態を削除
-    func deleteAllFavorites() {
-        UserDefaults.standard.removeObject(forKey: greetingVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: personalPronounsVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: dailyVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: tripVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: restaurantVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: dramaVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: shoppingVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: phoneVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: weatherVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: healthVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: businessVC.favoritesLocalKey)
-        
-    }
-    
-    // RemidListから全データ削除
-    func deleteAllRemindList() {
-        let dataToDelete = ["sentence": sentenceList.sentence[0]]
-        NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
-        
-        //ローカルからの削除
-        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.removeAll()
-            UserDefaults.standard.set(savedRemindData, forKey: "remind")
-        } else {
-            print("No data to delete")
-        }
-    }
     
     //MARK: - Reward Ads
     func getReword() {
