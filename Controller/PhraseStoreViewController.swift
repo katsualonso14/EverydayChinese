@@ -15,7 +15,7 @@ class PhraseStoreViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Phrase Store"
+        navigationItem.title = NSLocalizedString("custom_words_title", comment: "")
         setView()
         setTableView()
         setDescriptionButton()

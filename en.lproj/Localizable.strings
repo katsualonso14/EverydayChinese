@@ -6,6 +6,15 @@
   
 */
 
+//MARK: - Common
+// Navigation Bar Title
+"category_title" = "Category";
+"quick_memo_title" = "Quick Memo";
+"custom_words_title" = "Custom Words";
+"remind_list_title" = "Remind List";
+"calendar_title" = "Calendar";
+"category_bottom_tab_title" = "Vocab";
+
 //MARK: - Vocabulary Page
 "vocab_daily_button_title" = "Daily Conversation";
 "vocab_greeting_button_title" = "Greetings";

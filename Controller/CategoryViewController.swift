@@ -50,14 +50,13 @@ class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Category"
+        navigationItem.title = NSLocalizedString("category_title", comment: "")
         setupScrollView()
         setupContainer()
         setupVocabButtons()
         setDeleteNotifButton()
         setRewordAdButton()
     }
-    
     
     func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -210,56 +209,70 @@ class CategoryViewController: UIViewController {
     
 // MARK: - objc
     @objc func pushDailyButton(sender: UIButton){
-        let vc = DailyTalkViewController(titleName: "Daily conversation")
+        let vc = DailyTalkViewController(titleName: NSLocalizedString("vocab_daily_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushGreetingButton(sender: UIButton){
-        let vc = GreetingsViewController(titleName: "Greeting")
+        let vc = GreetingsViewController(titleName: NSLocalizedString("vocab_greeting_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushTripButton(sender: UIButton){
-        let vc = TripViewController(titleName: "Trip")
+        let vc = TripViewController(titleName: NSLocalizedString("vocab_trip_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushRestaurantButton(sender: UIButton){
-        print("restaurant tap")
-        let vc = RestaurantViewController(titleName: "Restaurant")
+        let vc = RestaurantViewController(titleName: NSLocalizedString("vocab_restaurant_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushDramaButton(sender: UIButton){
-        navigationController?.pushViewController(dramaVC, animated: true)
+        let vc = DramaViewController(titleName: NSLocalizedString("vocab_drama_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushPersonalPronounsButton(sender: UIButton){
-        navigationController?.pushViewController(personalPronounsVC, animated: true)
+        let vc = PersonalPronounsViewController(titleName: NSLocalizedString("vocab_personal_pronouns_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushDemonstrativePronounsButton(sender: UIButton) {
-        let vc = DemonstrativePronounsViewController(titleName: "Demonstrative Pronouns")
+        let vc = DemonstrativePronounsViewController(titleName: NSLocalizedString("vocab_demonstrative_pronouns_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushInterrogativePronounsButton(sender: UIButton) {
-        let vc = InterrogativePronounsViewController(titleName: "Interrogative Pronouns")
+        let vc = InterrogativePronounsViewController(titleName: NSLocalizedString("vocab_interrogative_pronouns_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushShoppingButton(sender: UIButton) {
-        let vc = ShoppingViewController(titleName: "Shopping")
+        let vc = ShoppingViewController(titleName: NSLocalizedString("vocab_shopping_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushPhoneButton(sender: UIButton) {
-        let vc = PhoneViewController(titleName: "Phone")
+        let vc = PhoneViewController(titleName: NSLocalizedString("vocab_phone_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushWeatherButton(sender: UIButton) {
-        let vc = WeatherViewController(titleName: "Weather")
+        let vc = WeatherViewController(titleName: NSLocalizedString("vocab_weather_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushHealthButton(sender: UIButton) {
-        let vc = HealthViewController(titleName: "Health")
+        let vc = HealthViewController(titleName: NSLocalizedString("vocab_health_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushBusinessButton(sender: UIButton) {
-        let vc = BusinessViewController(titleName: "Business")
+        let vc = BusinessViewController(titleName: NSLocalizedString("vocab_business_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     
     // 全てのリマインドを削除
     @objc func openAllNotifDeleteAleart(){

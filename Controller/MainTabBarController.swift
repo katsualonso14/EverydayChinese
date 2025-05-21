@@ -18,28 +18,28 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
     //MARK: -Layout
     //タブバーの表示
     func setupTab() {
-        self.tabBar.tintColor = UIColor.systemRed //タブバー選択時の色指定
+        self.tabBar.tintColor = AppColors.appMainColor
         view.backgroundColor = .systemGray6
         
         let phrasesVC = QuickMemoViewController()
         phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
-        phrasesVC.tabBarItem.title = "Quick Memo"
+        phrasesVC.tabBarItem.title = NSLocalizedString("quick_memo_title", comment: "")
         let nv1 = UINavigationController(rootViewController: phrasesVC)
         
         let phraseStoreVC = PhraseStoreViewController()
         let pencilLine = UIImage(systemName: "pencil.and.outline")
         phraseStoreVC.tabBarItem.image = pencilLine
-        phraseStoreVC.tabBarItem.title = "Phrase Store"
+        phraseStoreVC.tabBarItem.title = NSLocalizedString("custom_words_title", comment: "")
         let nv2 = UINavigationController(rootViewController: phraseStoreVC)
         
         let categoryViewController = CategoryViewController()
         categoryViewController.tabBarItem.image = UIImage(named: "tag")
-        categoryViewController.tabBarItem.title = "Word&Sentence"
+        categoryViewController.tabBarItem.title = NSLocalizedString("category_bottom_tab_title", comment: "")
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         
         let remindListVC = RemindListController()
         remindListVC.tabBarItem.image = UIImage(systemName: "list.bullet.clipboard")
-        remindListVC.tabBarItem.title = "Remind List"
+        remindListVC.tabBarItem.title = NSLocalizedString("remind_list_title", comment: "")
         let nv4 = UINavigationController(rootViewController: remindListVC)
         
         setViewControllers([nv3, nv1, nv2, nv4], animated: false)

@@ -6,6 +6,15 @@
   
 */
 
+//MARK: - Common
+// Navigation Bar Title
+"category_title" = "カテゴリー";
+"quick_memo_title" = "単語のタネ";
+"custom_words_title" = "カスタム単語帳";
+"remind_list_title" = "リマインドリスト";
+"calendar_title" = "カレンダー";
+"category_bottom_tab_title" = "単語・フレーズ";
+
 //MARK: - Vocabulary Page
 "vocab_daily_button_title" = "日常会話";
 "vocab_greeting_button_title" = "あいさつ";

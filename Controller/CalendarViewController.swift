@@ -11,7 +11,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Calendar"
+        navigationItem.title = NSLocalizedString("calendar_title", comment: "")
         saveToday()
         setCalendar()
     }

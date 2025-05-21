@@ -10,7 +10,7 @@ class RemindListController: UITableViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Remind List"
+        navigationItem.title = NSLocalizedString("remind_list_title", comment: "")
         setupFeedBackForm()
         setupCalendarButton()
         loadRemind()

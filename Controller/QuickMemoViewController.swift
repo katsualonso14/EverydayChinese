@@ -11,7 +11,7 @@ class QuickMemoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Quick Memo"
+        navigationItem.title = NSLocalizedString("quick_memo_title", comment: "")
         setView()
         setDescriptionButton()
         setTableView()
