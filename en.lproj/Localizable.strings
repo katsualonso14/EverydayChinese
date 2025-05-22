@@ -6,7 +6,7 @@
 //MARK: - Common
 // Navigation Bar Title
 "category_title" = "Category";
-"quick_memo_title" = "Quick Memo";
+"quick_memo_title" = "Word Seeds";
 "custom_words_title" = "Custom Words";
 "remind_list_title" = "Remind List";
 "calendar_title" = "Calendar";
@@ -26,6 +26,8 @@
 "submit" = "Submit";
 "watch" = "Watch";
 "next" = "Next";
+"open" = "Open";
+"error" = "Error";
 // Remind Time
 "in 1hour" = "in 1hour";
 "in 3hour" = "in 3hour";
@@ -60,6 +62,28 @@
 "vocab_health_button_title" = "Health & Hospitals";
 "vocab_business_button_title" = "Business";
 
+//MARK: - Word Seeds
+"add_word_seeds_title" = "Add Word Seeds";
+"add_word_seeds_message" = "Please enter a word";
+"edit_word_seeds_title" = "Edit Word Seeds";
+"edit_word_seeds_message" = "Edit your words";
+
+"save_memo_with_sentence_title" = "Save memo with sentence";
+"save_memo_with_sentence_message" = "Save sentence and memo \nwith check vocaburaly: ";
+"word_seeds_error_message" = "Please enter a word";
+
+"search_in_web_title" = "Would you like to search for the following words in Web?";
+"no_word_alert_title" = "No search word";
+"no_word_alert_message" = "Please select a search word.";
+//MARK: - Custom Words
+"custom_word_explain_0_post" = "No phrases added yet.\nSave words, create example sentences, and add notes about their meanings or the situations where you found them.\n\n🔹 Example:\nWord: 多少钱？\nSentence: 这个面包多少钱？\nMemo: When I bought a bread at a bakery.";
+
+"add_custom_word_title" = "Add Custom Word";
+"add_custom_word_message" = "Please enter a word and a sentence and memo.";
+"custom_word_error_message" = "Please enter a word and a sentence and memo.";
+
+"edit_custom_word_title" = "Edit your memo";
+"edit_custom_word_message" = "Edit word, sentence, memo";
 // MARK: - Remind Bottom Sheet
 "remind_bottom_sheet_title" = "Reminder";
 "remind_bottom_sheet_message" = "Please select the reminder time.";

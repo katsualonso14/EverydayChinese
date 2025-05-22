@@ -26,6 +26,8 @@
 "submit" = "送信";
 "watch" = "視聴";
 "next" = "次へ";
+"open" = "開く";
+"error" = "エラー";
 // Remind Time
 "in 1hour" = "1時間後";
 "in 3hour" = "3時間後";
@@ -183,7 +185,27 @@
 "Please confirm" = "ご確認ください";
 "Sorry for the trouble" = "お手数おかけします";
 
+//MARK: - Word Seeds
+"add_word_seeds_title" = "単語のタネを保存";
+"add_word_seeds_message" = "単語を保存するには、単語を入力してください。";
+"save_memo_with_sentence_title" = "例文とメモを保存";
+"save_memo_with_sentence_message" = "例文とメモを保存\nチェックした単語: ";
+"edit_word_seeds_title" = "単語のタネを編集";
+"edit_word_seeds_message" = "登録した単語を編集できます。";
+"word_seeds_error_message" = "単語を入力してください。";
 
+"search_in_web_title" = "以下の単語をWebで検索しますか？";
+"no_word_alert_title" = "検索ワードがありません";
+"no_word_alert_message" = "検索ワードを選択してください。";
+//MARK: - Custom Words
+"custom_word_explain_0_post" = "単語リストを追加していません。\n単語を保存し、例文を作成し、意味や出会った状況に関するメモを追加してください。\n\n🔹 例:\n単語: 多少钱？\n例文: 这个面包多少钱？\nメモ: パン屋でパンを買ったとき。";
+
+"add_custom_word_title" = "カスタム単語を追加";
+"add_custom_word_message" = "カスタム単語を追加するには、単語、例文、メモを入力してください。";
+"custom_word_error_message" = "単語・文章・メモを入力してください。";
+
+"edit_custom_word_title" = "カスタム単語を編集";
+"edit_custom_word_message" = "単語、例文、メモを編集することができます";
 // MARK: - Remind Bottom Sheet
 "remind_bottom_sheet_title" = "リマインド";
 "remind_bottom_sheet_message" = "リマインドの時間を選択してください。";

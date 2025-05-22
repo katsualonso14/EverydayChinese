@@ -1,6 +1,6 @@
 import UIKit
 
-class PhraseStoreViewController: UIViewController {
+class CustomWordsViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     //TODO: UseDefaultsの値のみで良い場合は削除を検討
@@ -100,7 +100,7 @@ class PhraseStoreViewController: UIViewController {
     func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Words"
+        searchController.searchBar.placeholder = NSLocalizedString("search_placeholder", comment: "")
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
@@ -114,9 +114,7 @@ class PhraseStoreViewController: UIViewController {
             emptyView.layer.masksToBounds = true
 
             let label = UILabel()
-            let explanationText = """
-            No phrases added yet.\nSave words, create example sentences, and add notes about their meanings or the situations where you found them.\n\n🔹 Example:\nWord: 多少钱？\nSentence: 这个面包多少钱？\nMemo: When I bought a bread at a bakery.
-            """
+            let explanationText = NSLocalizedString("custom_word_explain_0_post", comment: "")
             label.text = explanationText
             label.textAlignment = .left
             label.numberOfLines = 10
@@ -133,24 +131,30 @@ class PhraseStoreViewController: UIViewController {
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "New Notes", message: "add word and sentence", preferredStyle: .alert)
+        let aleat = UIAlertController(
+            title: NSLocalizedString("add_custom_word_title", comment: ""),
+            message: NSLocalizedString("add_custom_word_message", comment: ""), preferredStyle: .alert)
         
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter word..."
+            textField.placeholder = NSLocalizedString("word_placeholder", comment: "")
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter sentence..."
+            textField.placeholder = NSLocalizedString("example_sentence_placeholder", comment: "")
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter memo..."
+            textField.placeholder = NSLocalizedString("memo_placeholder", comment: "")
         }
         
-        aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
         
-        aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler:{
+            [weak self] (_) in
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                let alert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("custom_word_error_message", comment: ""),
+                    preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(alert, animated: true)
                 return
@@ -202,21 +206,28 @@ class PhraseStoreViewController: UIViewController {
     }
     // メモの編集処理
     func openEditMemo(word: String, sentence: String, memo: String, index: Int) {
-        let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, memo", preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: NSLocalizedString("edit_custom_word_title", comment: ""),
+            message: NSLocalizedString("edit_custom_word_message", comment: ""),
+            preferredStyle: .alert)
         
         alert.addTextField { $0.text = word }
         alert.addTextField { $0.text = sentence }
         alert.addTextField { $0.text = memo }
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
         
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
+            [weak self] _ in
             guard let self = self else { return }
             guard let textFields = alert.textFields,
                   let newWord = textFields[0].text, !newWord.isEmpty,
                   let newSentence = textFields[1].text, !newSentence.isEmpty,
                   let newMemo = textFields[2].text, !newMemo.isEmpty else {
-                let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                let errorAlert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("custom_word_error_message", comment: ""),
+                    preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(errorAlert, animated: true)
                 return
@@ -255,7 +266,7 @@ class PhraseStoreViewController: UIViewController {
 
 
 //MARK: - TableView DataSource
-extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate {
+extension CustomWordsViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセクション数を返す
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
@@ -365,7 +376,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     
 }
 //MARK: - Search
-extension PhraseStoreViewController: UISearchResultsUpdating {
+extension CustomWordsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             isSearching = false

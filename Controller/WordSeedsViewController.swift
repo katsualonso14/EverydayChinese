@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class QuickMemoViewController: UIViewController {
+class WordSeedsViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     var QuickMemo = [String]()
@@ -109,7 +109,7 @@ class QuickMemoViewController: UIViewController {
     func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Words"
+        searchController.searchBar.placeholder = NSLocalizedString("search_placeholder", comment: "")
         
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
@@ -121,24 +121,66 @@ class QuickMemoViewController: UIViewController {
         }
     }
     
+    // メモの編集処理
+    func openEditMemo(quickMemo: String, index: Int) {
+        let alert = UIAlertController(
+            title: NSLocalizedString("edit_word_seeds_title", comment: ""),
+            message: NSLocalizedString("edit_word_seeds_message", comment: ""),
+            preferredStyle: .alert)
+        
+        alert.addTextField { $0.text = quickMemo }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
+            guard let self = self else { return }
+            guard let textFields = alert.textFields,
+                  let newWord = textFields[0].text, !newWord.isEmpty else {
+                let errorAlert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("word_seeds_error_message", comment: ""),
+                    preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(errorAlert, animated: true)
+                return
+            }
+            
+            // データ更新
+            self.QuickMemo[index] = newWord
+            
+            // UserDefaults の更新
+            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }))
+        
+        present(alert, animated: true)
+    }
+    
     // PhraseStoreに追加
     func addPhraseStore(word: String) {
-        let phraseStoreVC = PhraseStoreViewController()
-        let aleat = UIAlertController(title: "Save Memo with sentence", message: "save sentence and memo \nwith check vocaburaly: \(word)", preferredStyle: .alert)
+        let phraseStoreVC = CustomWordsViewController()
+        let aleat = UIAlertController(
+            title: NSLocalizedString("save_memo_with_sentence_title", comment: ""),
+            message: NSLocalizedString("save_memo_with_sentence_message", comment: "") + word,
+            preferredStyle: .alert)
         
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter sentence..."
+            textField.placeholder = NSLocalizedString("example_sentence_placeholder", comment: "")
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter memo..."
+            textField.placeholder = NSLocalizedString("memo_placeholder", comment: "")
         }
         
-        aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
+            [weak self] (_) in
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                let alert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("custom_word_error_message", comment: ""),
+                    preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(alert, animated: true)
                 return
@@ -181,50 +223,27 @@ class QuickMemoViewController: UIViewController {
         
         present(aleat, animated: true)
     }
-    // メモの編集処理
-    func openEditMemo(quickMemo: String, index: Int) {
-        let alert = UIAlertController(title: "Edit Quick Memo", message: "Edit Your Word", preferredStyle: .alert)
-        
-        alert.addTextField { $0.text = quickMemo }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
-            guard let self = self else { return }
-            guard let textFields = alert.textFields,
-                  let newWord = textFields[0].text, !newWord.isEmpty else {
-                let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
-                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(errorAlert, animated: true)
-                return
-            }
-            
-            // データ更新
-            self.QuickMemo[index] = newWord
-            
-            // UserDefaults の更新
-            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }))
-        
-        present(alert, animated: true)
-    }
     
-    //MARK: - Function
+    //MARK: - objc
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "Save Quick Memo", message: "Add word", preferredStyle: .alert)
+        let aleat = UIAlertController(
+            title: NSLocalizedString("add_word_seeds_title", comment: ""),
+            message: NSLocalizedString("add_word_seeds_message", comment: ""),
+            preferredStyle: .alert)
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter word..."
+            textField.placeholder = NSLocalizedString("word_placeholder", comment: "")
         }
         
-        aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
+            [weak self] (_) in
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                let alert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("word_seeds_error_message", comment: ""),
+                    preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(alert, animated: true)
                 return
@@ -261,7 +280,7 @@ class QuickMemoViewController: UIViewController {
 }
 
 //MARK: - TableView DataSource
-extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
+extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         if isSearching {
             return filteredWords.count
@@ -357,7 +376,7 @@ extension QuickMemoViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: - Search
-extension QuickMemoViewController: UISearchResultsUpdating {
+extension WordSeedsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             isSearching = false

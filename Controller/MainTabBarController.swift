@@ -21,12 +21,12 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         self.tabBar.tintColor = AppColors.appMainColor
         view.backgroundColor = .systemGray6
         
-        let phrasesVC = QuickMemoViewController()
+        let phrasesVC = WordSeedsViewController()
         phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
         phrasesVC.tabBarItem.title = NSLocalizedString("quick_memo_title", comment: "")
         let nv1 = UINavigationController(rootViewController: phrasesVC)
         
-        let phraseStoreVC = PhraseStoreViewController()
+        let phraseStoreVC = CustomWordsViewController()
         let pencilLine = UIImage(systemName: "pencil.and.outline")
         phraseStoreVC.tabBarItem.image = pencilLine
         phraseStoreVC.tabBarItem.title = NSLocalizedString("custom_words_title", comment: "")
