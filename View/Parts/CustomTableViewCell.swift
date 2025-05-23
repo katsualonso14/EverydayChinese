@@ -20,7 +20,7 @@ class CustomTableViewCell: UITableViewCell {
     let sentenceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17)
-        label.textColor = UITraitCollection.current.userInterfaceStyle == .dark ? .white : .black
+        label.textColor = AppColors.textColor
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -124,7 +124,16 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     func setCell(sentence: String, pronunciation: String , japanese: String) {
-        sentenceLabel.text = sentence
+        // 単語ラベルへの音声マーク追加設定
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: "speaker.wave.3.fill")
+        imageAttachment.image = imageAttachment.image?.withTintColor(.gray)
+        imageAttachment.bounds = CGRect(x: 0, y: -2, width: 17, height: 17)
+        
+        let fullString = NSMutableAttributedString(string: sentence + " ")
+        fullString.append(NSAttributedString(attachment: imageAttachment))
+        
+        sentenceLabel.attributedText = fullString
         soundsLabel.text = pronunciation
         japaneseLabel.text = japanese
     }
