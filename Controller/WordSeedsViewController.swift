@@ -326,7 +326,9 @@ extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     //タップ処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        addPhraseStore(word: QuickMemo[indexPath.section])
+        if let cell = tableView.cellForRow(at: indexPath) as? QuickMemoCell {
+            cell.flip()
+        }
     }
     
     //Cellの編集と削除

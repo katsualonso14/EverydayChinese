@@ -42,7 +42,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         remindListVC.tabBarItem.title = NSLocalizedString("remind_list_title", comment: "")
         let nv4 = UINavigationController(rootViewController: remindListVC)
         
-        setViewControllers([nv3, nv1, nv2, nv4], animated: false)
+        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
     }
     
     //MARK: -Admob
