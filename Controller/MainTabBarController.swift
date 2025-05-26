@@ -21,7 +21,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         self.tabBar.tintColor = AppColors.appMainColor
         view.backgroundColor = .systemGray6
         
-        let phrasesVC = WordSeedsViewController()
+        let phrasesVC = MyCardsViewController()
         phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
         phrasesVC.tabBarItem.title = "My Cards"
         let nv1 = UINavigationController(rootViewController: phrasesVC)

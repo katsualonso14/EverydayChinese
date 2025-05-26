@@ -1,12 +1,17 @@
 import Foundation
 import UIKit
 
-class WordSeedsViewController: UIViewController {
+class MyCardsViewController: UIViewController, MyCardsInputDelegate {
     let tableView = UITableView()
     let conteinerView = UIView()
-    var QuickMemo = [String]()
+    var myWords = [String]()
+    var sentences = [String]()
+    var memo = [String]()
+    
     let searchController = UISearchController(searchResultsController: nil)
     var filteredWords = [String]()
+    var filteredSentences = [String]()
+    var filteredMemo = [String]()
     var isSearching = false // 検索中かどうか判定
     
     override func viewDidLoad() {
@@ -47,11 +52,11 @@ class WordSeedsViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.separatorStyle = .none // Remove default separator
-        self.QuickMemo = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
+        self.myWords = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(QuickMemoCell.self, forCellReuseIdentifier: "QuickMemoCell")
+        tableView.register(MyCardsCell.self, forCellReuseIdentifier: "MyCardsCell")
     }
     
     func setAddButton() {
@@ -145,10 +150,10 @@ class WordSeedsViewController: UIViewController {
             }
             
             // データ更新
-            self.QuickMemo[index] = newWord
+            self.myWords[index] = newWord
             
             // UserDefaults の更新
-            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
+            UserDefaults.standard.setValue(self.myWords, forKey: "quick word")
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -224,50 +229,24 @@ class WordSeedsViewController: UIViewController {
         present(aleat, animated: true)
     }
     
-    //MARK: - objc
-    @objc func addTapped() {
-        //add new cell
-        let aleat = UIAlertController(
-            title: NSLocalizedString("add_word_seeds_title", comment: ""),
-            message: NSLocalizedString("add_word_seeds_message", comment: ""),
-            preferredStyle: .alert)
-        aleat.addTextField{ (textField) in
-            textField.placeholder = NSLocalizedString("word_placeholder", comment: "")
+    // MARK: - MemoInputDelegate
+    func didSaveMyCards(frontText: String, backText: String) {
+        // カード表
+        if !frontText.isEmpty {
+            myWords.append(frontText)
+            UserDefaults.standard.setValue(myWords, forKey: "quick word")
+            tableView.reloadData()
         }
-        
-        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
-        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
-            [weak self] (_) in
-            // 文字がない場合はエラーメッセージ
-            if aleat.textFields?.first?.text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(
-                    title: NSLocalizedString("error", comment: ""),
-                    message: NSLocalizedString("word_seeds_error_message", comment: ""),
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?.present(alert, animated: true)
-                return
-            }
- 
-            if let filed = aleat.textFields?.first {
-                if let text = filed.text, !text.isEmpty {
-                    DispatchQueue.main.async {
-                        var currentWord = UserDefaults.standard.array(forKey: "quick word") ?? []
-                        currentWord.append(text)
-                        UserDefaults.standard.setValue(currentWord, forKey: "quick word")
-                        self?.QuickMemo.append(text)
-                        self?.tableView.reloadData()
-                    }
-                }
-            }
-        }))
-        
-        present(aleat, animated: true)
+        // カード裏
+        sentences.append(backText)
+        UserDefaults.standard.setValue(sentences, forKey: "sentence")
+        tableView.reloadData()
     }
     
+    //MARK: - objc
     @objc func checkSearchWord() {
         let modal = SelectSearchWordModal(frame: CGRect(x: 0, y: 0, width: 300, height: 300), parentVC: self)
-        modal.searchWord = QuickMemo
+        modal.searchWord = myWords
         modal.center = view.center
         view.addSubview(modal)
     }
@@ -277,15 +256,21 @@ class WordSeedsViewController: UIViewController {
         explanationView.center = view.center
         view.addSubview(explanationView)
     }
+    
+    @objc func addTapped() {
+        let modal = MyCardsInputViewController()
+        modal.delegate = self
+        present(modal, animated: true)
+    }
 }
 
 //MARK: - TableView DataSource
-extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
+extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         if isSearching {
             return filteredWords.count
         } else {
-            return QuickMemo.count
+            return myWords.count
         }
     }
     // 各セクションに対して1つだけ入れるように設定(スペースのため）
@@ -308,25 +293,30 @@ extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "QuickMemoCell") as! QuickMemoCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MyCardsCell") as! MyCardsCell
         // Background view for selection
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = UIColor.systemGray.withAlphaComponent(0.5)
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
+        // TODO: リビルドした際に単語とセンテンスがづれるので要確認
         
         if isSearching {
             cell.label.text = filteredWords[indexPath.section]
+            cell.backViewLabel.text = filteredSentences == [] ? "" : filteredSentences[indexPath.section]
         } else {
-            cell.label.text = QuickMemo[indexPath.section]
+            cell.label.text = myWords[indexPath.section]
+            // wordsとsentencesの数が異なる場合に備えて、セクションのインデックスをチェック
+            let sentence = sentences.count > indexPath.section ? sentences[indexPath.section] : ""
+            cell.backViewLabel.text =  sentence.isEmpty ? NSLocalizedString("caution_for_text_input", comment: "") : sentence
         }
         
         return cell
     }
     //タップ処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? QuickMemoCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? MyCardsCell {
             cell.flip()
         }
     }
@@ -337,14 +327,14 @@ extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
             if(self.isSearching) {
-                let originalIndex = self.QuickMemo.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
+                let originalIndex = self.myWords.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
                 self.openEditMemo(
-                    quickMemo: self.QuickMemo[originalIndex],
+                    quickMemo: self.myWords[originalIndex],
                     index: originalIndex
                 )
             } else {
                 self.openEditMemo(
-                    quickMemo: self.QuickMemo[indexPath.section],
+                    quickMemo: self.myWords[indexPath.section],
                     index: indexPath.section
                 )
             }
@@ -355,15 +345,19 @@ extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
             if(self.isSearching) {
-                let originalIndex = self.QuickMemo.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
-                self.QuickMemo.remove(at: originalIndex)
-
+                let originalIndex = self.myWords.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
+                self.myWords.remove(at: originalIndex)
                 self.filteredWords.remove(at: indexPath.section)
+                
+                let sentenceOriginalIndex = self.sentences.firstIndex(of: self.filteredSentences[indexPath.section]) ?? indexPath.section
+                self.sentences.remove(at: sentenceOriginalIndex)
+                self.filteredSentences.remove(at: indexPath.section)
             } else {
-                self.QuickMemo.remove(at: indexPath.section)
+                self.myWords.remove(at: indexPath.section)
+                self.sentences.remove(at: indexPath.section)
             }
     
-            UserDefaults.standard.setValue(self.QuickMemo, forKey: "quick word")
+            UserDefaults.standard.setValue(self.myWords, forKey: "quick word")
             tableView.deleteSections([indexPath.section], with: .fade) // セクションで設定しているため、セクション削除
             completionHandler(true)
         }
@@ -378,7 +372,7 @@ extension WordSeedsViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 //MARK: - Search
-extension WordSeedsViewController: UISearchResultsUpdating {
+extension MyCardsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             isSearching = false
@@ -389,7 +383,7 @@ extension WordSeedsViewController: UISearchResultsUpdating {
         isSearching = true
         filteredWords.removeAll()
         
-        for (index, word) in QuickMemo.enumerated() {
+        for (index, word) in myWords.enumerated() {
             // wordsにsearchTextが含まれているかどうか
             if word.lowercased().contains(searchText.lowercased()) {
                 filteredWords.append(word)

@@ -26,6 +26,8 @@
 "next" = "次へ";
 "open" = "開く";
 "error" = "エラー";
+"save" = "保存";
+
 // Remind Time
 "in 1hour" = "1時間後";
 "in 3hour" = "3時間後";
@@ -195,6 +197,10 @@
 "search_in_web_title" = "以下の単語をWebで検索しますか？";
 "no_word_alert_title" = "検索ワードがありません";
 "no_word_alert_message" = "検索ワードを選択してください。";
+
+"front_label" = "表";
+"back_label" = "裏";
+"caution_for_text_input" = "テキストを入力してください。例: 意味、単語を使った文など。";
 //MARK: - Custom Words
 "custom_word_explain_0_post" = "単語リストを追加していません。\n単語を保存し、例文を作成し、意味や出会った状況に関するメモを追加してください。\n\n🔹 例:\n単語: 多少钱？\n例文: 这个面包多少钱？\nメモ: パン屋でパンを買ったとき。";
 

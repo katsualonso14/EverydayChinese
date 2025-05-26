@@ -1,6 +1,6 @@
 import UIKit
 
-class QuickMemoCell: UITableViewCell {
+class MyCardsCell: UITableViewCell {
     let frontView = UIView()
     let backView = UIView()
     let label = UILabel()
@@ -11,8 +11,6 @@ class QuickMemoCell: UITableViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-//        backView.frame = contentView.bounds
-//        backView.isHidden = true
         setupLayout()
     }
     
@@ -76,23 +74,26 @@ class QuickMemoCell: UITableViewCell {
     func setupLabel() {
         label.textColor = AppColors.textColor
         label.font = .boldSystemFont(ofSize: 20)
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         frontView.addSubview(label)
         
         label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30).isActive = true
         label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
+        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
     }
     
     func setupBackViewLabel() {
         backViewLabel.textColor = AppColors.textColor
-        backViewLabel.font = .boldSystemFont(ofSize: 20)
+        //TODO: ここの挙動確認
+        backViewLabel.font = backViewLabel.text?.isEmpty == false ? .boldSystemFont(ofSize: 20) : .systemFont(ofSize: 16)
+        backViewLabel.numberOfLines = 0
         backViewLabel.translatesAutoresizingMaskIntoConstraints = false
         backView.addSubview(backViewLabel)
         
         backViewLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
         backViewLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        
-        backViewLabel.text = "Back View"
+        backViewLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
     }
     
     func setupBackViewSubLabel() {
@@ -103,8 +104,6 @@ class QuickMemoCell: UITableViewCell {
         
         backViewSubLabel.topAnchor.constraint(equalTo: backViewLabel.bottomAnchor, constant: 10).isActive = true
         backViewSubLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        
-        backViewSubLabel.text = "This is the back view"
     }
     
     // MARK: Helper
