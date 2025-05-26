@@ -23,14 +23,8 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         
         let phrasesVC = WordSeedsViewController()
         phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
-        phrasesVC.tabBarItem.title = NSLocalizedString("quick_memo_title", comment: "")
+        phrasesVC.tabBarItem.title = "My Cards"
         let nv1 = UINavigationController(rootViewController: phrasesVC)
-        
-        let phraseStoreVC = CustomWordsViewController()
-        let pencilLine = UIImage(systemName: "pencil.and.outline")
-        phraseStoreVC.tabBarItem.image = pencilLine
-        phraseStoreVC.tabBarItem.title = NSLocalizedString("custom_words_title", comment: "")
-        let nv2 = UINavigationController(rootViewController: phraseStoreVC)
         
         let categoryViewController = CategoryViewController()
         categoryViewController.tabBarItem.image = UIImage(named: "tag")
@@ -42,7 +36,7 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         remindListVC.tabBarItem.title = NSLocalizedString("remind_list_title", comment: "")
         let nv4 = UINavigationController(rootViewController: remindListVC)
         
-        setViewControllers([nv1, nv2, nv3, nv4], animated: false)
+        setViewControllers([nv1, nv3, nv4], animated: false)
     }
     
     //MARK: -Admob

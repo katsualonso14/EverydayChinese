@@ -11,7 +11,7 @@ class WordSeedsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("quick_memo_title", comment: "")
+        navigationItem.title = "My Cards"
         setView()
         setDescriptionButton()
         setTableView()

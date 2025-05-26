@@ -6,8 +6,6 @@
 //MARK: - Common
 // Navigation Bar Title
 "category_title" = "カテゴリー";
-"quick_memo_title" = "単語のタネ";
-"custom_words_title" = "カスタム単語帳";
 "remind_list_title" = "リマインドリスト";
 "calendar_title" = "カレンダー";
 "category_bottom_tab_title" = "単語・フレーズ";

@@ -6,8 +6,6 @@
 //MARK: - Common
 // Navigation Bar Title
 "category_title" = "Category";
-"quick_memo_title" = "Word Seeds";
-"custom_words_title" = "Custom Words";
 "remind_list_title" = "Remind List";
 "calendar_title" = "Calendar";
 "category_bottom_tab_title" = "Vocab";
