@@ -85,8 +85,6 @@ class MyCardsCell: UITableViewCell {
     
     func setupBackViewLabel() {
         backViewLabel.textColor = AppColors.textColor
-        //TODO: ここの挙動確認
-        backViewLabel.font = backViewLabel.text?.isEmpty == false ? .boldSystemFont(ofSize: 20) : .systemFont(ofSize: 16)
         backViewLabel.numberOfLines = 0
         backViewLabel.translatesAutoresizingMaskIntoConstraints = false
         backView.addSubview(backViewLabel)

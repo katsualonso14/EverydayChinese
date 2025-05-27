@@ -200,7 +200,7 @@
 
 "front_label" = "表";
 "back_label" = "裏";
-"caution_for_text_input" = "テキストを入力してください。例: 意味、単語を使った文など。";
+"no_sentence" = "文章を入力してください。";
 //MARK: - Custom Words
 "custom_word_explain_0_post" = "単語リストを追加していません。\n単語を保存し、例文を作成し、意味や出会った状況に関するメモを追加してください。\n\n🔹 例:\n単語: 多少钱？\n例文: 这个面包多少钱？\nメモ: パン屋でパンを買ったとき。";
 

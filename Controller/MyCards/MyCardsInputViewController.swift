@@ -2,6 +2,7 @@ import UIKit
 
 protocol MyCardsInputDelegate: AnyObject {
     func didSaveMyCards(frontText: String, backText: String)
+    func editMyCards(frontText: String, backText: String)
 }
 
 class MyCardsInputViewController: UIViewController {
@@ -12,6 +13,7 @@ class MyCardsInputViewController: UIViewController {
     let sentenceField = UITextField()
     let saveButton = UIButton(type: .system)
     let separator = UIView()
+    var editMode = false
     weak var delegate: MyCardsInputDelegate?
 
     override func viewDidLoad() {
@@ -116,8 +118,12 @@ class MyCardsInputViewController: UIViewController {
             return // dismiss しない
         }
         
+        if (editMode) {
+            delegate?.editMyCards(frontText: frontText, backText: backText)
+        } else {
+            delegate?.didSaveMyCards(frontText: frontText, backText: backText)
+        }
         
-        delegate?.didSaveMyCards(frontText: frontText, backText: backText)
         dismiss(animated: true, completion: nil)
     }
 }

@@ -4,14 +4,9 @@ import UIKit
 class MyCardsViewController: UIViewController, MyCardsInputDelegate {
     let tableView = UITableView()
     let conteinerView = UIView()
-    var myWords = [String]()
-    var sentences = [String]()
-    var memo = [String]()
-    
+    var myCards: [MyCard] = []
+    var filteredMyCards: [MyCard] = []
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredWords = [String]()
-    var filteredSentences = [String]()
-    var filteredMemo = [String]()
     var isSearching = false // 検索中かどうか判定
     
     override func viewDidLoad() {
@@ -52,7 +47,7 @@ class MyCardsViewController: UIViewController, MyCardsInputDelegate {
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.separatorStyle = .none // Remove default separator
-        self.myWords = UserDefaults.standard.stringArray(forKey: "quick word") ?? []
+        loadFromUserDefaults()
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -127,126 +122,48 @@ class MyCardsViewController: UIViewController, MyCardsInputDelegate {
     }
     
     // メモの編集処理
-    func openEditMemo(quickMemo: String, index: Int) {
-        let alert = UIAlertController(
-            title: NSLocalizedString("edit_word_seeds_title", comment: ""),
-            message: NSLocalizedString("edit_word_seeds_message", comment: ""),
-            preferredStyle: .alert)
-        
-        alert.addTextField { $0.text = quickMemo }
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
-            guard let self = self else { return }
-            guard let textFields = alert.textFields,
-                  let newWord = textFields[0].text, !newWord.isEmpty else {
-                let errorAlert = UIAlertController(
-                    title: NSLocalizedString("error", comment: ""),
-                    message: NSLocalizedString("word_seeds_error_message", comment: ""),
-                    preferredStyle: .alert)
-                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(errorAlert, animated: true)
-                return
-            }
-            
-            // データ更新
-            self.myWords[index] = newWord
-            
-            // UserDefaults の更新
-            UserDefaults.standard.setValue(self.myWords, forKey: "quick word")
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }))
-        
-        present(alert, animated: true)
+    func openEditMyCard(editingCard: MyCard) {
+        let modal = MyCardsInputViewController()
+        modal.delegate = self
+        modal.editMode = true
+        modal.myWordsField.text = editingCard.word
+        modal.sentenceField.text = editingCard.sentence
+        present(modal, animated: true)
     }
     
-    // PhraseStoreに追加
-    func addPhraseStore(word: String) {
-        let phraseStoreVC = CustomWordsViewController()
-        let aleat = UIAlertController(
-            title: NSLocalizedString("save_memo_with_sentence_title", comment: ""),
-            message: NSLocalizedString("save_memo_with_sentence_message", comment: "") + word,
-            preferredStyle: .alert)
-        
-        aleat.addTextField{ (textField) in
-            textField.placeholder = NSLocalizedString("example_sentence_placeholder", comment: "")
+    func loadFromUserDefaults() {
+        if let data = UserDefaults.standard.data(forKey: "myCards"),
+           let decoded = try? JSONDecoder().decode([MyCard].self, from: data) {
+            myCards = decoded
         }
-        aleat.addTextField{ (textField) in
-            textField.placeholder = NSLocalizedString("memo_placeholder", comment: "")
+    }
+
+    func saveToUserDefaults() {
+        if let encoded = try? JSONEncoder().encode(myCards) {
+            UserDefaults.standard.set(encoded, forKey: "myCards")
         }
-        
-        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
-        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
-            [weak self] (_) in
-            // 文字がない場合はエラーメッセージ
-            if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(
-                    title: NSLocalizedString("error", comment: ""),
-                    message: NSLocalizedString("custom_word_error_message", comment: ""),
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self?.present(alert, animated: true)
-                return
-            }
- 
-            //wordの追加
-            DispatchQueue.main.async {
-                var currentWord = UserDefaults.standard.array(forKey: "word") ?? []
-                currentWord.append(word)
-                UserDefaults.standard.setValue(currentWord, forKey: "word")
-                phraseStoreVC.words.append(word)
-                phraseStoreVC.tableView.reloadData()
-            }
-            
-            if let filed = aleat.textFields?.first {
-                if let text = filed.text, !text.isEmpty {
-                    DispatchQueue.main.async {
-                        var currentSentence = UserDefaults.standard.array(forKey: "sentence") ?? []
-                        currentSentence.append(text)
-                        UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
-                        phraseStoreVC.sentences.append(text)
-                        phraseStoreVC.tableView.reloadData()
-                    }
-                }
-            }
-            
-            if let filed2 = aleat.textFields?.last {
-                if let text2 = filed2.text, !text2.isEmpty {
-                    DispatchQueue.main.async {
-                        var currentMemo = UserDefaults.standard.array(forKey: "memo") ?? []
-                        currentMemo.append(text2)
-                        UserDefaults.standard.setValue(currentMemo, forKey: "memo")
-                        phraseStoreVC.memo.append(text2)
-                        phraseStoreVC.tableView.reloadData()
-                    }
-                }
-            }
-            
-        }))
-        
-        present(aleat, animated: true)
     }
     
     // MARK: - MemoInputDelegate
     func didSaveMyCards(frontText: String, backText: String) {
-        // カード表
-        if !frontText.isEmpty {
-            myWords.append(frontText)
-            UserDefaults.standard.setValue(myWords, forKey: "quick word")
+        myCards.append(MyCard(word: frontText, sentence: backText))
+        saveToUserDefaults()
+        tableView.reloadData()
+    }
+    
+    func editMyCards(frontText: String, backText: String) {
+        if let index = myCards.firstIndex(where: { $0.word == frontText }) {
+            myCards[index].word = frontText
+            myCards[index].sentence = backText
+            saveToUserDefaults()
             tableView.reloadData()
         }
-        // カード裏
-        sentences.append(backText)
-        UserDefaults.standard.setValue(sentences, forKey: "sentence")
-        tableView.reloadData()
     }
     
     //MARK: - objc
     @objc func checkSearchWord() {
         let modal = SelectSearchWordModal(frame: CGRect(x: 0, y: 0, width: 300, height: 300), parentVC: self)
-        modal.searchWord = myWords
+        modal.searchWord = myCards.map { $0.word }
         modal.center = view.center
         view.addSubview(modal)
     }
@@ -268,9 +185,9 @@ class MyCardsViewController: UIViewController, MyCardsInputDelegate {
 extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         if isSearching {
-            return filteredWords.count
+            return filteredMyCards.count
         } else {
-            return myWords.count
+            return myCards.count
         }
     }
     // 各セクションに対して1つだけ入れるように設定(スペースのため）
@@ -300,16 +217,20 @@ extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
         selectedBackgroundView.layer.cornerRadius = 16
         selectedBackgroundView.layer.masksToBounds = true
         cell.selectedBackgroundView = selectedBackgroundView
-        // TODO: リビルドした際に単語とセンテンスがづれるので要確認
+        
         
         if isSearching {
-            cell.label.text = filteredWords[indexPath.section]
-            cell.backViewLabel.text = filteredSentences == [] ? "" : filteredSentences[indexPath.section]
+            cell.label.text = filteredMyCards[indexPath.section].word
+            cell.backViewLabel.text = filteredMyCards[indexPath.section].sentence.isEmpty ? NSLocalizedString("no_sentence", comment: "") :
+            filteredMyCards[indexPath.section].sentence
+            cell.backViewLabel.font = filteredMyCards[indexPath.section].sentence.isEmpty ?
+                .systemFont(ofSize: 16) : .boldSystemFont(ofSize: 20)
         } else {
-            cell.label.text = myWords[indexPath.section]
-            // wordsとsentencesの数が異なる場合に備えて、セクションのインデックスをチェック
-            let sentence = sentences.count > indexPath.section ? sentences[indexPath.section] : ""
-            cell.backViewLabel.text =  sentence.isEmpty ? NSLocalizedString("caution_for_text_input", comment: "") : sentence
+            cell.label.text = myCards[indexPath.section].word
+            cell.backViewLabel.text = myCards[indexPath.section].sentence.isEmpty ? NSLocalizedString("no_sentence", comment: "") :
+            myCards[indexPath.section].sentence
+            cell.backViewLabel.font = myCards[indexPath.section].sentence.isEmpty ?
+                .systemFont(ofSize: 16) : .boldSystemFont(ofSize: 20)
         }
         
         return cell
@@ -327,16 +248,11 @@ extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
             if(self.isSearching) {
-                let originalIndex = self.myWords.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
-                self.openEditMemo(
-                    quickMemo: self.myWords[originalIndex],
-                    index: originalIndex
-                )
+                let originalIndex =
+                self.myCards.firstIndex(where: { $0.word == self.filteredMyCards.map { $0.word }[indexPath.section] }) ?? indexPath.section
+                self.openEditMyCard(editingCard: self.myCards[originalIndex])
             } else {
-                self.openEditMemo(
-                    quickMemo: self.myWords[indexPath.section],
-                    index: indexPath.section
-                )
+                self.openEditMyCard(editingCard: self.myCards[indexPath.section])
             }
             completionHandler(true)
         }
@@ -345,25 +261,22 @@ extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
             if(self.isSearching) {
-                let originalIndex = self.myWords.firstIndex(of: self.filteredWords[indexPath.section]) ?? indexPath.section
-                self.myWords.remove(at: originalIndex)
-                self.filteredWords.remove(at: indexPath.section)
-                
-                let sentenceOriginalIndex = self.sentences.firstIndex(of: self.filteredSentences[indexPath.section]) ?? indexPath.section
-                self.sentences.remove(at: sentenceOriginalIndex)
-                self.filteredSentences.remove(at: indexPath.section)
+                let originalIndex =
+                self.myCards.firstIndex(where: { $0.word == self.filteredMyCards.map { $0.word }[indexPath.section] }) ?? indexPath.section
+                self.myCards.remove(at: originalIndex)
+                self.filteredMyCards.remove(at: indexPath.section)
             } else {
-                self.myWords.remove(at: indexPath.section)
-                self.sentences.remove(at: indexPath.section)
+                self.myCards.remove(at: indexPath.section)
+                print("Delete myCards: \(self.myCards)")
             }
     
-            UserDefaults.standard.setValue(self.myWords, forKey: "quick word")
+            self.saveToUserDefaults()
             tableView.deleteSections([indexPath.section], with: .fade) // セクションで設定しているため、セクション削除
             completionHandler(true)
         }
         
         editAction.image = UIImage(systemName: "pencil")
-        editAction.backgroundColor = .systemBlue
+        editAction.backgroundColor = UIColor.systemBlue
         
         deleteAction.image = UIImage(systemName: "trash")
 
@@ -381,14 +294,15 @@ extension MyCardsViewController: UISearchResultsUpdating {
         }
         
         isSearching = true
-        filteredWords.removeAll()
-        
-        for (index, word) in myWords.enumerated() {
-            // wordsにsearchTextが含まれているかどうか
-            if word.lowercased().contains(searchText.lowercased()) {
-                filteredWords.append(word)
+        filteredMyCards.removeAll()
+
+        for (index, card) in myCards.enumerated() {
+            // wordにsearchTextが含まれているかどうか
+            if card.word.lowercased().contains(searchText.lowercased()) {
+                filteredMyCards.append(card)
             }
         }
+
         tableView.reloadData()
     }
 }
