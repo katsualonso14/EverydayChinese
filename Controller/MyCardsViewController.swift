@@ -223,14 +223,10 @@ extension MyCardsViewController: UITableViewDataSource, UITableViewDelegate {
             cell.label.text = filteredMyCards[indexPath.section].word
             cell.backViewLabel.text = filteredMyCards[indexPath.section].sentence.isEmpty ? NSLocalizedString("no_sentence", comment: "") :
             filteredMyCards[indexPath.section].sentence
-            cell.backViewLabel.font = filteredMyCards[indexPath.section].sentence.isEmpty ?
-                .systemFont(ofSize: 16) : .boldSystemFont(ofSize: 20)
         } else {
             cell.label.text = myCards[indexPath.section].word
             cell.backViewLabel.text = myCards[indexPath.section].sentence.isEmpty ? NSLocalizedString("no_sentence", comment: "") :
             myCards[indexPath.section].sentence
-            cell.backViewLabel.font = myCards[indexPath.section].sentence.isEmpty ?
-                .systemFont(ofSize: 16) : .boldSystemFont(ofSize: 20)
         }
         
         return cell

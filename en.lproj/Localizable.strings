@@ -79,7 +79,7 @@
 
 "front_label" = "Front";
 "back_label" = "Back";
-"no_sentence" = "Please enter a sentence.";
+"no_sentence" = "You can note the meaning or sentences here.";
 //MARK: - Custom Words
 "custom_word_explain_0_post" = "No phrases added yet.\nSave words, create example sentences, and add notes about their meanings or the situations where you found them.\n\n🔹 Example:\nWord: 多少钱？\nSentence: 这个面包多少钱？\nMemo: When I bought a bread at a bakery.";
 

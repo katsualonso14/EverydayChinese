@@ -201,7 +201,7 @@
 
 "front_label" = "表";
 "back_label" = "裏";
-"no_sentence" = "文章を入力してください。";
+"no_sentence" = "意味や例文などをメモすることが可能です。";
 //MARK: - Custom Words
 "custom_word_explain_0_post" = "単語リストを追加していません。\n単語を保存し、例文を作成し、意味や出会った状況に関するメモを追加してください。\n\n🔹 例:\n単語: 多少钱？\n例文: 这个面包多少钱？\nメモ: パン屋でパンを買ったとき。";
 
@@ -238,4 +238,4 @@
 "dicript_check_box_label" = "アプリ起動時に説明を表示しない";
 "dicript_label_add_my_cards" = "表に単語、裏に意味や例文を書いて「カード」として保存しよう！";
 "dicrpt_label_tap_my_cards" = "カードをタップすると裏返って意味や例文が見られます！";
-"dicrpt_label_my_cards_view" = "表と裏を活用して、自分だけの単語帳を作ろう！";
+"dicrpt_label_my_cards_view" = "表裏を活用し、自分だけの単語帳を作ろう！";
