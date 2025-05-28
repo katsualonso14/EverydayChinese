@@ -5,7 +5,7 @@
 
 //MARK: - Common
 // Navigation Bar Title
-"category_title" = "カテゴリー";
+"vocabrary_title" = "ボキャブラリー";
 "remind_list_title" = "リマインドリスト";
 "calendar_title" = "カレンダー";
 "category_bottom_tab_title" = "単語・フレーズ";
@@ -16,6 +16,7 @@
 "example_sentence_placeholder" = "例文を入力...";
 "memo_placeholder" = "メモを入力...";
 "word_placeholder" = "単語を入力...";
+"meaning_placeholder" = "意味やメモを入力...";
 // Button Text
 "done" = "完了";
 "cancel" = "キャンセル";
@@ -232,3 +233,9 @@
 //MARK: - Feedback
 "feedback_title" = "フィードバック";
 "feedback_message" = "こちらのアプリについてのご意見を募集しております。こんな機能が欲しい・ここを改善して欲しいなどご要望をこちらに記載し送信ボタンを押してください。";
+
+//MARK: -App Dicription
+"dicript_check_box_label" = "アプリ起動時に説明を表示しない";
+"dicript_label_add_my_cards" = "表に単語、裏に意味や例文を書いて「カード」として保存しよう！";
+"dicrpt_label_tap_my_cards" = "カードをタップすると裏返って意味や例文が見られます！";
+"dicrpt_label_my_cards_view" = "表と裏を活用して、自分だけの単語帳を作ろう！";

@@ -5,7 +5,7 @@
 
 //MARK: - Common
 // Navigation Bar Title
-"category_title" = "Category";
+"vocabrary_title" = "Vocabulary";
 "remind_list_title" = "Remind List";
 "calendar_title" = "Calendar";
 "category_bottom_tab_title" = "Vocab";
@@ -16,6 +16,7 @@
 "example_sentence_placeholder" = "Enter sentence...";
 "memo_placeholder" = "Enter memo...";
 "word_placeholder" = "Enter word...";
+"meaning_placeholder" = "Enter meaning or memo...";
 // Button Text
 "done" = "Done";
 "cancel" = "Cancel";
@@ -110,3 +111,9 @@
 //MARK: - Feedback
 "feedback_title" = "Feedback";
 "feedback_message" = "We are looking for your feedback on this app. Please write any requests such as 'I want this feature' or 'I want this to be improved' here and press the Submit button.";
+
+// MARK: - App Description
+"dicript_check_box_label" = "Do not show description at startup";
+"dicript_label_add_my_cards" = "Write a word on the front, and its meaning or example on the back to save it as a card!";
+"dicrpt_label_tap_my_cards" = "Tap a card to flip it and see the meaning or example!";
+"dicrpt_label_my_cards_view" = "Use the front and back to create your own personalized vocabulary deck!";

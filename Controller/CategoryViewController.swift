@@ -38,7 +38,7 @@ class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("category_title", comment: "")
+        navigationItem.title = NSLocalizedString("vocabrary_title", comment: "")
         setupScrollView()
         setupContainer()
         setupVocabButtons()

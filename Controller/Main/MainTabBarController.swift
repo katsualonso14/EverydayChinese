@@ -21,13 +21,13 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         self.tabBar.tintColor = AppColors.appMainColor
         view.backgroundColor = .systemGray6
         
-        let phrasesVC = MyCardsViewController()
-        phrasesVC.tabBarItem.image = UIImage(systemName: "pencil.and.scribble")
-        phrasesVC.tabBarItem.title = "My Cards"
-        let nv1 = UINavigationController(rootViewController: phrasesVC)
+        let myCardsVC = MyCardsViewController()
+        myCardsVC.tabBarItem.image = UIImage(named: "tag")
+        myCardsVC.tabBarItem.title = "My Cards"
+        let nv1 = UINavigationController(rootViewController: myCardsVC)
         
         let categoryViewController = CategoryViewController()
-        categoryViewController.tabBarItem.image = UIImage(named: "tag")
+        categoryViewController.tabBarItem.image = UIImage(systemName: "book")
         categoryViewController.tabBarItem.title = NSLocalizedString("category_bottom_tab_title", comment: "")
         let nv3 = UINavigationController(rootViewController: categoryViewController)
         

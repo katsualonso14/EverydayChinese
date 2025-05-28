@@ -42,7 +42,7 @@ class MyCardsInputViewController: UIViewController {
     }
     
     func setupSentenceTextField() {
-        sentenceField.placeholder = NSLocalizedString("example_sentence_placeholder", comment: "")
+        sentenceField.placeholder = NSLocalizedString("meaning_placeholder", comment: "")
         sentenceField.borderStyle = .roundedRect
         view.addSubview(sentenceField)
         sentenceField.translatesAutoresizingMaskIntoConstraints = false

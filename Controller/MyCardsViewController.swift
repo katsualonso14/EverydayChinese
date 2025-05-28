@@ -169,9 +169,9 @@ class MyCardsViewController: UIViewController, MyCardsInputDelegate {
     }
 
     @objc func setDiscrptionView() {
-        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 330, height: 350))
-        explanationView.center = view.center
-        view.addSubview(explanationView)
+        let vc = DescriptionViewController()
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
     }
     
     @objc func addTapped() {
