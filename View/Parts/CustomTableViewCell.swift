@@ -202,35 +202,35 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     @objc private func tapButton2() {
-        greetingsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800) // 3 hour
-        personalpronounsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        demonstrativepronounsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        interrogativepronounsVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        dailyConversationVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        restaurantVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        tripVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        dramaVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        shoppingVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        phoneVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        weatherVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        healthVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
-        businessVC?.CustomCellTapButtonCall2(cell: self, pushTime: 10800)
+        greetingsVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800) // 3 hour
+        personalpronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        demonstrativepronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        interrogativepronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        dailyConversationVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        restaurantVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        tripVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        dramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        shoppingVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        phoneVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        weatherVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        healthVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
+        businessVC?.CustomCellTapButtonCall(cell: self, pushTime: 10800)
     }
     
     @objc private func tapButton3() {
-        greetingsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400) // 1 day
-        personalpronounsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        demonstrativepronounsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        interrogativepronounsVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        dailyConversationVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        restaurantVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        tripVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        dramaVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        shoppingVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        phoneVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        weatherVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        healthVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
-        businessVC?.CustomCellTapButtonCall3(cell: self, pushTime: 86400)
+        greetingsVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400) // 1 day
+        personalpronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        demonstrativepronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        interrogativepronounsVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        dailyConversationVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        restaurantVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        tripVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        dramaVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        shoppingVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        phoneVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        weatherVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        healthVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
+        businessVC?.CustomCellTapButtonCall(cell: self, pushTime: 86400)
     }
     
 }

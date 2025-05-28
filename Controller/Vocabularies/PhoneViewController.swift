@@ -79,89 +79,13 @@ class PhoneViewController: UITableViewController, AVAudioPlayerDelegate, AVSpeec
         
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row)
+            // リマインドリストに追加
+            addRemindList(tappedRow: indexPathTapped.row, remindPattern: String(Int(pushTime)))
         } else {
             pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row)
         }
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
-    
-    // ハートボタン2を押した際の処理
-    func CustomCellTapButtonCall2(cell: UITableViewCell, pushTime: TimeInterval) {
-        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-        
-        let contact = sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited2
-        
-        sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
-        saveFavorites()
-        
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "phone"]
-        
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row)
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row)
-        }
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン3を押した際の処理
-    func CustomCellTapButtonCall3(cell: UITableViewCell, pushTime: TimeInterval) {
-        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-        
-        let contact = sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited3
-        
-        sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
-        saveFavorites()
-        
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "phone"]
-        
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row)
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row)
-        }
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン4を押した際の処理
-    func CustomCellTapButtonCall4(cell: UITableViewCell, pushTime: TimeInterval) {
-        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
-        
-        let contact = sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited4
-        
-        sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
-        saveFavorites()
-        
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "phone"]
-        
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row)
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row)
-        }
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
     
     func saveFavorites() {
         if let encoded = try? JSONEncoder().encode(sentenceView.phoneSentenceArray[0].names) {
@@ -223,16 +147,9 @@ class PhoneViewController: UITableViewController, AVAudioPlayerDelegate, AVSpeec
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
     }
     
-    func addRemindList(tappedRow: Int) {
-        let data = ["sentence": sentenceView.phoneSentence[tappedRow]]
-        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
-        
-        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.append(sentenceView.phoneSentence[tappedRow])
-            UserDefaults.standard.set(savedRemindData, forKey: "remind")
-        } else {
-            UserDefaults.standard.set([sentenceView.phoneSentence[tappedRow]], forKey: "remind")
-        }
+    func addRemindList(tappedRow: Int, remindPattern: String) {
+        let sentence = sentenceView.phoneSentence[tappedRow]
+        RemindManager.addRemindItem(sentence: sentence, remindPattern: remindPattern)
     }
     
     func deleteRemindList(tappedRow: Int) {

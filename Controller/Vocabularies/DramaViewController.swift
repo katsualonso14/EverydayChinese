@@ -89,95 +89,11 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
+            // リマインドリストに追加
+            addRemindList(tappedRow: indexPathTapped.row, remindPattern: String(Int(pushTime)))
         } else {
             pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン2をタップした際の設定
-    func CustomCellTapButtonCall2(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited2
-        
-        sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "drama"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン3をタップした際の設定
-    func CustomCellTapButtonCall3(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited3
-        
-        sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "drama"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン4をタップした際の設定
-    func CustomCellTapButtonCall4(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited4
-        
-        sentenceView.dramaSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "drama"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
@@ -254,20 +170,11 @@ class DramaViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeech
     }
     
     //RemindListへの追加
-    func addRemindList(tappedRow: Int) {
-        // 別VCへの値渡し
-        let data = ["sentence": sentenceView.dramaSentence[tappedRow]]
-        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
-        
-        //ローカルへの保存
-        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.append(sentenceView.dramaSentence[tappedRow])
-            UserDefaults.standard.set(savedRemindData, forKey: "remind")
-        } else {
-            UserDefaults.standard.set([sentenceView.dramaSentence[tappedRow]], forKey: "remind")
-        }
-        
+    func addRemindList(tappedRow: Int, remindPattern: String) {
+        let sentence = sentenceView.dramaSentence[tappedRow]
+        RemindManager.addRemindItem(sentence: sentence, remindPattern: remindPattern)
     }
+
     //RemindListからの削除
     func deleteRemindList(tappedRow: Int) {
         let dataToDelete = ["sentence": sentenceView.dramaSentence[tappedRow]]
