@@ -159,6 +159,15 @@ class MyCardsViewController: UIViewController, MyCardsInputDelegate {
             tableView.reloadData()
         }
     }
+    // フィルター時の編集内容を即時反映
+    func saveEditFilterdMyCards() {
+        if isSearching, let searchText = searchController.searchBar.text {
+            filteredMyCards = myCards.filter {
+                $0.word.contains(searchText) || $0.sentence.contains(searchText)
+            }
+        }
+        tableView.reloadData()
+    }
     
     //MARK: - objc
     @objc func checkSearchWord() {

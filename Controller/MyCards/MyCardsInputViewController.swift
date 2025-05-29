@@ -3,6 +3,7 @@ import UIKit
 protocol MyCardsInputDelegate: AnyObject {
     func didSaveMyCards(frontText: String, backText: String)
     func editMyCards(frontText: String, backText: String)
+    func saveEditFilterdMyCards()
 }
 
 class MyCardsInputViewController: UIViewController {
@@ -123,6 +124,8 @@ class MyCardsInputViewController: UIViewController {
         } else {
             delegate?.didSaveMyCards(frontText: frontText, backText: backText)
         }
+        
+        delegate?.saveEditFilterdMyCards()
         
         dismiss(animated: true, completion: nil)
     }
