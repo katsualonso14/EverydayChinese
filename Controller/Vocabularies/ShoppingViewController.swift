@@ -1,10 +1,9 @@
-//初心者ページ
 import UIKit
 import SnapKit
 import AVFoundation
 import UserNotifications
 
-class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+class ShoppingViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     
     let titleName: String
     let sentenceView = SentenseList()
@@ -13,7 +12,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     let audioSession = AVAudioSession.sharedInstance()
     // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
-    let favoritesLocalKey = "favoriteContacts_trip"
+    let favoritesLocalKey = "favoriteContacts_shopping"
     
     init(titleName: String) {
         self.titleName = titleName
@@ -75,17 +74,17 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         guard let indexPathTapped = tableView.indexPath(for: cell) else
         {return}
         
-        let contact = sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
+        let contact = sentenceView.shoppingSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         print(contact)
         let hasFavorited = contact.hasFavorited
         
-        sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        sentenceView.shoppingSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
         saveFavorites() // ハートボタンの色の状態を保存
         //タップしてときの値をpushメッセージに記載
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "trip"]
+        content.userInfo = ["page": "shopping"]
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
@@ -99,7 +98,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     
     // ハートボタンの状態をローカルに保存
     func saveFavorites() {
-        if let encoded = try? JSONEncoder().encode(sentenceView.tripSentenceArray[0].names) {
+        if let encoded = try? JSONEncoder().encode(sentenceView.dramaSentenceArray[0].names) {
             UserDefaults.standard.set(encoded, forKey: favoritesLocalKey)
         }
     }
@@ -107,25 +106,24 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     func loadFavorites() {
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
-            sentenceView.tripSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
+            sentenceView.shoppingSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
         }
     }
-    
     //cellの数
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentenceView.tripSentenceArray[0].names.count
+        return sentenceView.shoppingSentenceArray[0].names.count
     }
     //cellの中身
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.tripVC = self
+        cell.shoppingVC = self
         
         
         
-        let contact = sentenceView.tripSentenceArray[0].names[indexPath.row]
+        let contact = sentenceView.shoppingSentenceArray[0].names[indexPath.row]
         //cellの文字指定
-        cell.setCell(sentence: sentenceView.tripSentence[indexPath.row], pronunciation: sentenceView.tripPronunciation[indexPath.row], japanese: sentenceView.tripEnglish[indexPath.row])
+        cell.setCell(sentence: sentenceView.shoppingSentence[indexPath.row], pronunciation: sentenceView.shoppingPronunciation[indexPath.row], japanese: sentenceView.shoppingEnglish[indexPath.row])
         
         cell.heartButton.tintColor = contact.hasFavorited ? .red : .gray
         cell.heartButton2.tintColor = contact.hasFavorited2 ? .orange : .gray
@@ -141,13 +139,12 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //中国語の読み上げ設定
-        let utterance = AVSpeechUtterance.init(string: sentenceView.tripSentence[indexPath.row])
+        let utterance = AVSpeechUtterance.init(string: sentenceView.shoppingSentence[indexPath.row])
         let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
         utterance.voice = voice
         synthesizer.speak(utterance)
 
     }
-    
     //MARK:- Push
     //プッシュ通知登録
     func pushRegister(pushTime: TimeInterval) {
@@ -175,18 +172,18 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     
     //RemindListへの追加
     func addRemindList(tappedRow: Int, remindPattern: String) {
-        let sentence = sentenceView.tripSentence[tappedRow]
+        let sentence = sentenceView.shoppingSentence[tappedRow]
         RemindManager.addRemindItem(sentence: sentence, remindPattern: remindPattern)
     }
 
     //RemindListからの削除
     func deleteRemindList(tappedRow: Int) {
-        let dataToDelete = ["sentence": sentenceView.tripSentence[tappedRow]]
+        let dataToDelete = ["sentence": sentenceView.shoppingSentence[tappedRow]]
         NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
         
         //ローカルからの削除
         if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.removeAll { $0 == sentenceView.tripSentence[tappedRow] }
+            savedRemindData.removeAll { $0 == sentenceView.shoppingSentence[tappedRow] }
             UserDefaults.standard.set(savedRemindData, forKey: "remind")
         } else {
             print("No data to delete")

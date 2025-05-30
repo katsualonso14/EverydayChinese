@@ -6,7 +6,7 @@ import UserNotifications
 class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
     let titleName: String
-    let sentenceView = SentenceViewController()
+    let sentenceView = SentenseList()
     let  synthesizer = AVSpeechSynthesizer()
     //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
@@ -58,6 +58,7 @@ class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDe
         loadFavorites() // 起動時にハートボタンの色の状態を取得
         tableView.dataSource = self
         tableView.delegate  = self
+        
         //CustomCellの登録
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
     }
@@ -90,7 +91,7 @@ class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDe
         }
 //    セルの高さ
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(180)
+        return CGFloat(145)
     }
     //cellをタップした時の処理
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -103,7 +104,6 @@ class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDe
 //        print("tap")
     }
     
-    //TODO: ハートボタンの色の変化
     //お気に入りボタンを押したときの処理
     func CustomCellTapButtonCall(cell: UITableViewCell, pushTime: TimeInterval) {
         //タップしたcellの値
@@ -124,97 +124,14 @@ class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDe
         //通知設定
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
+            // リマインドリストに追加
+            addRemindList(tappedRow: indexPathTapped.row, remindPattern: String(Int(pushTime)))
         } else {
             pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
         }
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
-    // ハートボタン2をタップした際の設定
-    func CustomCellTapButtonCall2(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited2
-        
-        sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited2 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "interrogative"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン3をタップした際の設定
-    func CustomCellTapButtonCall3(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited3
-        
-        sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited3 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "interrogative"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
-    
-    // ハートボタン4をタップした際の設定
-    func CustomCellTapButtonCall4(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
-        
-        let contact = sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        let hasFavorited = contact.hasFavorited4
-        
-        sentenceView.interrogativePronounsSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited4 = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
-        content.title = contact.name
-        content.body = contact.name
-        content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "interrogative"]
-        //通知設定
-        if hasFavorited == false {
-            pushRegister(pushTime: pushTime)
-            addRemindList(tappedRow: indexPathTapped.row) // リマインドリストに追加
-        } else {
-            pushDelete()
-            deleteRemindList(tappedRow: indexPathTapped.row) // リマインドリストから削除
-        }
-        
-        tableView.reloadRows(at: [indexPathTapped], with: .fade)
-    }
     // ハートボタンの状態をローカルに保存
     func saveFavorites() {
         if let encoded = try? JSONEncoder().encode(sentenceView.interrogativePronounsSentenceArray[0].names) {
@@ -253,20 +170,11 @@ class InterrogativePronounsViewController: UITableViewController,AVAudioPlayerDe
     }
     
     //RemindListへの追加
-    func addRemindList(tappedRow: Int) {
-        // 別VCへの値渡し
-        let data = ["sentence": sentenceView.interrogativePronounsSentence[tappedRow]]
-        NotificationCenter.default.post(name: Notification.Name("addRemind"), object: nil, userInfo: data)
-        
-        //ローカルへの保存
-        if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.append(sentenceView.interrogativePronounsSentence[tappedRow])
-            UserDefaults.standard.set(savedRemindData, forKey: "remind")
-        } else {
-            UserDefaults.standard.set([sentenceView.interrogativePronounsSentence[tappedRow]], forKey: "remind")
-        }
-        
+    func addRemindList(tappedRow: Int, remindPattern: String) {
+        let sentence = sentenceView.interrogativePronounsSentence[tappedRow]
+        RemindManager.addRemindItem(sentence: sentence, remindPattern: remindPattern)
     }
+
     //RemindListからの削除
     func deleteRemindList(tappedRow: Int) {
         let dataToDelete = ["sentence": sentenceView.interrogativePronounsSentence[tappedRow]]

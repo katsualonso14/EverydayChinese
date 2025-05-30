@@ -2,13 +2,6 @@
 import UIKit
 
 class CategoryViewController: UIViewController {
-    // 各カテゴリのViewControllerをインスタンス化
-    let greetingVC = GreetingsViewController(titleName: "Greetings")
-    let personalPronounsVC = PersonalPronounsViewController(titleName: "Personal Pronouns")
-    let dailyVC = DailyTalkViewController(titleName: "Daily conversation")
-    let tripVC = TripViewController(titleName: "Trip")
-    let restaurantVC = RestaurantViewController(titleName: "Restaurant")
-    let dramaVC = DramaViewController(titleName: "Drama")
     
     let container = UIView()
     let scrollView = UIScrollView()
@@ -20,25 +13,37 @@ class CategoryViewController: UIViewController {
     let personalPronounsButton:UIButton = UIButton()
     let demonstrativePronounsButton:UIButton = UIButton()
     let interrogativePronounsButton:UIButton = UIButton()
+    let shoppingButton:UIButton = UIButton()
+    let phoneButton:UIButton = UIButton()
+    let weatherButton:UIButton = UIButton()
+    let healthButton:UIButton = UIButton()
+    let businessButton:UIButton = UIButton()
+    let sentenceList = SentenseList()
+
+    let vocabButtons: [VocabButtonInfo] = [
+        VocabButtonInfo(titleKey: "vocab_daily_button_title", imageName: "bubble.left.and.bubble.right", selector: #selector(pushDailyButton)),
+        VocabButtonInfo(titleKey: "vocab_greeting_button_title", imageName: "hand.wave", selector: #selector(pushGreetingButton)),
+        VocabButtonInfo(titleKey: "vocab_trip_button_title", imageName: "airplane", selector: #selector(pushTripButton)),
+        VocabButtonInfo(titleKey: "vocab_restaurant_button_title", imageName: "fork.knife", selector: #selector(pushRestaurantButton)),
+        VocabButtonInfo(titleKey: "vocab_drama_button_title", imageName: "film", selector: #selector(pushDramaButton)),
+        VocabButtonInfo(titleKey: "vocab_personal_pronouns_button_title", imageName: "person.2", selector: #selector(pushPersonalPronounsButton)),
+        VocabButtonInfo(titleKey: "vocab_demonstrative_pronouns_button_title", imageName: "point.topleft.down.curvedto.point.bottomright.up", selector: #selector(pushDemonstrativePronounsButton)),
+        VocabButtonInfo(titleKey: "vocab_interrogative_pronouns_button_title", imageName: "questionmark.circle", selector: #selector(pushInterrogativePronounsButton)),
+        VocabButtonInfo(titleKey: "vocab_shopping_button_title", imageName: "bag", selector: #selector(pushShoppingButton)),
+        VocabButtonInfo(titleKey: "vocab_phone_button_title", imageName: "phone", selector: #selector(pushPhoneButton)),
+        VocabButtonInfo(titleKey: "vocab_weather_button_title", imageName: "cloud.sun", selector: #selector(pushWeatherButton)),
+        VocabButtonInfo(titleKey: "vocab_health_button_title", imageName: "cross.case", selector: #selector(pushHealthButton)),
+        VocabButtonInfo(titleKey: "vocab_business_button_title", imageName: "briefcase", selector: #selector(pushBusinessButton))
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Category"
+        navigationItem.title = NSLocalizedString("vocabrary_title", comment: "")
         setupScrollView()
         setupContainer()
-        // Buttons Setting
-        setupDailyButton()
-        setupGreetingButton()
-        setupTripButton()
-        setupRestaurantButton()
-        setupDramaButton()
-        setupPersonalPronounsButton()
-        setupDemonstrativePronounsButton()
-        setupInterrogativePronounsButton()
-        setDeleteNotifButton()
+        setupVocabButtons()
         setRewordAdButton()
     }
-    
     
     func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +58,7 @@ class CategoryViewController: UIViewController {
             
         ])
         // contentSizeを設定
-        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 1500)
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 2400)
     }
     
     func setupContainer() {
@@ -65,380 +70,201 @@ class CategoryViewController: UIViewController {
             container.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             container.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            container.heightAnchor.constraint(equalToConstant: 1500), // 全体の高さを設定
+            container.heightAnchor.constraint(equalToConstant: 2400), // 全体の高さを設定
             container.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             
         ])
     }
-    
-    // 日常会話ボタン
-    func setupDailyButton() {
-        self.container.addSubview(dailyButton)
-        dailyButton.translatesAutoresizingMaskIntoConstraints = false
-        dailyButton.addTarget(self, action: #selector(pushDailyButton), for: .touchUpInside)
+    // MARK: - Vocab Buttons Setting
+    func createVocabItemView(
+        titleKey: String,
+        imageName: String,
+        topAnchor: NSLayoutYAxisAnchor,
+        topConstant: CGFloat,
+        selector: Selector
+    ) -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(view)
+
+        let imageView = createImageView()
+        view.addSubview(imageView)
         
-        let titleLabel = UILabel()
-        titleLabel.text = "DailyTalk"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        dailyButton.addSubview(titleLabel)
+        let titleLabel = createLabel(titleKey: titleKey)
+        view.addSubview(titleLabel)
         
-        let imageView = UIImageView(image: UIImage(named: "conversation_100*100"))
+        let chevronButton = craeteChevronButton()
+        view.addSubview(chevronButton)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: selector)
+        view.addGestureRecognizer(tapGesture)
+        chevronButton.addTarget(self, action: selector, for: .touchUpInside)
+
+        // レイアウト
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: topAnchor, constant: topConstant),
+            view.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            view.widthAnchor.constraint(equalTo: view.superview!.widthAnchor, multiplier: 0.9),
+            view.heightAnchor.constraint(equalToConstant: 110),
+
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 40),
+            imageView.heightAnchor.constraint(equalToConstant: 40),
+
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 30),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            chevronButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            chevronButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            chevronButton.widthAnchor.constraint(equalToConstant: 30),
+        ])
+
+        imageView.image = UIImage(systemName: imageName)
+        imageView.tintColor = .label
+
+        // ボタンの背景色と角丸
+        view.backgroundColor = AppColors.backgroundColorCheckMode
+        view.layer.cornerRadius = 12
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.1 // 薄めで自然な影
+        view.layer.shadowOffset = CGSize(width: 0, height: 2) // 下方向に落ちる影
+        view.layer.shadowRadius = 4
+
+        return view
+    }
+
+    // 各ボタン配置
+    func setupVocabButtons() {
+        var previousAnchor: NSLayoutYAxisAnchor = container.topAnchor
+        var topPadding: CGFloat = view.frame.height * 0.05
+
+        for buttonInfo in vocabButtons {
+            let button = createVocabItemView(
+                titleKey: buttonInfo.titleKey,
+                imageName: buttonInfo.imageName,
+                topAnchor: previousAnchor,
+                topConstant: topPadding,
+                selector: buttonInfo.selector
+            )
+            previousAnchor = button.bottomAnchor
+            topPadding = 15 // 2個目以降は等間隔に
+        }
+    }
+    // 共通のimageViewセットアップ
+    func createImageView() -> UIImageView {
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        dailyButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            dailyButton.topAnchor.constraint(equalTo: self.container.topAnchor, constant: 50),
-            dailyButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            dailyButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            dailyButton.heightAnchor.constraint(equalTo: dailyButton.widthAnchor),
-            // title
-            titleLabel.bottomAnchor.constraint(equalTo: dailyButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: dailyButton.topAnchor),
-            imageView.centerXAnchor.constraint(equalTo: dailyButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: dailyButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: dailyButton.heightAnchor),
-        ])
+        return imageView
     }
-    // 挨拶ボタン
-    func setupGreetingButton() {
-        self.container.addSubview(greetingButton)
-        greetingButton.translatesAutoresizingMaskIntoConstraints = false
-        greetingButton.addTarget(self, action: #selector(pushGreetingButton), for: .touchUpInside)
-        
+    
+    func createLabel(titleKey: String) -> UILabel {
         let titleLabel = UILabel()
-        titleLabel.text = "Greeting"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        greetingButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "Greetings"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        greetingButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            greetingButton.topAnchor.constraint(equalTo: dailyButton.bottomAnchor, constant: 50),
-            greetingButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            greetingButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            greetingButton.heightAnchor.constraint(equalTo: greetingButton.widthAnchor),
-            // title
-            titleLabel.bottomAnchor.constraint(equalTo: greetingButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: greetingButton.topAnchor),
-            imageView.centerXAnchor.constraint(equalTo: greetingButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: greetingButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: greetingButton.heightAnchor)
-        ])
-    }
-    
-    // 旅行用ボタン
-    func setupTripButton() {
-        self.container.addSubview(tripButton)
-        tripButton.translatesAutoresizingMaskIntoConstraints = false
-        tripButton.addTarget(self, action: #selector(pushTripButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Trip"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
+        titleLabel.text = NSLocalizedString(titleKey, comment: "")
+        titleLabel.font = .boldSystemFont(ofSize: 22)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        tripButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "trip_100*100"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        tripButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            tripButton.topAnchor.constraint(equalTo: greetingButton.bottomAnchor, constant: 50),
-            tripButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            tripButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            tripButton.heightAnchor.constraint(equalTo: tripButton.widthAnchor),
-            // title
-            titleLabel.bottomAnchor.constraint(equalTo: tripButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: tripButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: tripButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: tripButton.heightAnchor),
-        ])
-    }
-    // レストラン用ボタン
-    func setupRestaurantButton() {
-        self.container.addSubview(restaurantButton)
-        restaurantButton.translatesAutoresizingMaskIntoConstraints = false
-        restaurantButton.addTarget(self, action: #selector(pushRestaurantButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Restaurant"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        restaurantButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "restaurant_100*100"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        restaurantButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            restaurantButton.topAnchor.constraint(equalTo: tripButton.bottomAnchor, constant: 50),
-            restaurantButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            restaurantButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            restaurantButton.heightAnchor.constraint(equalTo:restaurantButton.widthAnchor),
-            // title
-            titleLabel.bottomAnchor.constraint(equalTo: restaurantButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: restaurantButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: restaurantButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: restaurantButton.heightAnchor),
-        ])
-    }
-    // ドラマ用ボタン用
-    func setupDramaButton() {
-        self.container.addSubview(dramaButton)
-        dramaButton.translatesAutoresizingMaskIntoConstraints = false
-        dramaButton.addTarget(self, action: #selector(pushDramaButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Drama"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        dramaButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "drama_100*100"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        dramaButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            dramaButton.topAnchor.constraint(equalTo: restaurantButton.bottomAnchor, constant: 50),
-            dramaButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            dramaButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            dramaButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
-            // title
-            titleLabel.topAnchor.constraint(equalTo: dramaButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: dramaButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: dramaButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: dramaButton.heightAnchor)
-        ])
-    }
-    // 人物名詞ボタン
-    func setupPersonalPronounsButton() {
-        self.container.addSubview(personalPronounsButton)
-        personalPronounsButton.translatesAutoresizingMaskIntoConstraints = false
-        personalPronounsButton.addTarget(self, action: #selector(pushPersonalPronounsButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Personal"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        personalPronounsButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "Personal Pronouns"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        personalPronounsButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            personalPronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
-            personalPronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor, constant: -90),
-            personalPronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            personalPronounsButton.heightAnchor.constraint(equalTo: personalPronounsButton.widthAnchor),
-            // title
-            titleLabel.topAnchor.constraint(equalTo: personalPronounsButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: personalPronounsButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: personalPronounsButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: personalPronounsButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: personalPronounsButton.heightAnchor)
-        ])
-    }
-    // 名詞ボタン(これ・それ）
-    func setupDemonstrativePronounsButton() {
-        self.container.addSubview(demonstrativePronounsButton)
-        demonstrativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
-        demonstrativePronounsButton.addTarget(self, action: #selector(pushDemonstrativePronounsButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Demonstartive"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        demonstrativePronounsButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "Demonstrative Pronouns"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        demonstrativePronounsButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            demonstrativePronounsButton.topAnchor.constraint(equalTo: dramaButton.bottomAnchor, constant: 50),
-            demonstrativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor, constant: 90),
-            demonstrativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            demonstrativePronounsButton.heightAnchor.constraint(equalTo: demonstrativePronounsButton.widthAnchor),
-            // title
-            titleLabel.topAnchor.constraint(equalTo: demonstrativePronounsButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: demonstrativePronounsButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: demonstrativePronounsButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: demonstrativePronounsButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: demonstrativePronounsButton.heightAnchor)
-        ])
-    }
-    //
-    func setupInterrogativePronounsButton() {
-        self.container.addSubview(interrogativePronounsButton)
-        interrogativePronounsButton.translatesAutoresizingMaskIntoConstraints = false
-        interrogativePronounsButton.addTarget(self, action: #selector(pushInterrogativePronounsButton), for: .touchUpInside)
-        
-        let titleLabel = UILabel()
-        titleLabel.text = "Interrogative"
-        titleLabel.font = .systemFont(ofSize: 18, weight: .bold)
-        titleLabel.textColor = AppColors.textColor
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        interrogativePronounsButton.addSubview(titleLabel)
-        
-        let imageView = UIImageView(image: UIImage(named: "Interrogative Pronouns"))
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 25.0
-        imageView.layer.masksToBounds = true
-        interrogativePronounsButton.addSubview(imageView)
-    
-        
-        NSLayoutConstraint.activate([
-            // button
-            interrogativePronounsButton.topAnchor.constraint(equalTo: demonstrativePronounsButton.bottomAnchor, constant: 50),
-            interrogativePronounsButton.centerXAnchor.constraint(equalTo: self.container.centerXAnchor),
-            interrogativePronounsButton.widthAnchor.constraint(equalTo: self.container.widthAnchor, multiplier: 0.25),
-            interrogativePronounsButton.heightAnchor.constraint(equalTo: dramaButton.widthAnchor),
-            // title
-            titleLabel.topAnchor.constraint(equalTo: interrogativePronounsButton.topAnchor, constant: -7),
-            titleLabel.centerXAnchor.constraint(equalTo: interrogativePronounsButton.centerXAnchor),
-            // imageView
-            imageView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 30),
-            imageView.centerXAnchor.constraint(equalTo: interrogativePronounsButton.centerXAnchor),
-            imageView.widthAnchor.constraint(equalTo: interrogativePronounsButton.widthAnchor),
-            imageView.heightAnchor.constraint(equalTo: interrogativePronounsButton.heightAnchor)
-        ])
+
+        return titleLabel
     }
     
-    func setDeleteNotifButton() {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "bell.circle"), for: .normal)
-        button.tintColor = AppColors.appMainColor
-        button.addTarget(self, action: #selector(openAllNotifDeleteAleart), for: .touchUpInside)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    func craeteChevronButton() -> UIButton {
+        let chevronButton = UIButton(type: .system)
+        chevronButton.translatesAutoresizingMaskIntoConstraints = false
+        chevronButton.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        chevronButton.tintColor = AppColors.appMainColor
+        return chevronButton
     }
     
+    // Mark: - AppBar Buttons
     func setRewordAdButton() {
-        let button = UIBarButtonItem(title: "Ads Hide Settings", style: .plain, target: self, action: #selector(showRewardAlert))
+        let button = UIBarButtonItem(
+            title: NSLocalizedString("ads_hide_button_title", comment: ""),
+            style: .plain, target: self, action: #selector(showRewardAlert))
         button.tintColor = AppColors.appMainColor
         navigationItem.rightBarButtonItem = button
     }
     
 // MARK: - objc
     @objc func pushDailyButton(sender: UIButton){
-        let vc = DailyTalkViewController(titleName: "Daily conversation")
+        let vc = DailyTalkViewController(titleName: NSLocalizedString("vocab_daily_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushGreetingButton(sender: UIButton){
-        let vc = GreetingsViewController(titleName: "Greeting")
+        let vc = GreetingsViewController(titleName: NSLocalizedString("vocab_greeting_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushTripButton(sender: UIButton){
-        let vc = TripViewController(titleName: "Trip")
+        let vc = TripViewController(titleName: NSLocalizedString("vocab_trip_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushRestaurantButton(sender: UIButton){
-        print("restaurant tap")
-        let vc = RestaurantViewController(titleName: "Restaurant")
+        let vc = RestaurantViewController(titleName: NSLocalizedString("vocab_restaurant_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushDramaButton(sender: UIButton){
-        navigationController?.pushViewController(dramaVC, animated: true)
+        let vc = DramaViewController(titleName: NSLocalizedString("vocab_drama_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushPersonalPronounsButton(sender: UIButton){
-        navigationController?.pushViewController(personalPronounsVC, animated: true)
+        let vc = PersonalPronounsViewController(titleName: NSLocalizedString("vocab_personal_pronouns_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushDemonstrativePronounsButton(sender: UIButton) {
-        let vc = DemonstrativePronounsViewController(titleName: "Demonstrative Pronouns")
+        let vc = DemonstrativePronounsViewController(titleName: NSLocalizedString("vocab_demonstrative_pronouns_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
+
     @objc func pushInterrogativePronounsButton(sender: UIButton) {
-        let vc = InterrogativePronounsViewController(titleName: "Interrogative Pronouns")
+        let vc = InterrogativePronounsViewController(titleName: NSLocalizedString("vocab_interrogative_pronouns_button_title", comment: ""))
         navigationController?.pushViewController(vc, animated: true)
     }
-    // 全てのリマインドを削除
-    @objc func openAllNotifDeleteAleart(){
-        let alert = UIAlertController(title: "Delete all reminders",
-                                      message: "If you tap delete, all reminders will be deleted. Are you sure?",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [self] _ in
-            deleteAllNotif()
-            deleteAllFavorites()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
+
+    @objc func pushShoppingButton(sender: UIButton) {
+        let vc = ShoppingViewController(titleName: NSLocalizedString("vocab_shopping_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
     }
+
+    @objc func pushPhoneButton(sender: UIButton) {
+        let vc = PhoneViewController(titleName: NSLocalizedString("vocab_phone_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func pushWeatherButton(sender: UIButton) {
+        let vc = WeatherViewController(titleName: NSLocalizedString("vocab_weather_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func pushHealthButton(sender: UIButton) {
+        let vc = HealthViewController(titleName: NSLocalizedString("vocab_health_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func pushBusinessButton(sender: UIButton) {
+        let vc = BusinessViewController(titleName: NSLocalizedString("vocab_business_button_title", comment: ""))
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
     
     @objc func showRewardAlert() {
         let alert = UIAlertController(
-            title: "Delete Ads for 24 hours",
-            message: "If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?",
+            title: NSLocalizedString("ads_hide_title", comment: ""),
+            message: NSLocalizedString("ads_hide_message", comment: ""),
             preferredStyle: .alert
             )
 
-        let watchAction = UIAlertAction(title: "Watch", style: .default) { _ in
+        let watchAction = UIAlertAction(title: NSLocalizedString("watch", comment: ""), style: .default) { _ in
             self.getReword()
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil)
 
         alert.addAction(watchAction)
         alert.addAction(cancelAction)
@@ -446,27 +272,7 @@ class CategoryViewController: UIViewController {
         present(alert, animated: true)
     }
 
-    //MARK - Delete Notification
-    //全ての通知を削除する処理
-    func deleteAllNotif() {
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests()
-        //全ての通知を削除しましたのダイアログ表示
-        let alert = UIAlertController(title: "All notifications removed.", message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
     
-    // 全てのハートボタンの状態を削除
-    func deleteAllFavorites() {
-        UserDefaults.standard.removeObject(forKey: greetingVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: personalPronounsVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: dailyVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: tripVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: restaurantVC.favoritesLocalKey)
-        UserDefaults.standard.removeObject(forKey: dramaVC.favoritesLocalKey)
-        
-    }
     //MARK: - Reward Ads
     func getReword() {
         Task {

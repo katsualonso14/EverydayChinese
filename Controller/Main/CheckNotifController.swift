@@ -31,6 +31,21 @@ class CheckNotifController: UIViewController {
         case "drama":
             let vc = DramaViewController(titleName: "Drama")
             navController.pushViewController(vc, animated: true)
+        case "shopping":
+            let vc = ShoppingViewController(titleName: "Shopping")
+            navController.pushViewController(vc, animated: true)
+        case "phone":
+            let vc = PhoneViewController(titleName: "Phone")
+            navController.pushViewController(vc, animated: true)
+        case "weather":
+            let vc = WeatherViewController(titleName: "Weather")
+            navController.pushViewController(vc, animated: true)
+        case "health":
+            let vc = HealthViewController(titleName: "Health")
+            navController.pushViewController(vc, animated: true)
+        case "business":
+            let vc = BusinessViewController(titleName: "Business")
+            navController.pushViewController(vc, animated: true)
         default:
             break
         }

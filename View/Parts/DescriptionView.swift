@@ -9,80 +9,107 @@ class DescriptionView: UIView {
     let checkBoxLabel = UILabel()
     let descriptionCheckBox = UIImageView()
     let closeButton = UIButton()
-    // QuickMemoかPhraseStoreかの判別フラグ
-    var discriptNumber = 1
+    var discriptNumber: Int // 説明ダイアログのページ番号
+    weak var parentViewController: UIViewController?
     // 説明ダイアログ次回以降非表示フラグ(UserDefaultsで管理)
     var isDescription: Bool {
         return UserDefaults.standard.bool(forKey: "isDescription")
     }
     override init(frame: CGRect) {
+        self.discriptNumber = 1
         super.init(frame: frame)
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = AppColors.backgroundColorCheckMode
         self.layer.cornerRadius = 12
+    
         setupView()
     }
     
-    func setupView() {
-        // 画像
-        imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 20, y: 20, width: 250, height: 150)
-        addSubview(imageView)
+    private func setupView() {
+        [imageView, label, checkBoxLabel, descriptionCheckBox, button, closeButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            addSubview($0)
+        }
 
-        // 説明文
-        label.frame = CGRect(x: 20, y: 180, width: 280, height: 20)
-        label.font = UIFont.systemFont(ofSize: 15)
+        imageView.contentMode = .scaleAspectFit
+
+        label.font = UIFont.systemFont(ofSize: 17)
         label.numberOfLines = 0
-        label.textColor = .systemBackground
-        addSubview(label)
-        
-        // チェックボックスの説明
-        checkBoxLabel.text = "Do not show this message again."
-        checkBoxLabel.frame = CGRect(x: 5, y: 260, width: 250, height: 20)
-        checkBoxLabel.font = UIFont.systemFont(ofSize: 15)
+
+        checkBoxLabel.text = NSLocalizedString("dicript_check_box_label", comment: "")
+        checkBoxLabel.font = UIFont.systemFont(ofSize: 16)
         checkBoxLabel.textColor = .systemGray
-        addSubview(checkBoxLabel)
-        
-        // 起動時に説明ダイアログを表示するかどうかのチェックボックス
-        descriptionCheckBox.frame = CGRect(x: 180, y: 260, width: 150, height: 30)
+
         descriptionCheckBox.contentMode = .scaleAspectFit
         descriptionCheckBox.isUserInteractionEnabled = true
-        addSubview(descriptionCheckBox)
-        
-        //チェックボックスのアクション
         let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapCheckBox))
         descriptionCheckBox.addGestureRecognizer(gesture)
 
-        // 画面切り替えボタン
         button.backgroundColor = AppColors.appMainColor
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
-        button.layer.masksToBounds = true
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
         button.addTarget(self, action: #selector(changePage), for: .touchUpInside)
-        button.frame = CGRect(x: 20, y: 300, width: 250, height: 40)
-        addSubview(button)
-        
-        //閉じるボタン
+
         closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         closeButton.tintColor = .systemGray
-        closeButton.frame = CGRect(x: 270, y: 0, width: 30, height: 30)
         closeButton.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
-        addSubview(closeButton)
-        
+
+        setupConstraints()
         updateViewContent()
+    }
+
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            closeButton.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+
+            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 80),
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5),
+
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 30),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+
+            checkBoxLabel.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20),
+            checkBoxLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+
+            descriptionCheckBox.centerYAnchor.constraint(equalTo: checkBoxLabel.centerYAnchor),
+            descriptionCheckBox.leadingAnchor.constraint(equalTo: checkBoxLabel.trailingAnchor, constant: 30),
+            descriptionCheckBox.widthAnchor.constraint(equalToConstant: 24),
+            descriptionCheckBox.heightAnchor.constraint(equalToConstant: 24),
+
+            button.topAnchor.constraint(equalTo: checkBoxLabel.bottomAnchor, constant: 30),
+            button.centerXAnchor.constraint(equalTo: centerXAnchor),
+            button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
+            button.heightAnchor.constraint(equalToConstant: 44)
+        ])
     }
     
     func updateViewContent() {
-        imageView.image = discriptNumber == 1 ? UIImage(named: "Quick Memo Sample") :
-        discriptNumber == 2 ? UIImage(named: "Add PhraseStore from Quick Memo") : UIImage(named: "PhraseStore Sample")
-        
-        label.text = discriptNumber == 1 ?
-        "You can write down words you don't understand or are curious about in your daily life quickly and easily."
-        : discriptNumber == 2 ? "You can save sentences and situations with words that you want to remember in Quick Memo." :
-        "You can save words and sentences that you want to remember and situations when you find them in PhraseStore."
-        label.sizeToFit()
-        
-        button.setTitle(discriptNumber == 3 ? "Close" : "Next", for: .normal)
-        
+        switch discriptNumber {
+        case 1:
+            imageView.image = UIImage(named: "Add MyCards")
+            label.text = NSLocalizedString("dicript_label_add_my_cards", comment: "")
+            button.setTitle(NSLocalizedString("next", comment: ""), for: .normal)
+            
+        case 2:
+            imageView.image = UIImage(named: "Check MyCards back page")
+            label.text = NSLocalizedString("dicrpt_label_tap_my_cards", comment: "")
+            button.setTitle(NSLocalizedString("next", comment: ""), for: .normal)
+            
+        case 3:
+            imageView.image = UIImage(named: "MyCards View Image")
+            label.text = NSLocalizedString("dicrpt_label_my_cards_view", comment: "")
+            button.setTitle(NSLocalizedString("close", comment: ""), for: .normal)
+            
+        default:
+            break
+        }
+
         updateCheckBox()
     }
     
@@ -91,12 +118,10 @@ class DescriptionView: UIView {
     }
     
     @objc func changePage() {
-        if discriptNumber == 1 {
-            discriptNumber = 2
-        } else if discriptNumber == 2 {
-            discriptNumber = 3
+        if discriptNumber < 3 {
+            discriptNumber += 1
         } else {
-            self.removeFromSuperview()
+            parentViewController?.dismiss(animated: true)
         }
         updateViewContent()
     }
@@ -110,7 +135,6 @@ class DescriptionView: UIView {
     @objc func closeModal() {
         self.removeFromSuperview()
     }
-
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

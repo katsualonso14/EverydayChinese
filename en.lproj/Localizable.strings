@@ -1,10 +1,134 @@
 /* 
   Localizable.strings
   ChineseApp
-
-  Created by KatsuyaTamai on 2024/12/07.
-  
 */
 
-"welcome_message" = "Welcome to the app!";
-"error_message" = "An error has occurred.";
+//MARK: - Common
+// Navigation Bar Title
+"vocabrary_title" = "Vocabulary";
+"remind_list_title" = "Remind List";
+"calendar_title" = "Calendar";
+"category_bottom_tab_title" = "Vocab";
+"quiz_title" = "Quiz";
+
+//MARK: - Common Components
+// Placeholder Text
+"search_placeholder" = "Search for words";
+"example_sentence_placeholder" = "Enter sentence...";
+"memo_placeholder" = "Enter memo...";
+"word_placeholder" = "Enter word...";
+"meaning_placeholder" = "Enter meaning or memo...";
+// Button Text
+"done" = "Done";
+"cancel" = "Cancel";
+"close" = "Close";
+"delete" = "Delete";
+"submit" = "Submit";
+"watch" = "Watch";
+"next" = "Next";
+"open" = "Open";
+"error" = "Error";
+"save" = "Save";
+
+// Remind Time
+"in 1hour" = "in 1hour";
+"in 3hour" = "in 3hour";
+"in 1day" = "in 1day";
+"not set" = "not set";
+
+//MARK: - Ads Hide
+"ads_hide_button_title" = "Hide Ads";
+"ads_hide_title" = "Hide Ads for 24 hours";
+"ads_hide_message" =
+"If you watch the reward ad, the ad at the bottom of the screen will be hidden for 24 hours.\nWould you like to see it?";
+
+//MARK: - Discpription Modal
+"dicript_check_box_label" = "Do not show description at startup";
+"discript_text_1" = "You can write down words you don't understand or are curious about in your daily life quickly and easily.";
+"discript_text_2" = "You can save sentences and memo with words that you want to remember in Quick Memo.";
+"discript_text_3" = "You can save words and sentences that you want to remember and memo (Situation, Meaning, etc.) in Custom Words.";
+"discript_text_default" = "We recommend writing in Memo the situation in which you encountered the word and the meaning of the word.";
+
+//MARK: - Vocabulary Page
+"vocab_daily_button_title" = "Daily Conversation";
+"vocab_greeting_button_title" = "Greetings";
+"vocab_trip_button_title" = "Travel";
+"vocab_restaurant_button_title" = "Restaurant";
+"vocab_drama_button_title" = "Drama & Movies";
+"vocab_personal_pronouns_button_title" = "Personal Pronouns";
+"vocab_demonstrative_pronouns_button_title" = "Demonstrative Pronouns";
+"vocab_interrogative_pronouns_button_title" = "Interrogative Pronouns";
+"vocab_shopping_button_title" = "Shopping";
+"vocab_phone_button_title" = "Phone & Messages";
+"vocab_weather_button_title" = "Weather & Seasons";
+"vocab_health_button_title" = "Health & Hospitals";
+"vocab_business_button_title" = "Business";
+
+//MARK: - Word Seeds
+"add_word_seeds_title" = "Add Word Seeds";
+"add_word_seeds_message" = "Please enter a word";
+"edit_word_seeds_title" = "Edit Word Seeds";
+"edit_word_seeds_message" = "Edit your words";
+
+"save_memo_with_sentence_title" = "Save memo with sentence";
+"save_memo_with_sentence_message" = "Save sentence and memo \nwith check vocaburaly: ";
+"word_seeds_error_message" = "Please enter a word";
+
+"search_in_web_title" = "Would you like to search for the following words in Web?";
+"no_word_alert_title" = "No search word";
+"no_word_alert_message" = "Please select a search word.";
+
+"front_label" = "Front";
+"back_label" = "Back";
+"no_sentence" = "You can note the meaning or sentences here.";
+//MARK: - Custom Words
+"custom_word_explain_0_post" = "No phrases added yet.\nSave words, create example sentences, and add notes about their meanings or the situations where you found them.\n\n🔹 Example:\nWord: 多少钱？\nSentence: 这个面包多少钱？\nMemo: When I bought a bread at a bakery.";
+
+"add_custom_word_title" = "Add Custom Word";
+"add_custom_word_message" = "Please enter a word and a sentence and memo.";
+"custom_word_error_message" = "Please enter a word and a sentence and memo.";
+
+"edit_custom_word_title" = "Edit your memo";
+"edit_custom_word_message" = "Edit word, sentence, memo";
+// MARK: - Remind Bottom Sheet
+"remind_bottom_sheet_title" = "Reminder";
+"remind_bottom_sheet_message" = "Please select the reminder time.";
+"remind_bottom_sheet_1hour" = "1 hour later";
+"remind_bottom_sheet_3hour" = "3 hours later";
+"remind_bottom_sheet_1day" = "1 day later";
+"remind_completed_title" = "Remind Completed";
+"remind_completed_message" = "The reminder has been set successfully.";
+
+//MARK: - Quiz
+// QUiz Contents
+"quiz_meaning_thank_you" = "What does '谢谢' mean?";
+"quiz_which_is_good_morning" = "Which one means 'Good morning' in Chinese?";
+"quiz_which_is_she" = "Which one means 'She' in Chinese?";
+"quiz_which_is_how_much_is_this" = "How do you say 'How much is this?' in Chinese?";
+"quiz_which_is_where" = "Which one means 'Where' in Chinese?";
+
+"word_sorry" = "Sorry";
+"word_thank_you" = "Thank you";
+"word_good_morning" = "Good morning";
+"word_goodbye" = "Goodbye";
+
+"reset_quiz" = "Reset Quiz";
+//MARK: - Remind
+// Delete Alert
+"delete_all_remind_title" = "Delete all reminders";
+"delete_all_remind_message" = "If you tap delete, all reminders will be deleted. Are you sure?";
+
+// Notification Delete
+"delete_all_notif_title" = "Delete All Notifications";
+"delete_all_notif_message" = "You can reset all notifications. Do you want to delete all notifications?";
+"delete_all_notif_finish_title" = "All notifications have been deleted";
+
+//MARK: - Feedback
+"feedback_title" = "Feedback";
+"feedback_message" = "We are looking for your feedback on this app. Please write any requests such as 'I want this feature' or 'I want this to be improved' here and press the Submit button.";
+
+// MARK: - App Description
+"dicript_check_box_label" = "Do not show description at startup";
+"dicript_label_add_my_cards" = "Write a word on the front, and its meaning or example on the back to save it as a card!";
+"dicrpt_label_tap_my_cards" = "Tap a card to flip it and see the meaning or example!";
+"dicrpt_label_my_cards_view" = "Use the front and back to create your own personalized vocabulary deck!";

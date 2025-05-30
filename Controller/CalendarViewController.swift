@@ -11,10 +11,9 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Calendar"
+        navigationItem.title = NSLocalizedString("calendar_title", comment: "")
         saveToday()
         setCalendar()
-        setupFeedBackForm()
     }
     
     //MARK: -Layout
@@ -63,15 +62,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             checkMarkView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
-    func setupFeedBackForm() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "bubble.left.and.bubble.right"),
-            style: .plain,
-            target: self,
-            action: #selector(openFeedbackModal)
-        )
-    }
 
     //MARK: -Function
     // 既存のチェックマークを削除する
@@ -99,39 +89,6 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
             realm.add(Events)
         }
     }
-    // Store feedback to Firestore
-    func saveFeedbackToFirestore(feedback: String) {
-        let db = Firestore.firestore()
-        db.collection("feedbacks").addDocument(data: [
-            "feedback": feedback,
-            "timestamp": Timestamp(date: Date())
-        ]) { error in
-            if let error = error {
-                print("Error saving feedback: \(error.localizedDescription)")
-            } else {
-                print("Feedback successfully saved!")
-            }
-        }
-    }
-    
-    //MARK: -objc
-    @objc func openFeedbackModal() {
-        let alert = UIAlertController(title: "Feedback",
-                                      message: "We would love to hear your feedback on this application. \nIf you have any feedback, please write it here and press the Submit button.",
-                                      preferredStyle: .alert)
-        alert.addTextField { textField in
-            textField.placeholder = "Feedback"
-        }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Submit", style: .default, handler: { _ in
-            if let feedback = alert.textFields?.first?.text {
-                // Save feedback to Firestore
-                self.saveFeedbackToFirestore(feedback: feedback)
-            }
-        }))
-        present(alert, animated: true, completion: nil)
-    }
-    
     
     //MARK: -CalendarSupport
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {

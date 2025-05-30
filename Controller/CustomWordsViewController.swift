@@ -1,25 +1,27 @@
 import UIKit
 
-class PhraseStoreViewController: UIViewController {
+class CustomWordsViewController: UIViewController {
     let tableView = UITableView()
     let conteinerView = UIView()
     //TODO: UseDefaultsの値のみで良い場合は削除を検討
     var words = [String]()
     var sentences = [String]()
-    var situation = [String]()
+    var memo = [String]()
     let searchController = UISearchController(searchResultsController: nil)
     var filteredWords = [String]()
     var filteredSentences = [String]()
-    var filteredSituations = [String]()
+    var filteredMemo = [String]()
     var isSearching = false // 検索中かどうか判定
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Phrase Store"
+        navigationItem.title = NSLocalizedString("custom_words_title", comment: "")
         setView()
         setTableView()
+        setDescriptionButton()
         setAddButton()
         setupSearchController()
+        updateBackgroundView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -27,7 +29,7 @@ class PhraseStoreViewController: UIViewController {
         // 遷移のたびに確認
         words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
+        memo = UserDefaults.standard.stringArray(forKey: "memo") ?? []
         tableView.reloadData()
     }
     
@@ -58,12 +60,21 @@ class PhraseStoreViewController: UIViewController {
         
         self.words = UserDefaults.standard.stringArray(forKey: "word") ?? []
         self.sentences = UserDefaults.standard.stringArray(forKey: "sentence") ?? []
-        self.situation = UserDefaults.standard.stringArray(forKey: "situation") ?? []
+        self.memo = UserDefaults.standard.stringArray(forKey: "memo") ?? []
         
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(PhraseStoreCell.self, forCellReuseIdentifier: "PhraseStoreCell")
     }
+    
+    func setDescriptionButton() {
+        let descriptionButton = UIButton(type: .system)
+        descriptionButton.setImage(UIImage(systemName: "questionmark.circle"), for: .normal)
+        descriptionButton.tintColor = AppColors.appMainColor
+        descriptionButton.addTarget(self, action: #selector(setDiscrptionView), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: descriptionButton)
+    }
+    
     
     func setAddButton() {
         let addButton = UIButton()
@@ -89,40 +100,61 @@ class PhraseStoreViewController: UIViewController {
     func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Words"
-        tableView.tableHeaderView = searchController.searchBar
-        // Layout Setting
-        tableView.tableHeaderView?.layer.cornerRadius = 16
-        tableView.tableHeaderView?.layer.masksToBounds = true
-        tableView.tableHeaderView?.layer.borderWidth = 5
-        tableView.tableHeaderView?.layer.borderColor = UIColor.systemGray6.cgColor
-        
-        searchController.searchBar.backgroundImage = UIImage() // 背景を透明に設定
-        searchController.searchBar.searchTextField.backgroundColor = AppColors.backgroundColorCheckMode
-        definesPresentationContext = true
+        searchController.searchBar.placeholder = NSLocalizedString("search_placeholder", comment: "")
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    // cellのが0の場合の背景
+    func updateBackgroundView() {
+        if words.isEmpty {
+            let emptyView = UIView(frame: tableView.bounds)
+            emptyView.backgroundColor = AppColors.backgroundColorCheckMode
+            emptyView.layer.cornerRadius = 16
+            emptyView.layer.masksToBounds = true
+
+            let label = UILabel()
+            let explanationText = NSLocalizedString("custom_word_explain_0_post", comment: "")
+            label.text = explanationText
+            label.textAlignment = .left
+            label.numberOfLines = 10
+            label.frame = CGRect(x: 40, y: 0, width: 300, height: 300)
+            label.font = .systemFont(ofSize: 16)
+
+            emptyView.addSubview(label)
+            tableView.backgroundView = emptyView
+        } else {
+            tableView.backgroundView = nil
+        }
     }
     
     //MARK: - Function
     @objc func addTapped() {
         //add new cell
-        let aleat = UIAlertController(title: "New Notes", message: "add word and sentence", preferredStyle: .alert)
+        let aleat = UIAlertController(
+            title: NSLocalizedString("add_custom_word_title", comment: ""),
+            message: NSLocalizedString("add_custom_word_message", comment: ""), preferredStyle: .alert)
         
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter word..."
+            textField.placeholder = NSLocalizedString("word_placeholder", comment: "")
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter sentence..."
+            textField.placeholder = NSLocalizedString("example_sentence_placeholder", comment: "")
         }
         aleat.addTextField{ (textField) in
-            textField.placeholder = "Enter situation..."
+            textField.placeholder = NSLocalizedString("memo_placeholder", comment: "")
         }
         
-        aleat.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
         
-        aleat.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] (_) in
+        aleat.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler:{
+            [weak self] (_) in
             // 文字がない場合はエラーメッセージ
             if aleat.textFields?.first?.text == "" || aleat.textFields?[1].text == "" || aleat.textFields?.last?.text == "" {
-                let alert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                let alert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("custom_word_error_message", comment: ""),
+                    preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self?.present(alert, animated: true)
                 return
@@ -137,6 +169,7 @@ class PhraseStoreViewController: UIViewController {
                         UserDefaults.standard.setValue(currentWord, forKey: "word")
                         self?.words.append(text)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -149,6 +182,7 @@ class PhraseStoreViewController: UIViewController {
                         UserDefaults.standard.setValue(currentSentence, forKey: "sentence")
                         self?.sentences.append(text2)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -156,11 +190,12 @@ class PhraseStoreViewController: UIViewController {
             if let filed3 = aleat.textFields?.last {
                 if let text3 = filed3.text, !text3.isEmpty {
                     DispatchQueue.main.async {
-                        var currentSituation = UserDefaults.standard.array(forKey: "situation") ?? []
-                        currentSituation.append(text3)
-                        UserDefaults.standard.setValue(currentSituation, forKey: "situation")
-                        self?.situation.append(text3)
+                        var currentMemo = UserDefaults.standard.array(forKey: "memo") ?? []
+                        currentMemo.append(text3)
+                        UserDefaults.standard.setValue(currentMemo, forKey: "memo")
+                        self?.memo.append(text3)
                         self?.tableView.reloadData()
+                        self?.updateBackgroundView()
                     }
                 }
             }
@@ -170,22 +205,29 @@ class PhraseStoreViewController: UIViewController {
         present(aleat, animated: true)
     }
     // メモの編集処理
-    func openEditMemo(word: String, sentence: String, situation: String, index: Int) {
-        let alert = UIAlertController(title: "Edit Your Memo", message: "Edit word, sentence, situation", preferredStyle: .alert)
+    func openEditMemo(word: String, sentence: String, memo: String, index: Int) {
+        let alert = UIAlertController(
+            title: NSLocalizedString("edit_custom_word_title", comment: ""),
+            message: NSLocalizedString("edit_custom_word_message", comment: ""),
+            preferredStyle: .alert)
         
         alert.addTextField { $0.text = word }
         alert.addTextField { $0.text = sentence }
-        alert.addTextField { $0.text = situation }
+        alert.addTextField { $0.text = memo }
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel, handler: nil))
         
-        alert.addAction(UIAlertAction(title: "Done", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("done", comment: ""), style: .default, handler: {
+            [weak self] _ in
             guard let self = self else { return }
             guard let textFields = alert.textFields,
                   let newWord = textFields[0].text, !newWord.isEmpty,
                   let newSentence = textFields[1].text, !newSentence.isEmpty,
-                  let newSituation = textFields[2].text, !newSituation.isEmpty else {
-                let errorAlert = UIAlertController(title: "Error", message: "Please enter word and sentence", preferredStyle: .alert)
+                  let newMemo = textFields[2].text, !newMemo.isEmpty else {
+                let errorAlert = UIAlertController(
+                    title: NSLocalizedString("error", comment: ""),
+                    message: NSLocalizedString("custom_word_error_message", comment: ""),
+                    preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(errorAlert, animated: true)
                 return
@@ -194,12 +236,12 @@ class PhraseStoreViewController: UIViewController {
             // データ更新
             self.words[index] = newWord
             self.sentences[index] = newSentence
-            self.situation[index] = newSituation
+            self.memo[index] = newMemo
             
             // UserDefaults の更新を一回でまとめる
             UserDefaults.standard.setValue(self.words, forKey: "word")
             UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
-            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            UserDefaults.standard.setValue(self.memo, forKey: "memo")
             
             // テーブルをリロード（UI更新はメインスレッドで）
             DispatchQueue.main.async {
@@ -209,18 +251,28 @@ class PhraseStoreViewController: UIViewController {
         
         present(alert, animated: true)
     }
+    
+    //MARK: - objc
+    @objc func setDiscrptionView() {
+        let explanationView = DescriptionView(frame: CGRect(x: 50, y: 170, width: 330, height: 350))
+        explanationView.center = view.center
+        // PhraseStoreからの遷移はPhraseStore説明ページを初期表示に設定
+        let data = ["discriptNumber": 3]
+        NotificationCenter.default.post(name: Notification.Name("addDescription"), object: nil, userInfo: data)
+        view.addSubview(explanationView)
+    }
 
 }
 
 
 //MARK: - TableView DataSource
-extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate {
+extension CustomWordsViewController: UITableViewDataSource, UITableViewDelegate {
     // テーブルビューのセクション数を返す
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
-            return min(filteredWords.count, filteredSentences.count, filteredSituations.count)
+            return min(filteredWords.count, filteredSentences.count, filteredMemo.count)
         } else {
-            return min(words.count, sentences.count, situation.count)
+            return min(words.count, sentences.count, memo.count)
         }
     }
 
@@ -237,17 +289,17 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
         
         guard indexPath.row < (isSearching ? filteredWords.count : words.count),
               indexPath.row < (isSearching ? filteredSentences.count : sentences.count),
-              indexPath.row < (isSearching ? filteredSituations.count : situation.count) else {
+              indexPath.row < (isSearching ? filteredMemo.count : memo.count) else {
             return cell
         }
         
         let word = isSearching ? filteredWords[indexPath.row] : words[indexPath.row]
         let sentence = isSearching ? filteredSentences[indexPath.row] : sentences[indexPath.row]
-        let situation = isSearching ? filteredSituations[indexPath.row] : situation[indexPath.row]
+        let memo = isSearching ? filteredMemo[indexPath.row] : memo[indexPath.row]
 
         cell.label.text = "Word: \(word)"
         cell.secondLabel.text = "Sentence: \(sentence)"
-        cell.thirdLabel.text = "Situation: \(situation)"
+        cell.thirdLabel.text = "Memo: \(memo)"
         
         return cell
     }
@@ -255,10 +307,14 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     
     //セルの高さ
      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 160
     }
+    //TODO: 1→0の例文表示処理がエラーなので解消する
     //Cellの編集と削除
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if words.count == 0 {
+            return nil
+        }
         // 編集アクション
         let editAction = UIContextualAction(style: .normal, title: nil) { (action, view, completionHandler) in
             // 検索中の場合、フィルター時のインデックス指定
@@ -267,19 +323,19 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 self.openEditMemo(
                     word: self.words[originalIndex],
                     sentence: self.sentences[originalIndex],
-                    situation: self.situation[originalIndex],
+                    memo: self.memo[originalIndex],
                     index: originalIndex
                 )
             } else {
                 self.openEditMemo(
                     word: self.words[indexPath.row],
                     sentence: self.sentences[indexPath.row],
-                    situation: self.situation[indexPath.row],
+                    memo: self.memo[indexPath.row],
                     index: indexPath.row
                 )
             }
             completionHandler(true)
-        }
+        }		
 
         // 削除アクション
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
@@ -288,22 +344,23 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
                 let originalIndex = self.words.firstIndex(of: self.filteredWords[indexPath.row]) ?? indexPath.row
                 self.words.remove(at: originalIndex)
                 self.sentences.remove(at: originalIndex)
-                self.situation.remove(at: originalIndex)
-
+                self.memo.remove(at: originalIndex)
+                
                 self.filteredWords.remove(at: indexPath.row)
                 self.filteredSentences.remove(at: indexPath.row)
-                self.filteredSituations.remove(at: indexPath.row)
+                self.filteredMemo.remove(at: indexPath.row)
             } else {
                 self.words.remove(at: indexPath.row)
                 self.sentences.remove(at: indexPath.row)
-                self.situation.remove(at: indexPath.row)
+                self.memo.remove(at: indexPath.row)
             }
             
             UserDefaults.standard.setValue(self.words, forKey: "word")
             UserDefaults.standard.setValue(self.sentences, forKey: "sentence")
-            UserDefaults.standard.setValue(self.situation, forKey: "situation")
+            UserDefaults.standard.setValue(self.memo, forKey: "memo")
             
             tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateBackgroundView()
             completionHandler(true)
         }
         
@@ -319,7 +376,7 @@ extension PhraseStoreViewController: UITableViewDataSource, UITableViewDelegate 
     
 }
 //MARK: - Search
-extension PhraseStoreViewController: UISearchResultsUpdating {
+extension CustomWordsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchText.isEmpty else {
             isSearching = false
@@ -330,19 +387,19 @@ extension PhraseStoreViewController: UISearchResultsUpdating {
         isSearching = true
         filteredWords.removeAll()
         filteredSentences.removeAll()
-        filteredSituations.removeAll()
+        filteredMemo.removeAll()
 
         for (index, word) in words.enumerated() {
             let sentence = sentences[index]
-            let situ = situation[index]
+            let memo = memo[index]
 
-            // words, sentences, situation のどれかに検索ワードが含まれていたら追加
+            // words, sentences, memo のどれかに検索ワードが含まれていたら追加
             if word.lowercased().contains(searchText.lowercased()) ||
                sentence.lowercased().contains(searchText.lowercased()) ||
-               situ.lowercased().contains(searchText.lowercased()) {
+               memo.lowercased().contains(searchText.lowercased()) {
                 filteredWords.append(word)
                 filteredSentences.append(sentence)
-                filteredSituations.append(situ)
+                filteredMemo.append(memo)
             }
         }
         tableView.reloadData()

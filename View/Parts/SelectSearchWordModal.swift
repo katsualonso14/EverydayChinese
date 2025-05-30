@@ -2,8 +2,8 @@ import UIKit
 
 class SelectSearchWordModal: UIView {
     var searchWord: [String] = []
-    var selecetedWord: String?
     var parentVC: UIViewController?
+    let pickerView = UIPickerView()
     
     init(frame: CGRect, parentVC: UIViewController) {
         self.parentVC = parentVC
@@ -23,7 +23,7 @@ class SelectSearchWordModal: UIView {
     
     func setupDiscriptLabel() {
         let label = UILabel()
-        label.text = "Would you like to search for the following words in Web?"
+        label.text = NSLocalizedString("search_in_web_title", comment: "")
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.numberOfLines = 0
@@ -32,7 +32,6 @@ class SelectSearchWordModal: UIView {
     }
     
     func setupPicker() {
-        let pickerView = UIPickerView()
         pickerView.backgroundColor = .systemBackground
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -42,7 +41,7 @@ class SelectSearchWordModal: UIView {
     
     func setupOpenButton() {
         let openButton = UIButton(type: .system)
-        openButton.setTitle("Open", for: .normal)
+        openButton.setTitle(NSLocalizedString("open", comment: ""), for: .normal)
         openButton.tintColor = UIColor.systemBlue
         openButton.addTarget(self, action: #selector(openWebView), for: .touchUpInside)
         openButton.frame = CGRect(x: 150, y: 250, width: 150, height: 50)
@@ -51,7 +50,7 @@ class SelectSearchWordModal: UIView {
     
     func setupCancelButton() {
         let cancelButton = UIButton(type: .system)
-        cancelButton.setTitle("Cancel", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("cancel", comment: ""), for: .normal)
         cancelButton.tintColor = UIColor.systemBlue
         cancelButton.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         cancelButton.frame = CGRect(x: 0, y: 250, width: 150, height: 50)
@@ -59,7 +58,10 @@ class SelectSearchWordModal: UIView {
     }
     
     func openNoSeachWordAlert() {
-        let alert = UIAlertController(title: "No search word", message: "Please select a search word.", preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: NSLocalizedString("no_word_alert_title", comment: ""),
+            message: NSLocalizedString("no_word_alert_message", comment: ""),
+            preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         parentVC?.present(alert, animated: true, completion: nil)
@@ -72,8 +74,9 @@ class SelectSearchWordModal: UIView {
         }
         
         let webView = WebModalViewController()
-        // pickerで選択した単語を渡す
-        webView.selectedWord = selecetedWord
+        // pickerで選択した単語を渡す(非選択時は0番目)
+        let row = pickerView.selectedRow(inComponent: 0)
+        webView.selectedWord = searchWord[row]
         webView.modalPresentationStyle = .popover
         // 親ビューの上に表示
         parentVC?.present(webView, animated: true, completion: nil)
@@ -94,9 +97,8 @@ extension SelectSearchWordModal: UIPickerViewDelegate, UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return searchWord.count
     }
-    
+    // pickerの各文字列の設定
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        selecetedWord = searchWord[row]
         return searchWord[row]
     }
 }

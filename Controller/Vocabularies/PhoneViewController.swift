@@ -1,19 +1,18 @@
-//初心者ページ
+
+
 import UIKit
 import SnapKit
 import AVFoundation
 import UserNotifications
 
-class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+class PhoneViewController: UITableViewController, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     
     let titleName: String
     let sentenceView = SentenseList()
     let synthesizer = AVSpeechSynthesizer()
-    //     マナーモード時音鳴らすための宣言 AVAudioSession
     let audioSession = AVAudioSession.sharedInstance()
-    // 通知の編集を可能にする定数宣言
     let content = UNMutableNotificationContent()
-    let favoritesLocalKey = "favoriteContacts_trip"
+    let favoritesLocalKey = "favoriteContacts_phone"
     
     init(titleName: String) {
         self.titleName = titleName
@@ -21,7 +20,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
     }
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-    //　　　　viewのセット
+    
     private lazy var container: UIScrollView = {
         let container = UIScrollView()
         container.backgroundColor = UIColor.white
@@ -34,7 +33,7 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         self.view.addSubview(container)
         
         container.snp.makeConstraints { make in
-            make.edges.equalToSuperview() //中心点を親Viewと合わせる、全画面に窓を固定
+            make.edges.equalToSuperview()
         }
         
         container.snp.makeConstraints { make in
@@ -43,50 +42,41 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         }
        
         do {
-            // マナーモードでも音を鳴らすようにする
             try audioSession.setCategory(.playback)
-
         } catch {
             print("Audio Setting Failed.")
             return
         }
         
-        // TableViewのcontentInsetを調整して、広告スペースを確保
-        let bannerHeight: CGFloat = 50 // AdMobバナーの高さ
+        let bannerHeight: CGFloat = 50
         tableView.contentInset.bottom = bannerHeight
         tableView.scrollIndicatorInsets.bottom = bannerHeight
         
-        loadFavorites() // 起動時にハートボタンの色の状態を取得
+        loadFavorites()
         tableView.dataSource = self
-        tableView.delegate  = self
+        tableView.delegate = self
         tableView.separatorStyle = .none
-        //CustomCellの登録
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
-       override func didReceiveMemoryWarning() {
-           super.didReceiveMemoryWarning()
-           // Dispose of any resources that can be recreated.
-       }
-    //MARK: -Function
-    //cellの設定
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
     func CustomCellTapButtonCall(cell: UITableViewCell, pushTime: TimeInterval) {
-        //タップしたcellの値
-        guard let indexPathTapped = tableView.indexPath(for: cell) else
-        {return}
+        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
         
-        let contact = sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
-        print(contact)
+        let contact = sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row]
         let hasFavorited = contact.hasFavorited
         
-        sentenceView.tripSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
-        saveFavorites() // ハートボタンの色の状態を保存
-        //タップしてときの値をpushメッセージに記載
+        sentenceView.phoneSentenceArray[indexPathTapped.section].names[indexPathTapped.row].hasFavorited = !hasFavorited
+        saveFavorites()
+        
         content.title = contact.name
         content.body = contact.name
         content.sound = UNNotificationSound.default
-        content.userInfo = ["page": "trip"]
-        //通知設定
+        content.userInfo = ["page": "phone"]
+        
         if hasFavorited == false {
             pushRegister(pushTime: pushTime)
             // リマインドリストに追加
@@ -97,102 +87,80 @@ class TripViewController: UITableViewController,AVAudioPlayerDelegate, AVSpeechS
         tableView.reloadRows(at: [indexPathTapped], with: .fade)
     }
     
-    // ハートボタンの状態をローカルに保存
     func saveFavorites() {
-        if let encoded = try? JSONEncoder().encode(sentenceView.tripSentenceArray[0].names) {
+        if let encoded = try? JSONEncoder().encode(sentenceView.phoneSentenceArray[0].names) {
             UserDefaults.standard.set(encoded, forKey: favoritesLocalKey)
         }
     }
-    // ハートボタンの状態をローカルから取得
+    
     func loadFavorites() {
         if let savedData = UserDefaults.standard.data(forKey: favoritesLocalKey),
            let decoded = try? JSONDecoder().decode([Contact].self, from: savedData) {
-            sentenceView.tripSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
+            sentenceView.phoneSentenceArray = [ExpandableNames(isExpanded: true, names: decoded)]
         }
     }
-    
-    //cellの数
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sentenceView.tripSentenceArray[0].names.count
+        return sentenceView.phoneSentenceArray[0].names.count
     }
-    //cellの中身
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //CustomTableViewCellの追加
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        cell.tripVC = self
+        cell.phoneVC = self
         
-        
-        
-        let contact = sentenceView.tripSentenceArray[0].names[indexPath.row]
-        //cellの文字指定
-        cell.setCell(sentence: sentenceView.tripSentence[indexPath.row], pronunciation: sentenceView.tripPronunciation[indexPath.row], japanese: sentenceView.tripEnglish[indexPath.row])
+        let contact = sentenceView.phoneSentenceArray[0].names[indexPath.row]
+        cell.setCell(sentence: sentenceView.phoneSentence[indexPath.row], pronunciation: sentenceView.phonePronunciation[indexPath.row], japanese: sentenceView.phoneEnglish[indexPath.row])
         
         cell.heartButton.tintColor = contact.hasFavorited ? .red : .gray
         cell.heartButton2.tintColor = contact.hasFavorited2 ? .orange : .gray
         cell.heartButton3.tintColor = contact.hasFavorited3 ? .systemBlue : .gray
         cell.heartButton4.tintColor = contact.hasFavorited4 ? .systemGreen : .gray
 
-            return cell
-        }
-//    セルの高さ
+        return cell
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return CGFloat(145)
     }
-    //cellをタップした時の処理
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //中国語の読み上げ設定
-        let utterance = AVSpeechUtterance.init(string: sentenceView.tripSentence[indexPath.row])
+        let utterance = AVSpeechUtterance.init(string: sentenceView.phoneSentence[indexPath.row])
         let voice = AVSpeechSynthesisVoice.init(language: "zh-CN")
         utterance.voice = voice
         synthesizer.speak(utterance)
-
     }
     
-    //MARK:- Push
-    //プッシュ通知登録
     func pushRegister(pushTime: TimeInterval) {
         let notificationCenter = UNUserNotificationCenter.current()
-        // 受け取った時間をリピート通知
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: pushTime, repeats: true)
-        //通知のID(identifier,タイトル,内容、トリガーを設定 )
         let request = UNNotificationRequest(identifier: content.title, content: content, trigger: trigger)
-        print("request is \(request.content.title)")
         
-        notificationCenter.add(request) {
-            (error) in
+        notificationCenter.add(request) { (error) in
             if error != nil {
-            print(error.debugDescription)
+                print(error.debugDescription)
             }
         }
     }
-    //push通知削除
+    
     func pushDelete() {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [content.title])
-        
-        print("request is \(content.title)")
     }
     
-    //RemindListへの追加
     func addRemindList(tappedRow: Int, remindPattern: String) {
-        let sentence = sentenceView.tripSentence[tappedRow]
+        let sentence = sentenceView.phoneSentence[tappedRow]
         RemindManager.addRemindItem(sentence: sentence, remindPattern: remindPattern)
     }
-
-    //RemindListからの削除
+    
     func deleteRemindList(tappedRow: Int) {
-        let dataToDelete = ["sentence": sentenceView.tripSentence[tappedRow]]
+        let dataToDelete = ["sentence": sentenceView.phoneSentence[tappedRow]]
         NotificationCenter.default.post(name: Notification.Name("deleteRemind"), object: nil, userInfo: dataToDelete)
         
-        //ローカルからの削除
         if var savedRemindData = UserDefaults.standard.stringArray(forKey: "remind") {
-            savedRemindData.removeAll { $0 == sentenceView.tripSentence[tappedRow] }
+            savedRemindData.removeAll { $0 == sentenceView.phoneSentence[tappedRow] }
             UserDefaults.standard.set(savedRemindData, forKey: "remind")
         } else {
             print("No data to delete")
         }
     }
 }
-    
-    
-
