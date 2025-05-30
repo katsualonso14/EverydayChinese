@@ -26,6 +26,11 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         myCardsVC.tabBarItem.title = "My Cards"
         let nv1 = UINavigationController(rootViewController: myCardsVC)
         
+        let quizVC = QuizViewController()
+        quizVC.tabBarItem.image = UIImage(systemName: "questionmark.circle")
+        quizVC.tabBarItem.title = "Quiz"
+        let nv2 = UINavigationController(rootViewController: quizVC)
+        
         let categoryViewController = CategoryViewController()
         categoryViewController.tabBarItem.image = UIImage(systemName: "book")
         categoryViewController.tabBarItem.title = NSLocalizedString("category_bottom_tab_title", comment: "")
@@ -36,7 +41,8 @@ class MainTabBarController: UITabBarController, BannerViewDelegate {
         remindListVC.tabBarItem.title = NSLocalizedString("remind_list_title", comment: "")
         let nv4 = UINavigationController(rootViewController: remindListVC)
         
-        setViewControllers([nv1, nv3, nv4], animated: false)
+        //TODO: 修正ようにnv2を1に
+        setViewControllers([nv2,nv1,nv3, nv4], animated: false)
     }
     
     //MARK: -Admob

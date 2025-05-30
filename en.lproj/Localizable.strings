@@ -9,6 +9,7 @@
 "remind_list_title" = "Remind List";
 "calendar_title" = "Calendar";
 "category_bottom_tab_title" = "Vocab";
+"quiz_title" = "Quiz";
 
 //MARK: - Common Components
 // Placeholder Text
@@ -98,6 +99,20 @@
 "remind_completed_title" = "Remind Completed";
 "remind_completed_message" = "The reminder has been set successfully.";
 
+//MARK: - Quiz
+// QUiz Contents
+"quiz_meaning_thank_you" = "What does '谢谢' mean?";
+"quiz_which_is_good_morning" = "Which one means 'Good morning' in Chinese?";
+"quiz_which_is_she" = "Which one means 'She' in Chinese?";
+"quiz_which_is_how_much_is_this" = "How do you say 'How much is this?' in Chinese?";
+"quiz_which_is_where" = "Which one means 'Where' in Chinese?";
+
+"word_sorry" = "Sorry";
+"word_thank_you" = "Thank you";
+"word_good_morning" = "Good morning";
+"word_goodbye" = "Goodbye";
+
+"reset_quiz" = "Reset Quiz";
 //MARK: - Remind
 // Delete Alert
 "delete_all_remind_title" = "Delete all reminders";

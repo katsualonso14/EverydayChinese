@@ -9,6 +9,7 @@
 "remind_list_title" = "リマインドリスト";
 "calendar_title" = "カレンダー";
 "category_bottom_tab_title" = "単語・フレーズ";
+"quiz_title" = "クイズ";
 
 //MARK: - Common Components
 // Placeholder Text
@@ -219,6 +220,23 @@
 "remind_bottom_sheet_1day" = "1日後";
 "remind_completed_title" = "リマインドの設定完了";
 "remind_completed_message" = "リマインドの設定が完了しました。";
+
+//MARK: - Quiz
+// QUiz Contents
+"quiz_meaning_thank_you" = "「谢谢」の意味は？";
+"quiz_which_is_good_morning" = "「おはよう」は中国語でどれ？";
+"quiz_which_is_she" = "「彼女」は中国語でどれ？";
+"quiz_which_is_how_much_is_this" = "「これはいくらですか？」の中国語表現は？";
+"quiz_which_is_where" = "「どこ？」は中国語でどれ？";
+
+
+"word_sorry" = "ごめんなさい";
+"word_thank_you" = "ありがとう";
+"word_good_morning" = "おはよう";
+"word_goodbye" = "さようなら";
+
+
+"reset_quiz" = "クイズをリセット";
 
 //MARK: - Remind
 // Delete Alert
